@@ -1,0 +1,191 @@
+.App {
+  text-align: center;
+}
+
+@import 'Font.css';
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.App {
+  position: relative; /* Ensure that child elements can be absolutely positioned */
+  min-height: 100vh; /* Make sure the App component covers at least the viewport height */
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../assets/images/background.jpg'); /* Update this path if needed */
+  background-size: cover;
+  background-position: center;
+  z-index: 1; /* Ensure the background is below the content */
+}
+
+.content {
+  position: relative;
+  z-index: 2; /* Ensure the content (including Navbar) is above the background */
+}
+
+input::placeholder {
+  color: #BDBCC0;
+  opacity: 1; /* Ensures full opacity for the color */
+}
+
+/*.custom-placeholder::placeholder {*/
+/*  color: #BDBCC0;*/
+/*  opacity: 1;*/
+/*  font-weight: bold;*/
+/*  font-size: 10px;*/
+/*}*/
+
+.custom-card {
+  width: 320px;
+  height: 510px;
+  border-radius: 48px;
+  overflow: hidden; /* Ensure the image stays within the rounded corners */
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.25);
+  margin-bottom: 20px;
+}
+
+.custom-card-img {
+  width: 320px; /* Fixed width */
+  height: 180px; /* Fixed height */
+  object-fit: cover; /* Maintains aspect ratio while filling the box */
+  border-radius: 48px 48px 0 0; /* Rounded top corners */
+}
+
+.card-title {
+  width: 200px;
+  margin: 25px 0px;
+  color: #02033B;
+  font-weight: bold;
+  font-size: 1.5rem;
+  text-align: start;
+
+}
+
+.card-title-service{
+  margin:25px 50px;
+  height: 57.6px;
+}
+
+.card-text {
+
+  font-size: 1.1rem;
+  text-align: start; /* Align text to the start */
+  margin-left: 20px; /* Left margin */
+}
+
+.fb-card{
+  width: 330px; /* Fixed width */
+  height: 270.98px; /* Fixed height */
+
+}
+
+.fb-in-card{
+  width: 310px;
+  height: 247.39px;
+  border-radius: 48px;
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.25);
+
+}
+
+.fb-text{
+  width: 258px; /* Fixed width */
+  height: 105.562px;
+  text-align: start;
+  font-size:1rem;
+}
+
+.custom-button-feedback{
+  width: 325px;
+  height: 75px;
+  padding: 1rem 1.59rem;
+  border: 2px solid #02033B; /* Initial border color */
+  color: #02033B;
+  font-size: 1.3rem;
+  font-weight: 800; /* Equivalent to font-extrabold */
+  background-color: transparent; /* Optional for transparency */
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+  display: flex; /* Use flexbox for centering */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+}
+
+.button-container {
+  display: flex; /* Use flexbox */
+  flex-direction: column; /* Stack buttons vertically */
+  align-items: center; /* Center items horizontally */
+  justify-content: center; /* Center items vertically */
+  margin-top: 1rem; /* Optional spacing */
+}
+
+.btn-shadow {
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.custom-button-feedback:hover {
+  color: darkslateblue; /* Change text color to white on hover */
+  border-color: darkslateblue; /* Change border color to white on hover */
+  background-color: transparent; /* Keep the background transparent */
+}
+
+.read-more-btn {
+  width: 150px; /* Further reduced width */
+  height: 40px; /* Further reduced height */
+  font-size: 0.9rem; /* Smaller font size */
+}
+
+.footer-bg {
+  background-color: #02033B; /* Set footer background color */
+}
+
+footer {
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.underline {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+
+@font-face {
+
+}
