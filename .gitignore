@@ -1,0 +1,8 @@
+# Loại bỏ thư mục node_modules chứa các package đã cài đặt
+node_modules/
+
+# Loại bỏ thư mục build hoặc dist (sản phẩm cuối cùng sau khi build)
+build/
+
+
+
