@@ -6,8 +6,8 @@ const SecretPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        const role = localStorage.getItem('role');
+        const token = sessionStorage.getItem('token');
+        const role = sessionStorage.getItem('role');
 
         if (!token) {
             alert('Bạn chưa đăng nhập!'); // Hiển thị alert
