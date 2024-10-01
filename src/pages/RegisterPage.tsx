@@ -8,12 +8,16 @@ export default function RegisterPage(){
     const[password, setPassword] = useState("");
     const[confirmPassword, setConfirmPassword] = useState("");
     const[email, setEmail] = useState("");
+    const [firstname, setFirstname] = useState("");
+    const [lastname, setLastname] = useState("");
+
     //cac bien bao loi
     const[errorTenDangNhap, setErrorTenDangNhap] = useState("");
     const[errorEmail, setErrorEmail] = useState("");
     const[errorMatKhau, setErrorMatKhau] = useState("");
     const[errorMatKhauNhapLai, setErrorMatKhauNhapLai] = useState("");
-
+    const [errorFirstname, setErrorFirstname] = useState("");
+    const [errorLastname, setErrorLastname] = useState("");
 
     //Xu Ly thong tin
     const handleSubmit = async (e: React.FormEvent) =>{
@@ -22,17 +26,27 @@ export default function RegisterPage(){
         setErrorEmail("");
         setErrorMatKhau("");
         setErrorMatKhauNhapLai("");
-
+        setErrorFirstname("");
+        setErrorLastname("");
         //Avoid spam click
         e.preventDefault();
+        //Avoid null
+        const isFirstnameValid = firstname.trim() !== "";
+        const isLastnameValid = lastname.trim() !== "";
+        const isUsernameValid = username.trim() !== "" && !username.includes(" ");
+        const isEmailValid = validateEmail(email);
 
+        if (!isUsernameValid) setErrorTenDangNhap("Username is required and cannot contain spaces!");
+        if (!isFirstnameValid) setErrorFirstname("First name is required!");
+        if (!isLastnameValid) setErrorLastname("Last name is required!");
+        if (!isEmailValid) setErrorEmail("Invalid format and cannot contain spaces!");
         //Kiem tra cac dieu kien va gan ket qua vao bien
         const isTenDangNhapValid = !await kiemTraTenDangNhapDaTonTai(username);
-        const isEmailValid = !await kiemTraEmailDaTonTai(email);
+        const isEmailAvailable = !await kiemTraEmailDaTonTai(email);
         const isPasswordValid = !kiemMatKhau(password);
         const isConfirmPasswordValid = !kiemMatKhauNhapLai(confirmPassword);
 
-        if (isTenDangNhapValid && isEmailValid && isPasswordValid && isConfirmPasswordValid) {
+        if (isFirstnameValid && isLastnameValid &&isTenDangNhapValid && isEmailAvailable&& isEmailValid && isPasswordValid && isConfirmPasswordValid ) {
             try {
                 // Gọi hàm đăng ký và nhận kết quả
                 const result = await register(username, email, password);
@@ -41,6 +55,8 @@ export default function RegisterPage(){
                 alert("Đăng ký thành công!");
 
                 // Xóa các trường nhập liệu
+                setFirstname("");
+                setLastname("");
                 setUsername("");
                 setEmail("");
                 setPassword("");
@@ -55,7 +71,6 @@ export default function RegisterPage(){
     }
 //Kiem Tra Ten Dang Nhap///////////////////////////////////////////////////////////////////////////////////////////
     const kiemTraTenDangNhapDaTonTai = async (username: string) =>{
-        // endpoint
         const url = 'https://66e10816c831c8811b538fae.mockapi.io/api/login';
         console.log(url);
 
@@ -77,15 +92,40 @@ export default function RegisterPage(){
         }
     }
 
-    const handleTenDangNhapChange = (e: React.ChangeEvent<HTMLInputElement>) =>{
-        //Thay doi gia tri
-        setUsername(e.target.value);
-        setErrorTenDangNhap("");
-        return kiemTraTenDangNhapDaTonTai(e.target.value);
+
+    const validateUsername = (username: string) => {
+        const usernameRegex = /^[A-Za-z0-9]+$/; // Only allows English alphabet characters
+        return usernameRegex.test(username);
     }
 
+    const handleTenDangNhapChange = (e: React.ChangeEvent<HTMLInputElement>) =>{
+        //Thay doi gia tri
+        const value = e.target.value;
+        setUsername(value);
 
-    //Kiem Tra Email//////////////////////////////////////////////////////////////////////////////////////////
+        if (value.trim() === "") {
+            setErrorTenDangNhap(""); // Không hiển thị lỗi nếu ô trống
+        }
+        else if (value.includes(" ")) {
+            setErrorTenDangNhap("Username cannot contain spaces!");
+        } else if (!validateUsername(value)) {
+            setErrorTenDangNhap("Username must be only English alphabet characters!");
+        } else {
+            setErrorTenDangNhap("");
+            return kiemTraTenDangNhapDaTonTai(value);
+        }
+    }
+    //Kiem Tra Format Email//////////////////////////////////////////////////////////////////////////////////////////
+    const validateEmail = (email: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email) || email.includes(" ")) {
+            return false;
+        }
+        return true;
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //Kiem Tra Email Ton tai//////////////////////////////////////////////////////////////////////////////////////////
     const kiemTraEmailDaTonTai = async (email: string) =>{
         // endpoint
         const url = 'https://66e10816c831c8811b538fae.mockapi.io/api/login';
@@ -120,12 +160,20 @@ export default function RegisterPage(){
 //Kiem Tra Mat Khau///////////////////////////////////////////////////////////////////////////////////////////
     const kiemMatKhau = (password: string) =>{
         const passwordRegex = /^(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
-        if(!passwordRegex.test(password)){
+
+        // Check for whitespace in the password
+        if (/\s/.test(password)) {
+            setErrorMatKhau("Password must not contain spaces!");
+            return true; // Indicates an error
+        }
+
+        // Check if the password meets the regex criteria
+        if (!passwordRegex.test(password)) {
             setErrorMatKhau("Password must be at least 8 chars with a special char!");
-            return true;
-        }else {
-            setErrorMatKhau(""); //mat khau hop le
-            return false;
+            return true; // Indicates an error
+        } else {
+            setErrorMatKhau(""); // Password is valid
+            return false; // No errors
         }
     }
 
@@ -195,10 +243,10 @@ export default function RegisterPage(){
 
                     {/* Username Input */}
                     <form onSubmit={handleSubmit}>
-                        <div className="mb-3">
+                        <div className="mb-2">
                             <div className="d-flex flex-column align-items-start">
                                 <label htmlFor="tenDangNhap" className="form-label"
-                                       >Username</label>
+                                >Username<span className="required">*</span></label>
                                 <input
                                     type="text"
                                     id="tenDangNhap"
@@ -218,11 +266,48 @@ export default function RegisterPage(){
                             </div>
                         </div>
 
-                        <div className="mb-3">
+                        {/* Firstname and Lastname on one row */}
+                        <div className="d-flex justify-content-between ">
+                            <div className="mb-2 me-1 d-flex flex-column align-items-start" style={{ flex: 1 }}>
+                                <label htmlFor="firstname" className="form-label">
+                                    First name<span className="required">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="firstname"
+                                    className="form-control custom-placeholder"
+                                    value={firstname}
+                                    placeholder="Enter your first name"
+                                    onChange={(e) => setFirstname(e.target.value)}
+                                />
+                                {errorFirstname && (
+                                    <div className="error-register">{errorFirstname}</div>
+                                )}
+                            </div>
+
+                            <div className="mb-2 ms-1 d-flex flex-column align-items-start" style={{ flex: 1 }}>
+                                <label htmlFor="lastname" className="form-label">
+                                    Last name<span className="required">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="lastname"
+                                    className="form-control custom-placeholder"
+                                    value={lastname}
+                                    placeholder="Enter your last name"
+                                    onChange={(e) => setLastname(e.target.value)}
+                                />
+                                {errorLastname && (
+                                    <div className="error-register">{errorLastname}</div>
+                                )}
+                            </div>
+                        </div>
+
+                        <div className="mb-2">
                             <div className="d-flex flex-column align-items-start">
                                 <label htmlFor="email" className="form-label"
 
-                                >Email</label>
+                                >Email<span className="required">*</span></label>
                                 <input type="text"
                                        id="email"
                                        className="form-control custom-placeholder"
@@ -242,10 +327,10 @@ export default function RegisterPage(){
                         </div>
 
 
-                        <div className="mb-3">
+                        <div className="mb-2">
                             <div className="d-flex flex-column align-items-start">
                                 <label htmlFor="matKhau" className="form-label"
-                                       >Password</label>
+                                >Password<span className="required">*</span></label>
                                 <input type="password"
                                        id="matKhau"
                                        className="form-control custom-placeholder"
@@ -264,7 +349,7 @@ export default function RegisterPage(){
                             </div>
                         </div>
 
-                        <div className="mb-3">
+                        <div className="mb-2">
                             <div className="d-flex flex-column align-items-start">
                                 <label htmlFor="matKhauNhapLai" className="form-label"
                                        >Confirm password</label>
@@ -285,7 +370,7 @@ export default function RegisterPage(){
                             </div>
                         </div>
 
-                        <div className="d-grid mb-2 mt-4">
+                        <div className="d-grid mt-4">
                             <button type="submit" className="btn btn-primary fw-bold"
                                     style={{
                                         backgroundColor: '#c19758',
