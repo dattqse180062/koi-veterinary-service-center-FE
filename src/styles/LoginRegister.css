@@ -2,6 +2,7 @@
     font-size: 0.75rem;
     color: white;
     font-weight: bold;
+
 }
 
 .form-control{
@@ -22,7 +23,7 @@
     color: red;
     font-size: 0.68rem;
     margin-top: 0.2rem;
-    padding: 0.1rem 0.4rem;
+    padding: 0.01rem 0.4rem;
     border-radius: 4px;
     font-weight: bold;
 }
@@ -35,4 +36,9 @@
     margin-top: -10px;
     margin-bottom: 1rem;
 }
-
+.required {
+    color: red;
+    font-weight: bold;
+    margin-left: 2px;
+    font-size: 1rem;
+}
