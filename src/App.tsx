@@ -9,6 +9,7 @@ const RegisterPage = lazy(() => import("./pages/RegisterPage"));
 const DangNhapNguoiDung = lazy(() => import("./pages/LoginPage"));
 const HomePage = lazy(() => import("./pages/HomePage"));
 const SecretPage = lazy(() => import("./pages/SecretPage"));
+const ManagerPage = lazy(() => import("./pages/ManagerPage"));
 
 function App() {
     return (
@@ -21,7 +22,10 @@ function App() {
                             <Route path="/register" element={<RegisterPage />} />
                             <Route path="/login" element={<DangNhapNguoiDung />} />
                             <Route path="/" element={<HomePage />} />
-                            <Route path="/secret" element={<SecretPage />} />
+                            <Route path="/secret" element={<SecretPage />} /> 
+                            {/* Manager page */}
+                            <Route path="/manager" element={<ManagerPage />} />
+                            {/* sửa dòng 24 thành page của manager, sửa cái path */}
                         </Routes>
                     </Suspense>
                 </BrowserRouter>
