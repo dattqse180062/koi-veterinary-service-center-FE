@@ -59,7 +59,7 @@ const ManagerPage = () => {
             <div className="flex-grow-1 d-flex flex-column align-items-center justify-content-center">
                 {activeMenu === 'shift' && (
                     <>
-                            <h1>Not for Hung</h1>
+                        <h1>Not for Hung</h1>
                     </>
                 )}
                 {activeMenu === 'history' && (
