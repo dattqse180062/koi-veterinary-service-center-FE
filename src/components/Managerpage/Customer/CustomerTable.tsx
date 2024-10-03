@@ -28,10 +28,10 @@ const initialCustomers: Customer[] = [
 const CustomerAccountTable: React.FC = () => {
   const [customers, setCustomers] = useState<Customer[]>(initialCustomers);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  // const [showDetailModal, setShowDetailModal] = useState(false);
   const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+  const [showDetailModal, setShowDetailModal] = useState(false);
   const [newCustomer, setNewCustomer] = useState<Customer>({
     avatar: '',
     customerId: customers.length + 1,
@@ -67,17 +67,12 @@ const CustomerAccountTable: React.FC = () => {
       email: '',
       phoneNumber: ''
     });
-    // Close modal after adding user
-    // const modal = document.getElementById('newCustomerModal')!;
-    // const modalInstance = new (window as any).bootstrap.Modal(modal); // Direct Modal instance creation
-    // modalInstance.hide();
     setShowAddModal(false);
   };
 
   const handleViewDetails = (customer: Customer) => {
     setSelectedCustomer(customer);
-    const modal = new window.bootstrap.Modal(document.getElementById('viewDetailsModal')!);
-    modal.show();
+    setShowDetailModal(true);
   };
 
   const handleDeleteClick = (customer: Customer) => {
@@ -156,30 +151,43 @@ const CustomerAccountTable: React.FC = () => {
       </nav>
 
       {/* Modal for View Details */}
-      <div className="modal fade" id="viewDetailsModal"
-        tabIndex={-1} aria-labelledby="viewDetailsModalLabel" aria-hidden="true">
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="viewDetailsModalLabel">Customer Details</h5>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div className="modal-body">
-              {selectedCustomer && (
-                <>
-                  <p><strong>Full Name:</strong> {`${selectedCustomer.firstName} ${selectedCustomer.lastName}`}</p>
-                  <p><strong>Email:</strong> {selectedCustomer.email}</p>
-                  <p><strong>Phone Number:</strong> {selectedCustomer.phoneNumber}</p>
-                  <p><strong>Avatar URL:</strong> {selectedCustomer.avatar}</p>
-                </>
-              )}
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      {selectedCustomer && (
+        <div
+          className={`modal fade ${showDetailModal ? 'show' : ''}`}
+          tabIndex={-1}
+          role="dialog"
+          aria-labelledby="viewDetailsModalLabel"
+          aria-hidden={!showDetailModal}
+          style={{ display: showDetailModal ? 'block' : 'none', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+        >
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="viewDetailsModalLabel">Customer Details</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={() => setShowDetailModal(false)}
+                ></button>
+              </div>
+              <div className="modal-body">
+                {selectedCustomer && (
+                  <>
+                    <p><strong>Full Name:</strong> {`${selectedCustomer.firstName} ${selectedCustomer.lastName}`}</p>
+                    <p><strong>Email:</strong> {selectedCustomer.email}</p>
+                    <p><strong>Phone Number:</strong> {selectedCustomer.phoneNumber}</p>
+                    <p><strong>Avatar URL:</strong> {selectedCustomer.avatar}</p>
+                  </>
+                )}
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={() => setShowDetailModal(false)}>Close</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
+
 
       {/* Delete Confirmation Modal */}
       {selectedCustomer && (
