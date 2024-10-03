@@ -30,10 +30,15 @@ export default function DangNhapNguoiDung() {
             // Gọi hàm login từ context
             login(user.id); // Gọi hàm login từ context để cập nhật trạng thái
             console.log("isLoggedIn updated to true"); // Log trạng thái đăng nhập
-
+            // trường hợp là admin
             if (user.roles === 'admin') {
                 navigate('/secret');
-            } else {
+            } 
+            // trường hợp là manager
+            else if (user.roles === 'manager') {
+                navigate('/manager');
+            } // trường hợp là user, các case còn lại !
+            else {
                 navigate('/');
             }
         } catch (err) {
