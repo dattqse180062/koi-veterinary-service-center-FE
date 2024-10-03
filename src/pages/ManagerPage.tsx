@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import SideMenu from "../components/layout/LeftSideBarForManager";
 import AppointmentHistoryTable from "../components/Managerpage/Appointment/AppointmentHistoryTable";
 import StaffTable from "../components/Managerpage/Staff/StaffTable";
-import FeedbackAndRatingTable from "../components/Managerpage/FeedbackAndRating/FeedbackTable";
+// import FeedbackAndRatingTable from "../components/Managerpage/FeedbackAndRating/FeedbackTable";
 import CustomerTable from "../components/Managerpage/Customer/CustomerTable";
 
 const ManagerPage = () => {
@@ -79,7 +79,8 @@ const ManagerPage = () => {
                 )}
                 {activeMenu === 'feedback' && (
                     <>
-                        <FeedbackAndRatingTable />
+                        {/* <FeedbackAndRatingTable /> */}
+                        <h1>In process</h1>
                     </>
                 )}
                 {activeMenu === 'reports' && (

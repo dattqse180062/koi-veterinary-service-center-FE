@@ -36,8 +36,8 @@ const AppointmentHistoryTable: React.FC = () => {
 
   const handleViewDetail = (order: Order) => {
     setSelectedOrder(order);
-    const modal = new window.bootstrap.Modal(document.getElementById('viewDetailsModal')!);
-    modal.show();
+    const modal = new bootstrap.Modal(document.getElementById('viewDetailsModal'));
+modal.show(); 
   };
 
   const handleOpenDeleteModal = (order: Order) => {
