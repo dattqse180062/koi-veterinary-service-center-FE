@@ -81,6 +81,7 @@ const ManagerPage = () => {
                     <>
                         {/* <FeedbackAndRatingTable /> */}
                         <h1>In process</h1>
+                        
                     </>
                 )}
                 {activeMenu === 'reports' && (
