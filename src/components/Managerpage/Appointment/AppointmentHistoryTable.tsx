@@ -32,12 +32,13 @@ const AppointmentHistoryTable: React.FC = () => {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [showDetailModal, setShowDetailModal] = useState<boolean>(false);
+
   const rowsPerPage = 5;
 
   const handleViewDetail = (order: Order) => {
     setSelectedOrder(order);
-    const modal = new bootstrap.Modal(document.getElementById('viewDetailsModal'));
-modal.show(); 
+    setShowDetailModal(true); // Mở modal thông qua state
   };
 
   const handleOpenDeleteModal = (order: Order) => {
@@ -49,7 +50,6 @@ modal.show();
     if (selectedOrder) {
       setOrderData((prevData) => prevData.filter((order) => order.appointmentID !== selectedOrder.appointmentID));
       setShowDeleteModal(false);
-      // alert(`Deleted appointment ID: ${selectedOrder.appointmentID}`);
     }
   };
 
@@ -130,31 +130,48 @@ modal.show();
       </nav>
 
       {/* Modal for View Details */}
-      <div className="modal fade" id="viewDetailsModal" tabIndex={-1} aria-labelledby="viewDetailsModalLabel" aria-hidden="true">
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="viewDetailsModalLabel">Appointment Details</h5>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div className="modal-body">
-              {selectedOrder && (
-                <>
-                  <p><strong>Appointment ID:</strong> {selectedOrder.appointmentID}</p>
-                  <p><strong>Created Date:</strong> {selectedOrder.created}</p>
-                  <p><strong>Customer Name:</strong> {selectedOrder.customer}</p>
-                  <p><strong>Total Price:</strong> ${selectedOrder.totalPrice.toFixed(2)}</p>
-                  <p><strong>Description:</strong> {selectedOrder.description}</p>
-                  <p><strong>Status:</strong> {selectedOrder.status}</p>
-                </>
-              )}
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+
+      {selectedOrder && (
+        <div
+          className={`modal fade ${showDetailModal ? 'show' : ''}`}
+          tabIndex={-1}
+          role="dialog"
+          aria-labelledby="viewDetailsModalLabel"
+          aria-hidden={!showDetailModal}
+          style={{ display: showDetailModal ? 'block' : 'none', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+        >
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="viewDetailsModalLabel">Customer Details</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={() => setShowDetailModal(false)}
+                ></button>
+              </div>
+              <div className="modal-body">
+                {selectedOrder && (
+                  <>
+                    <p><strong>Appointment ID:</strong> {selectedOrder.appointmentID}</p>
+                    <p><strong>Created Date:</strong> {selectedOrder.created}</p>
+                    <p><strong>Customer Name:</strong> {selectedOrder.customer}</p>
+                    <p><strong>Total Price:</strong> ${selectedOrder.totalPrice.toFixed(2)}</p>
+                    <p><strong>Description:</strong> {selectedOrder.description}</p>
+                    <p><strong>Status:</strong> {selectedOrder.status}</p>
+                  </>
+                )}
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={() => setShowDetailModal(false)}>Close</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
+
+
 
       {/* Modal for Confirm Deletion */}
       {showDeleteModal && (
