@@ -12,15 +12,15 @@ interface Staff {
 
 const initialStaff: Staff[] = [
   { staffId: 1, avatar: 'passed-stamp_1017-8239.jpg', email: 'vajohem349@abatido.com', phoneNumber: '1234567890', firstName: 'Ahlam', lastName: 'Ges', isActive: true },
-  { staffId: 2, avatar: 'passed-stamp_1017-8239.jpg', email: 'vsdsdf@abatido.com', phoneNumber: '0987654321', firstName: 'John', lastName: 'Doe', isActive: true },
+  { staffId: 2, avatar: 'blunder.jpg', email: 'vsdsdf@abatido.com', phoneNumber: '0987654321', firstName: 'John', lastName: 'Doe', isActive: true },
   { staffId: 3, avatar: 'passed-stamp_1017-8239.jpg', email: 'jane.smith@example.com', phoneNumber: '3456789012', firstName: 'Jane', lastName: 'Smith', isActive: false },
-  { staffId: 4, avatar: 'passed-stamp_1017-8239.jpg', email: 'mike.johnson@example.com', phoneNumber: '4567890123', firstName: 'Mike', lastName: 'Johnson', isActive: true },
+  { staffId: 4, avatar: 'blunder.jpg', email: 'mike.johnson@example.com', phoneNumber: '4567890123', firstName: 'Mike', lastName: 'Johnson', isActive: true },
   { staffId: 5, avatar: 'passed-stamp_1017-8239.jpg', email: 'emily.brown@example.com', phoneNumber: '5678901234', firstName: 'Emily', lastName: 'Brown', isActive: true },
-  { staffId: 6, avatar: 'passed-stamp_1017-8239.jpg', email: 'david.lee@example.com', phoneNumber: '6789012345', firstName: 'David', lastName: 'Lee', isActive: false },
+  { staffId: 6, avatar: 'blunder.jpg', email: 'david.lee@example.com', phoneNumber: '6789012345', firstName: 'David', lastName: 'Lee', isActive: false },
   { staffId: 7, avatar: 'passed-stamp_1017-8239.jpg', email: 'sarah.wilson@example.com', phoneNumber: '7890123456', firstName: 'Sarah', lastName: 'Wilson', isActive: true },
-  { staffId: 8, avatar: 'passed-stamp_1017-8239.jpg', email: 'alex.taylor@example.com', phoneNumber: '8901234567', firstName: 'Alex', lastName: 'Taylor', isActive: true },
+  { staffId: 8, avatar: 'blunder.jpg', email: 'alex.taylor@example.com', phoneNumber: '8901234567', firstName: 'Alex', lastName: 'Taylor', isActive: true },
   { staffId: 9, avatar: 'passed-stamp_1017-8239.jpg', email: 'olivia.martinez@example.com', phoneNumber: '9012345678', firstName: 'Olivia', lastName: 'Martinez', isActive: false },
-  { staffId: 10, avatar: 'passed-stamp_1017-8239.jpg', email: 'daniel.anderson@example.com', phoneNumber: '0123456789', firstName: 'Daniel', lastName: 'Anderson', isActive: true },
+  { staffId: 10, avatar: 'blunder.jpg', email: 'daniel.anderson@example.com', phoneNumber: '0123456789', firstName: 'Daniel', lastName: 'Anderson', isActive: true },
   { staffId: 11, avatar: 'passed-stamp_1017-8239.jpg', email: 'sophia.garcia@example.com', phoneNumber: '1122334455', firstName: 'Sophia', lastName: 'Garcia', isActive: true }
 ];
 
