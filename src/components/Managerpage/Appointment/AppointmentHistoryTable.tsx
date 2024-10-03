@@ -130,8 +130,6 @@ const AppointmentHistoryTable: React.FC = () => {
       </nav>
 
       {/* Modal for View Details */}
-
-
       {selectedOrder && (
         <div
           className={`modal fade ${showDetailModal ? 'show' : ''}`}
@@ -171,8 +169,6 @@ const AppointmentHistoryTable: React.FC = () => {
         </div>
       )}
 
-
-
       {/* Modal for Confirm Deletion */}
       {showDeleteModal && (
         <div className="modal fade show" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
@@ -193,6 +189,7 @@ const AppointmentHistoryTable: React.FC = () => {
           </div>
         </div>
       )}
+      
     </div>
   );
 };
