@@ -1,0 +1,21 @@
+/* Sidebar.css */
+.icon-placeholder {
+    width: 24px; /* Adjust icon size */
+    height: 24px; /* Adjust icon size */
+    background-color: #e0e0e0; /* Placeholder color for icons */
+    border-radius: 50%; /* Circle shape */
+}
+
+.nav-link {
+    padding: 15px 20px; /* Add padding to each link */
+    transition: background-color 0.3s;
+}
+
+.nav-link:hover {
+    background-color: #f8f9fa; /* Light gray on hover */
+}
+
+.badge {
+    position: relative;
+    top: -1px; /* Adjust badge position */
+}
