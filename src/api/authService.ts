@@ -20,12 +20,37 @@ export const login = async (username: string, password: string) => {
     if (user) {
         sessionStorage.setItem('token', user.token); // Lưu token (hoặc id) vào sessionStorage
         sessionStorage.setItem('role', user.role); // Lưu role vào sessionStorage
+        sessionStorage.setItem('userId', user.id);
         return user; // Trả về thông tin người dùng nếu đăng nhập thành công
     } else {
         throw new Error('Invalid credentials');
     }
 };
+// API để lấy thông tin người dùng
+export const getUserInfo = async (userId: string) => {
+    try {
+        const response = await axios.get(`${API_URL}/login/${userId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching user info:", error);
+        throw new Error('Error fetching user info');
+    }
+};
 
+export const updateUserInfoAPI = async (userId: string, updatedData: any) => {
+    const response = await axios.put(`${API_URL}/login/${userId}`, updatedData);
+    return response.data;
+};
 
+// Thay đổi mật khẩu
+export const changePassword = async (userId: string, currentPassword: string, newPassword: string) => {
+    const user = await getUserInfo(userId);
 
+    if (user && user.password === currentPassword) {
+        await updateUserInfoAPI(userId, { ...user, password: newPassword });
+        return true; // Trả về true nếu thay đổi mật khẩu thành công
+    } else {
+        throw new Error('Current password is incorrect.');
+    }
+};
 

@@ -52,7 +52,7 @@ input[type="file"] {
 .upload-btn {
 
     background-color: #edb664;
-    padding: 10px;
+    padding: 6px;
     border-radius: 10px;
     color: white;
     cursor: pointer;
@@ -73,9 +73,13 @@ margin-top: 40px;
 }
 
 .name-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px; /* Add gap between the two input fields */
+    display: flex; /* Sử dụng flexbox để sắp xếp các trường nhập */
+    justify-content: space-between; /* Căn chỉnh khoảng cách giữa các ô nhập */
+    gap: 10px; /* Khoảng cách giữa các ô nhập */
+}
+
+.name-row .form-group {
+    flex: 1; /* Tất cả các ô nhập sẽ có chiều rộng bằng nhau */
 }
 
 .form-group {
@@ -95,22 +99,65 @@ margin-top: 40px;
 
 .button-group {
     display: flex;
-    justify-content: end;
-    gap: 10px;
+    justify-content: space-between; /* Distribute space between the left and right sections */
+    align-items: center; /* Center items vertically */
+    margin-top: 10px; /* Add some space above the buttons */
+}
 
+.left-buttons {
+    /* Allow the left section to take available space */
+}
+
+.right-buttons {
+    display: flex; /* Align right buttons in a row */
+    gap: 10px; /* Add space between Cancel and Save buttons */
+    justify-content: flex-end; /* Align buttons to the right */
+}
+
+.change-password-btn {
+    display: inline-block;
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+    text-decoration: none; /* Remove underline */
+    padding: 5px 10px;
+    border-radius:9px; /* Optional: Add some rounded corners */
+    border: none; /* Remove border */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 0.88rem;
+}
+
+.cancel-btn,
+.save-btn {
+    background-color: #6c757d; /* Bootstrap secondary color */
+    color: white;
+    border: none;
+    border-radius: 9px;
+    padding: 10px 20px;
+    cursor: pointer; /* Pointer cursor on hover */
 }
 
 .cancel-btn {
     background-color: white;
     border: 2px solid #edb664;
-    padding: 10px;
-    border-radius: 5px;
+    padding: 5px 10px; /* Reduce padding */
+    border-radius: 9px;
     color: #edb664;
+    font-size: 14px; /* Optional: Change font size */
 }
 
 .save-btn {
     background-color: #edb664;
-    padding: 10px;
-    border-radius: 5px;
+    padding: 5px 10px; /* Reduce padding */
+    border-radius: 9px;
     color: white;
+    font-size: 14px; /* Optional: Change font size */
+}
+.address-row {
+    display: flex; /* Sử dụng flexbox để sắp xếp các trường nhập */
+    justify-content: space-between; /* Căn chỉnh khoảng cách giữa các ô nhập */
+    gap: 10px; /* Khoảng cách giữa các ô nhập */
+}
+
+.address-row .form-group {
+    flex: 1; /* Tất cả các ô nhập sẽ có chiều rộng bằng nhau */
 }

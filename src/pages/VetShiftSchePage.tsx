@@ -1,6 +1,8 @@
-import React from 'react';
-import VetShiftTable from '../components/vet/VetShiftTable';
+import React, { useState } from 'react';
+// import VetShiftTable from '../components/vet/VetShiftTable';
 import Sidebar from '../components/layout/Sidebar';
+import TableComponent from '../components/table/TableComponent'
+import { useNavigate } from 'react-router-dom';
 
 const VetShiftSchePage: React.FC = () => {
     // Example data for veterinarians, including address
@@ -67,17 +69,31 @@ const VetShiftSchePage: React.FC = () => {
         },
     ];
 
+    const columns = ['user_id', 'fullName', 'username', 'email', 'phone_number', 'address'];
+    const columnHeaders = ['Vet ID', 'Full Name', 'Username', 'Email', 'Phone Number', 'Address'];  // Đặt tiêu đề cột cho Vet
+    const navigate = useNavigate();
+
+    const handleVetClick = (vetId: number, fullName: string) => {
+        navigate(`/vetsche`, { state: { vetId, fullName } });
+    };
+
     return (
         <div className="d-flex flex-grow-1">
             <Sidebar />
-            <div className="container " style={{marginTop:"6rem"}}>
+            <div className="container" style={{ marginTop: "6rem" }}>
                 <div className="card" style={{ width: '100%' }}>
                     <div className="card-header">
-                        <h5 className="text-start"  style={{fontWeight:"bold", color:"#02033B", fontSize:"2rem", padding:"1.2rem"}}>Veterinarians List</h5>
-
+                        <h5 className="text-start" style={{ fontWeight: "bold", color: "#02033B", fontSize: "2rem", padding: "1.2rem" }}>
+                            Veterinarians List
+                        </h5>
                     </div>
                     <div className="card-body">
-                        <VetShiftTable vets={vets} />
+                        <TableComponent
+                            columns={columns}
+                            columnHeaders={columnHeaders}  // Truyền tiêu đề cột
+                            data={vets}
+                            onRowButtonClick={handleVetClick}
+                        />
                     </div>
                 </div>
             </div>

@@ -1,0 +1,101 @@
+.container-fluid {
+    padding: 0;
+
+}
+
+.image-upload-container {
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    align-items: center;    /* Center items horizontally */
+}
+
+.image-upload-card {
+    width: 100%;
+    padding: 20px;
+    background-color: white;
+    border: 2px solid #e0e6ed;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+    margin-bottom: 10px; /* Space between image and button */
+}
+
+
+
+.upload-button-container {
+    width: 100%;
+    margin-top: 10px; /* Optional: additional spacing above button */
+}
+
+
+.image-upload {
+    width: 300px;
+    height: auto;
+    border-radius: 15px;
+}
+
+.upload-button-container {
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.upload-button {
+    font-size: 16px;
+    border-radius: 5px;
+    padding: 8px 16px;
+}
+
+.form-container {
+    max-width: 500px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+    padding: 20px;
+
+}
+
+.input-field {
+    border: 1px solid #e0e6ed;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.submit-button {
+    border-radius: 8px;
+    padding: 10px;
+}
+
+@media (max-width: 768px) {
+    .image-upload-container,
+    .form-container {
+        max-width: 100%;
+        margin-bottom: 2rem;
+    }
+
+    .image-upload-card {
+        padding: 10px;
+        border-radius: 10px;
+        margin-top: 2rem;
+    }
+
+    .upload-button {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    .submit-button {
+        padding: 8px;
+    }
+}
+.form-label {
+    font-weight: bold; /* Make the label bold */
+    text-align: left; /* Align text to the left */
+    display: block; /* Ensure the label takes the full width */
+    margin-left: 10px;
+}
+
+.back-button {
+    position: fixed;
+    top: 80px; /* Adjust this value as needed */
+    left: 30px; /* Adjust this value as needed */
+
+}
