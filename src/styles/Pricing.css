@@ -1,5 +1,9 @@
 /* Apply border radius to the table */
+<<<<<<< HEAD
 .table-small-pricing {
+=======
+.table-small {
+>>>>>>> dev
     font-size: 1rem; /* Reduce font size */
     border-collapse: separate;
     border-spacing: 0; /* Make sure the cells aren't overlapping the border */
@@ -12,7 +16,11 @@
 }
 
 /* Adjust table header styling */
+<<<<<<< HEAD
 .table-small-pricing  thead th {
+=======
+.table-small thead th {
+>>>>>>> dev
     background-color: #002d72; /* Apply the blue color */
     color: white; /* White text to contrast the blue background */
     padding: 0.5rem;
@@ -21,41 +29,71 @@
 }
 
 /* Set border radius for the first and last table header cells */
+<<<<<<< HEAD
 .table-small-pricing thead th:first-child {
     border-top-left-radius: 10px;
 }
 
 .table-small-pricing  thead th:last-child {
+=======
+.table-small thead th:first-child {
+    border-top-left-radius: 10px;
+}
+
+.table-small thead th:last-child {
+>>>>>>> dev
     border-top-right-radius: 10px;
 }
 
 /* Optional: Add a border to the table cells for better visibility */
+<<<<<<< HEAD
 .table-small-pricing  th, .table-small td {
     border: 1px solid #dee2e6; /* Bootstrap default border color */
 }
 
 .table-small-pricing  td {
+=======
+.table-small th, .table-small td {
+    border: 1px solid #dee2e6; /* Bootstrap default border color */
+}
+
+.table-small td {
+>>>>>>> dev
     padding: 0.3rem; /* Adjust padding for smaller table */
     vertical-align: top; /* Align text to the top */
 }
 
 /* Adjust margins for paragraphs inside table cells */
+<<<<<<< HEAD
 .table-small-pricing  td p {
+=======
+.table-small td p {
+>>>>>>> dev
     margin: 0; /* Remove default margin */
     margin-bottom: 0.2rem; /* Add some bottom margin for spacing */
     margin-top: 0.2rem;
 }
 
 /* Bold the Slot column */
+<<<<<<< HEAD
 .table-small-pricing  th:first-child, /* The "Slot" header */
 .table-small-pricing  td:first-child { /* The "Slot" column cells */
+=======
+.table-small th:first-child, /* The "Slot" header */
+.table-small td:first-child { /* The "Slot" column cells */
+>>>>>>> dev
     font-weight: bold;
     font-size: 1.1rem;
 }
 
 /* Adjust the width of specific columns */
+<<<<<<< HEAD
 .table-small-pricing  th:nth-child(3), /* Targeting the header for Current Price */
 .table-small-pricing  td:nth-child(3) { /* Targeting the data cells for Current Price */
+=======
+.table-small th:nth-child(3), /* Targeting the header for Current Price */
+.table-small td:nth-child(3) { /* Targeting the data cells for Current Price */
+>>>>>>> dev
     width: 10rem; /* Set a width that you prefer */
     white-space: nowrap; /* Prevent text wrapping */
 }

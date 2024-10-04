@@ -1,8 +1,14 @@
+<<<<<<< HEAD
 import React, { useState } from 'react';
 // import VetShiftTable from '../components/vet/VetShiftTable';
 import Sidebar from '../components/layout/Sidebar';
 import TableComponent from '../components/table/TableComponent'
 import { useNavigate } from 'react-router-dom';
+=======
+import React from 'react';
+import VetShiftTable from '../components/vet/VetShiftTable';
+import Sidebar from '../components/layout/Sidebar';
+>>>>>>> dev
 
 const VetShiftSchePage: React.FC = () => {
     // Example data for veterinarians, including address
@@ -69,6 +75,7 @@ const VetShiftSchePage: React.FC = () => {
         },
     ];
 
+<<<<<<< HEAD
     const columns = ['user_id', 'fullName', 'username', 'email', 'phone_number', 'address'];
     const columnHeaders = ['Vet ID', 'Full Name', 'Username', 'Email', 'Phone Number', 'Address'];  // Đặt tiêu đề cột cho Vet
     const navigate = useNavigate();
@@ -94,6 +101,19 @@ const VetShiftSchePage: React.FC = () => {
                             data={vets}
                             onRowButtonClick={handleVetClick}
                         />
+=======
+    return (
+        <div className="d-flex flex-grow-1">
+            <Sidebar />
+            <div className="container " style={{marginTop:"6rem"}}>
+                <div className="card" style={{ width: '100%' }}>
+                    <div className="card-header">
+                        <h5 className="text-start"  style={{fontWeight:"bold", color:"#02033B", fontSize:"2rem", padding:"1.2rem"}}>Veterinarians List</h5>
+
+                    </div>
+                    <div className="card-body">
+                        <VetShiftTable vets={vets} />
+>>>>>>> dev
                     </div>
                 </div>
             </div>

@@ -11,9 +11,12 @@ import VetShiftSchePage from "./pages/VetShiftSchePage";
 import ViewScheduleOfVetPage from "./pages/ViewScheduleOfVetPage";
 import ServicePricingPage from "./pages/ServicePricingPage";
 import TransportationPricingPage from "./pages/TransportationPricingPage";
+<<<<<<< HEAD
 import PasswordChangePage from "./pages/PasswordChangePage";
 import KoiFishPage from "./pages/KoiFishPage";
 import AddKoiFishPage from "./pages/AddKoiFishPage";
+=======
+>>>>>>> dev
 
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
 const DangNhapNguoiDung = lazy(() => import("./pages/LoginPage"));
@@ -41,6 +44,7 @@ function App() {
                             <Route path="/vetsche" element={<ViewScheduleOfVetPage />} />
                             <Route path="/service-pricing" element={<ServicePricingPage/>} />
                             <Route path="/transport-pricing" element={<TransportationPricingPage/>} />
+<<<<<<< HEAD
                             <Route path="/password-change" element={<PasswordChangePage/>} />
                             <Route path="/settings" element={<ProfilePage />} />
                             <Route path="/koi" element={<KoiFishPage />} />
@@ -48,6 +52,11 @@ function App() {
                             {/* Authenticated routes */}
                             <Route element={<AuthGuard />}>
 
+=======
+                            {/* Authenticated routes */}
+                            <Route element={<AuthGuard />}>
+                                <Route path="/settings" element={<ProfilePage />} />
+>>>>>>> dev
 
                                 {/* Role-based route */}
                                 <Route element={<RoleBasedGuard allowedRoles={['admin']} />}>

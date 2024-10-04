@@ -15,10 +15,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     useEffect(() => {
         const token = sessionStorage.getItem('token');
+<<<<<<< HEAD
         const storedUserId = sessionStorage.getItem('userId');
         if (token && storedUserId) {
             setIsLoggedIn(true);
             setUserId(storedUserId);
+=======
+        if (token) {
+            setIsLoggedIn(true);
+            setUserId(token);
+>>>>>>> dev
         }
     }, []);
 
@@ -29,11 +35,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const logout = () => {
         sessionStorage.removeItem('token');
+<<<<<<< HEAD
         sessionStorage.removeItem('userId');
         sessionStorage.removeItem('role');
         setIsLoggedIn(false);
         setUserId(undefined);
         sessionStorage.clear();
+=======
+        sessionStorage.removeItem('role');
+        setIsLoggedIn(false);
+        setUserId(undefined);
+>>>>>>> dev
     };
 
     return (

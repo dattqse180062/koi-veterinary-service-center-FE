@@ -194,7 +194,11 @@ const generateWeeksOfYear = (selectedYear: number) => {
 
 const DoctorSchedule: React.FC = () => {
     const location = useLocation();
+<<<<<<< HEAD
     const { vetId, fullName } = location.state; //
+=======
+    const { userId, fullName } = location.state; //
+>>>>>>> dev
 
 
     const currentYear = new Date().getUTCFullYear();
@@ -236,7 +240,11 @@ const DoctorSchedule: React.FC = () => {
                         Doctor Schedule
                     </h3>
                     <h3 className="text-end fst-italic" >
+<<<<<<< HEAD
                         {`${fullName} (ID: ${vetId})`}
+=======
+                        {`${fullName} (ID: ${userId})`}
+>>>>>>> dev
                     </h3>
                 </div>
                 <div className="d-flex justify-content-between align-items-center mb-3">
