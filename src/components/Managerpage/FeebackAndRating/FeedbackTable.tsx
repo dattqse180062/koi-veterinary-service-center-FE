@@ -55,6 +55,8 @@ const FeedbackAndRatingTable: React.FC = () => {
         { feedbackId: 18, rating: 4, comment: 'Happy with the results', dateTime: '2024-09-18 14:50', appointmentID: 18 },
         { feedbackId: 19, rating: 3, comment: 'Nothing special', dateTime: '2024-09-19 09:40', appointmentID: 19 },
         { feedbackId: 20, rating: 5, comment: 'Best experience ever', dateTime: '2024-09-20 11:25', appointmentID: 20 },
+        { feedbackId: 21, rating: 5, comment: 'Best experience ever', dateTime: '2024-09-20 11:25', appointmentID: 20 },
+
     ];
     
     const appointmentData: Appointment[] = [
@@ -78,6 +80,8 @@ const FeedbackAndRatingTable: React.FC = () => {
         { appointmentID: 18, created: '2024-09-18', customer: 'Customer 18', totalPrice: 130, description: 'Service R Description', status: 'Cancel' },
         { appointmentID: 19, created: '2024-09-19', customer: 'Customer 19', totalPrice: 220, description: 'Service S Description', status: 'Done' },
         { appointmentID: 20, created: '2024-09-20', customer: 'Customer 20', totalPrice: 300, description: 'Service T Description', status: 'Done' },
+        { appointmentID: 21, created: '2024-09-20', customer: 'Customer 20', totalPrice: 300, description: 'Service T Description', status: 'Done' },
+
     ];
 
     const [feedbackData, setFeedbackData] = useState<Feedback[]>(initialFeedbackData);
