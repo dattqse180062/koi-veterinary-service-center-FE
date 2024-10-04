@@ -3,7 +3,7 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import './styles/App.css';
 import Navbar from "./components/layout/Navbar";
 import {AuthProvider} from "./hooks/context/AuthContext";
-
+import AppointmentCustomerHistoryTable from './components/Customerpage/Appointment/AppointmentTable';
 
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
 const DangNhapNguoiDung = lazy(() => import("./pages/LoginPage"));
@@ -20,12 +20,17 @@ function App() {
                     <Suspense fallback={<div>Loading...</div>}>
                         <Routes>
                             <Route path="/register" element={<RegisterPage />} />
+                            
                             <Route path="/login" element={<DangNhapNguoiDung />} />
+                            {/* For user */}
                             <Route path="/" element={<HomePage />} />
+
                             <Route path="/secret" element={<SecretPage />} /> 
                             {/* Manager page */}
                             <Route path="/manager" element={<ManagerPage />} />
                             {/* sửa dòng 24 thành page của manager, sửa cái path */}
+                            <Route path="/my-appointment" element={<AppointmentCustomerHistoryTable />} />
+
                         </Routes>
                     </Suspense>
                 </BrowserRouter>
