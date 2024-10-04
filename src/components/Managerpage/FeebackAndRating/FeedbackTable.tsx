@@ -19,21 +19,7 @@ interface Appointment {
 }
 
 const FeedbackAndRatingTable: React.FC = () => {
-    // Dữ liệu Feedback và Appointment
-    // const initialFeedbackData: Feedback[] = [
-    //     { feedbackId: 1, rating: 5, comment: 'Great service', dateTime: '2024-09-01 12:30', appointmentID: 1 },
-    //     { feedbackId: 2, rating: 4, comment: 'Good service', dateTime: '2024-09-02 14:00', appointmentID: 2 },
-    //     { feedbackId: 3, rating: 3, comment: 'Average experience', dateTime: '2024-09-03 10:15', appointmentID: 3 },
-    //     // ... Thêm dữ liệu khác nếu cần
-    // ];
-
-    // const appointmentData: Appointment[] = [
-    //     { appointmentID: 1, created: '2024-09-01', customer: 'Customer 1', totalPrice: 100, description: 'Service A Description', status: 'Done' },
-    //     { appointmentID: 2, created: '2024-09-02', customer: 'Customer 2', totalPrice: 150, description: 'Service B Description', status: 'Done' },
-    //     { appointmentID: 3, created: '2024-09-03', customer: 'Customer 3', totalPrice: 200, description: 'Service C Description', status: 'In process' },
-    //     // ... Thêm dữ liệu khác nếu cần
-    // ];
-
+    // Dữ liệu mẫu cho Feedback và Appointment
     const initialFeedbackData: Feedback[] = [
         { feedbackId: 1, rating: 5, comment: 'Great service', dateTime: '2024-09-01 12:30', appointmentID: 1 },
         { feedbackId: 2, rating: 4, comment: 'Good service', dateTime: '2024-09-02 14:00', appointmentID: 2 },
