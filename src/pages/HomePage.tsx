@@ -11,6 +11,7 @@ import Veterinarian from "../components/homepage/veterinarian/Veterinarian";
 const HomePage: React.FC = () => {
     return (
         <div>
+            <Navbar />
             <HeroSection />
             <NewsSection />
             <Veterinarian/>
