@@ -56,3 +56,34 @@
 .table-small td:first-child { /* The "Slot" column cells */
     font-weight: bold;
 }
+
+.text-pending {
+    color: orange;
+    font-weight: bold;
+}
+
+.text-confirmed {
+    color: lightblue;
+    font-weight: bold;
+}
+
+.text-checked-in {
+    color: dodgerblue;
+    font-weight: bold;
+}
+
+.text-cancel {
+    color: red;
+    font-weight: bold;
+}
+
+.text-on-going {
+    color: purple;
+    font-weight: bold;
+}
+
+.text-done {
+    color: green;
+    font-weight: bold;
+}
+

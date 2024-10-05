@@ -133,7 +133,7 @@ const AddKoiFish: React.FC = () => {
                             {/* Species */}
                             <div className="mb-3">
                                 <label className="form-label text-secondary">Species</label>
-                                <input type="text" name="species" className="form-control input-field"
+                                <input type="text" name="species" className="form-control input-field-koi"
                                        placeholder="Enter your koi species" onChange={handleInputChange} />
                             </div>
 
@@ -141,7 +141,7 @@ const AddKoiFish: React.FC = () => {
                             <div className="mb-3 row">
                                 <div className="col-md-4 col-sm-6">
                                     <label className="form-label text-secondary">Age</label>
-                                    <input type="number" name="age" className="form-control input-field"
+                                    <input type="number" name="age" className="form-control input-field-koi"
                                            placeholder="Enter koi age" onChange={handleInputChange} />
                                 </div>
                                 <div className="col-md-8 col-sm-6 d-flex align-items-end gap-3 mt-2">
@@ -159,28 +159,28 @@ const AddKoiFish: React.FC = () => {
                             {/* Size */}
                             <div className="mb-3">
                                 <label className="form-label text-secondary">Size</label>
-                                <input type="text" name="size" className="form-control input-field"
+                                <input type="text" name="size" className="form-control input-field-koi"
                                        placeholder="Enter your koi size (width/height)" onChange={handleInputChange} />
                             </div>
 
                             {/* Weight */}
                             <div className="mb-3">
                                 <label className="form-label text-secondary">Weight</label>
-                                <input type="text" name="weight" className="form-control input-field"
+                                <input type="text" name="weight" className="form-control input-field-koi"
                                        placeholder="Enter your koi weight" onChange={handleInputChange} />
                             </div>
 
                             {/* Color */}
                             <div className="mb-3">
                                 <label className="form-label text-secondary">Color</label>
-                                <input type="text" name="color" className="form-control input-field"
+                                <input type="text" name="color" className="form-control input-field-koi"
                                        placeholder="Enter your koi color" onChange={handleInputChange} />
                             </div>
 
                             {/* Origin */}
                             <div className="mb-3">
                                 <label className="form-label text-secondary">Origin</label>
-                                <input type="text" name="origin" className="form-control input-field"
+                                <input type="text" name="origin" className="form-control input-field-koi"
                                        placeholder="Enter your koi origin" onChange={handleInputChange} />
                             </div>
 

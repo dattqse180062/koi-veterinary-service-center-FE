@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/layout/Sidebar";
 import { useAuth } from "../hooks/context/AuthContext";
-import { getUserInfo, updateUserInfoAPI } from "../api/authService"; // Import the update function
+import { getUserInfo, updateUserInfoAPI } from "../api/authService"; // Import authService functions
 import { Link } from "react-router-dom";
 import axios from 'axios';
+
 // Define interfaces for user data
 interface UserAddress {
     state: string;
@@ -20,9 +21,9 @@ interface UserData {
     phone: string;
     address: UserAddress;
 }
-const API_URL = 'https://66e10816c831c8811b538fae.mockapi.io/api';
+
 const Profile: React.FC = () => {
-    const { userId } = useAuth();
+    const { userId } = useAuth(); // Use Auth context to get userId
     const [userData, setUserData] = useState<UserData | null>(null);
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
@@ -35,13 +36,13 @@ const Profile: React.FC = () => {
     const [errorAddress, setErrorAddress] = useState("");
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
+    // Fetch user data from API on component mount
     useEffect(() => {
         const fetchUserData = async () => {
             try {
                 const userId = sessionStorage.getItem('userId');
                 if (userId) {
-                    const response = await axios.get(`${API_URL}/login?id=${userId}`);
-                    const user = response.data[0]; // Giả định API trả về mảng có 1 phần tử
+                    const user = await getUserInfo(userId); // Call authService function
                     setUserData(user);
                     setFirstname(user.firstname || '');
                     setLastname(user.lastname || '');
@@ -59,6 +60,7 @@ const Profile: React.FC = () => {
         fetchUserData();
     }, []);
 
+    // Handle image upload
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
@@ -70,8 +72,8 @@ const Profile: React.FC = () => {
         }
     };
 
+    // Validate phone number
     const validatePhone = () => {
-        // Validate phone number length to be 10 digits and numeric only if not empty
         const phonePattern = /^[0-9]{10}$/;
         if (phone.trim() !== "" && !phonePattern.test(phone)) {
             setErrorPhone("Contact number must be a 10-digit number.");
@@ -80,8 +82,8 @@ const Profile: React.FC = () => {
         }
     };
 
+    // Validate address fields
     const validateAddress = () => {
-        // Allow empty fields but require all to be filled if any is filled
         const addressFieldsFilled = [state, city, ward, homeNumber].some(field => field.trim() !== "");
         const allAddressFieldsFilled = [state, city, ward, homeNumber].every(field => field.trim() !== "");
 
@@ -94,9 +96,10 @@ const Profile: React.FC = () => {
         }
     };
 
+    // Handle saving updated user info
     const handleSave = async () => {
         const isAddressValid = validateAddress();
-        if (!isAddressValid || errorPhone) return; // Kiểm tra lỗi trước khi gửi request
+        if (!isAddressValid || errorPhone) return;
 
         try {
             const updatedData = {
@@ -111,24 +114,28 @@ const Profile: React.FC = () => {
                 },
             };
 
-            // Gửi yêu cầu PUT để cập nhật thông tin người dùng
-            await axios.put(`https://66e10816c831c8811b538fae.mockapi.io/api/login?id=${userId}`, updatedData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-        } catch (error: any) {
-            if (error.response) {
-                console.error('Error data:', error.response.data);
-                console.error('Error status:', error.response.status);
-                console.error('Error headers:', error.response.headers);
-            } else {
-                console.error('Error message:', error.message);
+            const userId = sessionStorage.getItem('userId');
+            if (userId) {
+                await updateUserInfoAPI(userId, updatedData); // Use authService function
+                alert('User data updated successfully!');
             }
+        } catch (error) {
+            console.error('Failed to update user data:', error);
         }
     };
 
-
+    // Handle cancel action to reset form values to original state
+    const handleCancel = () => {
+        if (userData) {
+            setFirstname(userData.firstname || '');
+            setLastname(userData.lastname || '');
+            setPhone(userData.phone || '');
+            setState(userData.address?.state || '');
+            setCity(userData.address?.city || '');
+            setWard(userData.address?.ward || '');
+            setHomeNumber(userData.address?.homeNumber || '');
+        }
+    };
 
     return (
         <div className="d-flex">
@@ -157,54 +164,45 @@ const Profile: React.FC = () => {
                         <form className="profile-form">
                             <div className="form-group">
                                 <label className="fw-bold">Username</label>
-                                <input type="text" className="input-field" value={userData?.username || 'Loading...'}
-                                       readOnly/>
+                                <input type="text" className="form-control input-field" value={userData?.username || 'Loading...'} readOnly />
                             </div>
                             <div className="form-group">
                                 <label className="fw-bold">Email</label>
-                                <input type="email" className="input-field" value={userData?.email || 'Loading...'}
-                                       readOnly/>
+                                <input type="email" className="form-control input-field" value={userData?.email || 'Loading...'} readOnly />
                             </div>
                             <div className="name-row">
                                 <div className="form-group">
                                     <label className="fw-bold">First Name</label>
-                                    <input type="text" className="input-field" value={firstname}
-                                           onChange={e => setFirstname(e.target.value)}/>
+                                    <input type="text" className="form-control input-field" value={firstname} onChange={e => setFirstname(e.target.value)} />
                                 </div>
                                 <div className="form-group">
                                     <label className="fw-bold">Last Name</label>
-                                    <input type="text" className="input-field" value={lastname}
-                                           onChange={e => setLastname(e.target.value)}/>
+                                    <input type="text" className="form-control input-field" value={lastname} onChange={e => setLastname(e.target.value)} />
                                 </div>
                             </div>
                             <div className="form-group">
                                 <label className="fw-bold">Contact Number</label>
-                                <input type="text" className="input-field" value={phone}
-                                       onChange={e => setPhone(e.target.value)} onBlur={validatePhone}/>
+                                <input type="text" className="form-control input-field" value={phone} onChange={e => setPhone(e.target.value)} onBlur={validatePhone} />
                                 {errorPhone && <div className="error-register">{errorPhone}</div>}
                             </div>
                             <div className="address-row">
                                 <div className="form-group">
                                     <label className="fw-bold">State</label>
-                                    <input type="text" className="input-field" value={state}
-                                           onChange={e => setState(e.target.value)}/>
+                                    <input type="text" className="form-control input-field" value={state} onChange={e => setState(e.target.value)} />
                                 </div>
                                 <div className="form-group">
                                     <label className="fw-bold">City</label>
-                                    <input type="text" className="input-field" value={city}
-                                           onChange={e => setCity(e.target.value)}/>
+                                    <input type="text" className="form-control input-field" value={city} onChange={e => setCity(e.target.value)} />
                                 </div>
                             </div>
                             <div className="address-row">
                                 <div className="form-group">
                                     <label className="fw-bold">Ward</label>
-                                    <input type="text" className="input-field" value={ward}
-                                           onChange={e => setWard(e.target.value)}/>
+                                    <input type="text" className="form-control input-field" value={ward} onChange={e => setWard(e.target.value)} />
                                 </div>
                                 <div className="form-group">
                                     <label className="fw-bold">Home Number</label>
-                                    <input type="text" className="input-field" value={homeNumber}
-                                           onChange={e => setHomeNumber(e.target.value)}/>
+                                    <input type="text" className="form-control input-field" value={homeNumber} onChange={e => setHomeNumber(e.target.value)} />
                                 </div>
                             </div>
                             {errorAddress && <div className="error-register">{errorAddress}</div>}
@@ -213,12 +211,11 @@ const Profile: React.FC = () => {
                                     <Link to="/password-change" className="change-password-btn">Change Password</Link>
                                 </div>
                                 <div className="right-buttons">
-                                    <button type="button" className="cancel-btn">Cancel</button>
+                                    <button type="button" className="cancel-btn" onClick={handleCancel}>Cancel</button>
                                     <button type="button" className="save-btn" onClick={handleSave}>Save</button>
                                 </div>
                             </div>
                         </form>
-
                     </div>
                 </div>
             </div>

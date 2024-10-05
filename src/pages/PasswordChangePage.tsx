@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Sidebar from '../components/layout/Sidebar';
 import '../styles/Profile.css';
-import { changePassword } from '../api/authService'; // Đảm bảo đường dẫn đúng
+import { changePassword } from '../api/authService';
 
 const PasswordChangePage: React.FC = () => {
     const [currentPassword, setCurrentPassword] = useState('');
@@ -10,8 +10,10 @@ const PasswordChangePage: React.FC = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
+    // Regex for password validation
     const passwordRegex = /^(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
 
+    // Validate passwords
     const validatePasswords = () => {
         if (!newPassword || !currentPassword) {
             setError('Please fill in all fields.');
@@ -29,9 +31,10 @@ const PasswordChangePage: React.FC = () => {
         return true;
     };
 
+    // Handle password change request
     const handlePasswordChange = async () => {
         if (validatePasswords()) {
-            const userId = sessionStorage.getItem('userId'); // Lấy userId từ sessionStorage
+            const userId = sessionStorage.getItem('userId');
 
             if (!userId) {
                 setError('User ID not found. Please log in again.');
@@ -44,14 +47,14 @@ const PasswordChangePage: React.FC = () => {
                 setCurrentPassword('');
                 setNewPassword('');
                 setConfirmPassword('');
-                alert('Password changed successfully!'); // Thông báo thành công
+                alert('Password changed successfully!');
             } catch (error: unknown) {
                 if (error instanceof Error) {
                     setError('Error changing password: ' + error.message);
                 } else {
                     setError('An unknown error occurred.');
                 }
-                alert('Failed to change password. Please try again.'); // Thông báo thất bại
+                alert('Failed to change password. Please try again.');
             }
         }
     };
@@ -65,18 +68,18 @@ const PasswordChangePage: React.FC = () => {
                         <form className="profile-form">
                             <div className="form-group">
                                 <label className="fw-bold">Current Password</label>
-                                <input type="password" className="input-field" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
+                                <input type="password" className="form-control input-field" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
                             </div>
                             <div className="form-group">
                                 <label className="fw-bold">New Password</label>
-                                <input type="password" className="input-field" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+                                <input type="password" className="form-control input-field" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
                             </div>
                             <div className="form-group">
                                 <label className="fw-bold">Confirm New Password</label>
-                                <input type="password" className="input-field" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                                <input type="password" className="form-control input-field" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                             </div>
-                            {error && <div className="error">{error}</div>}
-                            {success && <div className="success">{success}</div>}
+                            {error && <div className="error-register">{error}</div>}
+                            {success && <div className="success-change">{success}</div>}
                             <div className="button-group">
                                 <button type="button" className="cancel-btn">Cancel</button>
                                 <button type="button" className="save-btn" onClick={handlePasswordChange}>Change Password</button>
