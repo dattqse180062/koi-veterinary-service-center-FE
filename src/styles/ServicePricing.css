@@ -1,6 +1,6 @@
 /* Apply border radius to the table */
 .table-small {
-    font-size: 0.9rem; /* Reduce font size */
+    font-size: 1rem; /* Reduce font size */
     border-collapse: separate;
     border-spacing: 0; /* Make sure the cells aren't overlapping the border */
     border-radius: 10px; /* Add border radius */
@@ -33,7 +33,7 @@
     color: white; /* White text to contrast the blue background */
     padding: 0.5rem;
     border: none; /* Remove borders from the header for a cleaner look */
-    font-size: 1.05rem;
+    font-size: 1rem;
 }
 
 /* Set border radius for the first and last table header cells */
@@ -55,37 +55,11 @@
 .table-small th:first-child, /* The "Slot" header */
 .table-small td:first-child { /* The "Slot" column cells */
     font-weight: bold;
+    font-size: 1.1rem;
 }
 
-
-.text-pending {
-    color: orange;
-    font-weight: bold;
+.table-small th:nth-child(3), /* Targeting the header for Current Price */
+.table-small td:nth-child(3) { /* Targeting the data cells for Current Price */
+    width: 10rem; /* Set a width that you prefer, e.g., 150px */
+    white-space: nowrap; /* Prevent text wrapping */
 }
-
-.text-confirmed {
-    color: lightblue;
-    font-weight: bold;
-}
-
-.text-checked-in {
-    color: dodgerblue;
-    font-weight: bold;
-}
-
-.text-cancel {
-    color: red;
-    font-weight: bold;
-}
-
-.text-on-going {
-    color: purple;
-    font-weight: bold;
-}
-
-.text-done {
-    color: green;
-    font-weight: bold;
-}
-
-

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+
 import axios from 'axios';  // Import Axios
 import '../../styles/Schedule.css';
 import Sidebar from "../layout/Sidebar"; // Import your custom CSS
+
 
 // Map slot_order to time ranges
 const slotOrderToTime = {
@@ -56,7 +58,9 @@ const generateWeeksOfYear = (selectedYear: number) => {
 
 const DoctorSchedule: React.FC = () => {
     const location = useLocation();
+
     const { vetId, fullName } = location.state;
+
 
     const currentYear = new Date().getUTCFullYear();
     const [selectedYear, setSelectedYear] = useState(currentYear);
@@ -64,6 +68,7 @@ const DoctorSchedule: React.FC = () => {
     const { weeks } = generateWeeksOfYear(selectedYear);
     const [selectedWeekStart, setSelectedWeekStart] = useState(currentWeekStart.toISOString().split('T')[0]);
     const [weekDates, setWeekDates] = useState<string[]>(getWeekDates(currentWeekStart));
+
     const [appointments, setAppointments] = useState<any[]>([]);  // To store fetched appointments
     const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -77,6 +82,7 @@ const DoctorSchedule: React.FC = () => {
                 console.error('Error fetching slots:', error);
             });
     }, [vetId, selectedWeekStart]);
+
 
     const handleWeekChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const newWeekStart = event.target.value;
@@ -109,7 +115,9 @@ const DoctorSchedule: React.FC = () => {
                         Doctor Schedule
                     </h3>
                     <h3 className="text-end fst-italic" >
+
                         {`${fullName} (ID: ${vetId})`}
+
                     </h3>
                 </div>
                 <div className="d-flex justify-content-between align-items-center mb-3">
@@ -145,7 +153,9 @@ const DoctorSchedule: React.FC = () => {
                         {weekDays.map((day, index) => (
                             <th key={index} className="text-center">
                                 {day}
+
                                 <br/> {weekDates[index].split('-').reverse().join('/')}
+
                             </th>
                         ))}
                     </tr>
@@ -155,16 +165,19 @@ const DoctorSchedule: React.FC = () => {
                         <tr key={slotId}>
                             <td>{`Slot ${slotId}`}</td>
                             {weekDates.map((date, dateIndex) => {
+
                                 const appointment = appointments.find(appointment => (
                                     appointment.year === new Date(date).getUTCFullYear() &&
                                     appointment.month === new Date(date).getUTCMonth() + 1 &&
                                     appointment.day === new Date(date).getUTCDate() &&
                                     appointment.slot_order === slotId
+
                                 ));
                                 return (
                                     <td key={dateIndex}>
                                         {appointment ? (
                                             <>
+
                                                 {/* Phân màu theo current_status */}
                                                 <p className={`fw-bold ${
                                                     appointment.appointment.current_status === 'PENDING' ? 'text-warning' :
@@ -176,6 +189,7 @@ const DoctorSchedule: React.FC = () => {
                                                                             ''
                                                 }`}>
                                                     {appointment.appointment.current_status}
+
                                                 </p>
                                                 <p>{slotOrderToTime[slotId as keyof typeof slotOrderToTime]}</p>
                                             </>

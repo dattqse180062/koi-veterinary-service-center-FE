@@ -1,8 +1,11 @@
+
 import React, { useState } from 'react';
+
 import { Link } from 'react-router-dom';
 import '../../styles/Sidebar.css'; // Import your CSS for additional styling if needed
 
 const Sidebar: React.FC = () => {
+
     const [isPricingOpen, setIsPricingOpen] = useState(false); // State to handle Pricing submenu
 
     const togglePricingMenu = () => {

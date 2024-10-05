@@ -6,6 +6,7 @@
     padding: 120px; /* Reduced padding */
     gap: 40px; /* Add gap between sections */
 
+
 }
 
 .image-section {
@@ -13,6 +14,7 @@
     flex: 0;
 
     flex-direction: column;
+
 }
 
 .image-background {
@@ -20,12 +22,15 @@
     height: 300px; /* Set height to 300px */
     background-color: #edb664; /* Orange background */
     border-radius: 20px;
+
     box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.25); /* Shadow effect */
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden; /* Ensures the image stays within the container */
+
     margin-bottom: 10px;
+
 }
 
 .uploaded-image {
@@ -47,11 +52,13 @@
 
 input[type="file"] {
     margin-top: 15px;
+
 }
 
 .upload-btn {
     background-color: #edb664;
     padding: 6px;
+
     border-radius: 10px;
     color: white;
     cursor: pointer;
@@ -60,6 +67,7 @@ input[type="file"] {
 }
 
 .form-section {
+
     flex: 1;
     max-width: 450px;
     background-color: white; /* Optional: Add a background color for better visibility */
@@ -71,12 +79,14 @@ input[type="file"] {
 
 .profile-form {
     margin-top: 40px;
+
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
 .name-row {
+
     display: flex; /* Sử dụng flexbox để sắp xếp các trường nhập */
     justify-content: space-between; /* Căn chỉnh khoảng cách giữa các ô nhập */
     gap: 10px; /* Khoảng cách giữa các ô nhập */
@@ -84,12 +94,14 @@ input[type="file"] {
 
 .name-row .form-group {
     flex: 1; /* Tất cả các ô nhập sẽ có chiều rộng bằng nhau */
+
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
     text-align: start;
+
 }
 
 .input-field {
@@ -98,10 +110,12 @@ input[type="file"] {
     border-radius: 5px;
     max-height: 40px; /* Reduce max-height for smaller fields */
     font-size: 1rem; /* Adjust this value to set the desired font size */
+
 }
 
 .button-group {
     display: flex;
+
     justify-content: space-between; /* Distribute space between the left and right sections */
     align-items: center; /* Center items vertically */
     margin-top: 10px; /* Add some space above the buttons */
@@ -137,19 +151,23 @@ input[type="file"] {
     border-radius: 9px;
     padding: 10px 20px;
     cursor: pointer; /* Pointer cursor on hover */
+
 }
 
 .cancel-btn {
     background-color: white;
     border: 2px solid #edb664;
+
     padding: 5px 10px; /* Reduce padding */
     border-radius: 9px;
     color: #edb664;
     font-size: 14px; /* Optional: Change font size */
+
 }
 
 .save-btn {
     background-color: #edb664;
+
     padding: 5px 10px; /* Reduce padding */
     border-radius: 9px;
     color: white;
@@ -200,3 +218,4 @@ input[type="file"] {
     font-style: italic; /* Make the text italic */
     margin-top: 5px; /* Add some space above the error message */
 }
+

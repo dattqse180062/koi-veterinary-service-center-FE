@@ -20,7 +20,9 @@ export const login = async (username: string, password: string) => {
     if (user) {
         sessionStorage.setItem('token', user.token); // Lưu token (hoặc id) vào sessionStorage
         sessionStorage.setItem('role', user.role); // Lưu role vào sessionStorage
+
         sessionStorage.setItem('userId', user.id);
+
         return user; // Trả về thông tin người dùng nếu đăng nhập thành công
     } else {
         throw new Error('Invalid credentials');
@@ -53,4 +55,5 @@ export const changePassword = async (userId: string, currentPassword: string, ne
         throw new Error('Current password is incorrect.');
     }
 };
+
 

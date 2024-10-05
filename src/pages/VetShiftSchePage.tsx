@@ -1,3 +1,4 @@
+
 // import React, { useState } from 'react';
 // // import VetShiftTable from '../components/vet/VetShiftTable';
 // import Sidebar from '../components/layout/Sidebar';
@@ -137,9 +138,11 @@ const VetShiftSchePage: React.FC = () => {
         navigate(`/vetsche`, { state: { vetId, fullName } });
     };
 
+
     return (
         <div className="d-flex flex-grow-1">
             <Sidebar />
+
             <div className="container" style={{ marginTop: "6rem" }}>
                 <div className="card" style={{ width: '100%' }}>
                     <div className="card-header">
@@ -154,6 +157,7 @@ const VetShiftSchePage: React.FC = () => {
                             data={vets} // Use fetched vet data
                             onRowButtonClick={handleVetClick}
                         />
+
                     </div>
                 </div>
             </div>

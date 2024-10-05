@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/layout/Sidebar";
 import { useAuth } from "../hooks/context/AuthContext";
@@ -137,14 +138,18 @@ const Profile: React.FC = () => {
         }
     };
 
+
     return (
         <div className="d-flex">
             <Sidebar />
+
             <div className="flex-grow-1 bg-light" style={{ height: '100vh' }}>
+
                 <div className="profile-container">
                     <div className="image-section">
                         <div className="image-background">
                             {selectedImage ? (
+
                                 <img src={selectedImage} alt="Uploaded" className="uploaded-image" />
                             ) : (
                                 <div className="image-placeholder">No Image Selected</div>
@@ -152,27 +157,33 @@ const Profile: React.FC = () => {
                         </div>
                         <label className="upload-btn">
                             {selectedImage ? "Change Image" : "Choose Image"}
+
                             <input
                                 type="file"
                                 accept="image/*"
                                 onChange={handleImageChange}
+
                                 style={{ display: 'none' }}
                             />
                         </label>
+
                     </div>
                     <div className="form-section">
                         <form className="profile-form">
                             <div className="form-group">
                                 <label className="fw-bold">Username</label>
+
                                 <input type="text" className="form-control input-field" value={userData?.username || 'Loading...'} readOnly />
                             </div>
                             <div className="form-group">
                                 <label className="fw-bold">Email</label>
                                 <input type="email" className="form-control input-field" value={userData?.email || 'Loading...'} readOnly />
+
                             </div>
                             <div className="name-row">
                                 <div className="form-group">
                                     <label className="fw-bold">First Name</label>
+
                                     <input type="text" className="form-control input-field" value={firstname} onChange={e => setFirstname(e.target.value)} />
                                 </div>
                                 <div className="form-group">
@@ -214,10 +225,12 @@ const Profile: React.FC = () => {
                                     <button type="button" className="cancel-btn" onClick={handleCancel}>Cancel</button>
                                     <button type="button" className="save-btn" onClick={handleSave}>Save</button>
                                 </div>
+
                             </div>
                         </form>
                     </div>
                 </div>
+
             </div>
         </div>
     );

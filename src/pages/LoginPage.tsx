@@ -139,7 +139,9 @@ export default function DangNhapNguoiDung() {
 
                     {/* Register Link */}
                     <p className="text-center text-white fw-bold" style={{ fontSize: '0.875rem' }}>
+
                         Don’t have an account yet? <Link className="text-warning" to="/register">Register for free</Link>
+
                     </p>
                 </div>
             </div>
