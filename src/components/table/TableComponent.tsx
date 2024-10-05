@@ -3,32 +3,30 @@ import TableRow from './TableRow';
 
 interface TableComponentProps {
     columns: string[];
-    columnHeaders: string[]; // Thêm thuộc tính mới để nhận tiêu đề cột tùy chỉnh
+    columnHeaders: string[];
     data: any[];
-    avatarKey?: string;
-    fullNameKeys?: { firstName: string; lastName: string };
-    onRowButtonClick: (id: number, fullName: string) => void;
+    actions?: { label: string; icon: string; onClick: (id: number, fullName?: string) => void }[]; // Actions prop
 }
 
-const TableComponent: React.FC<TableComponentProps> = ({ columns, columnHeaders, data, onRowButtonClick }) => {
+const TableComponent: React.FC<TableComponentProps> = ({ columns, columnHeaders, data, actions }) => {
     return (
         <div className="table-responsive">
             <table className="table table-bordered table-small table-striped">
                 <thead className="table-light">
                 <tr>
                     {columnHeaders.map((header, index) => (
-                        <th key={index}>{header}</th>  // Hiển thị tiêu đề cột tùy chỉnh
+                        <th key={index}>{header}</th>
                     ))}
-                    <th>Action</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 {data.map((item) => (
                     <TableRow
-                        key={item[columns[0]]}  // Assuming first column is ID
+                        key={item[columns[0]]} // Assuming first column is ID
                         columns={columns}
                         rowData={item}
-                        onButtonClick={onRowButtonClick}
+                        actions={actions} // Pass actions prop
                     />
                 ))}
                 </tbody>
