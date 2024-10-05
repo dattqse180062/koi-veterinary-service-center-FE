@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { fetchServices, updateServicePrice } from '../api/serviceApi';
 import PricingManagementTable from '../components/Pricing/PricingManagementTable';
@@ -82,8 +83,11 @@ const ServicePricingPage: React.FC = () => {
                     </div>
                 </div>
             </div>
+
         </div>
     );
 };
 
+
 export default ServicePricingPage;
+

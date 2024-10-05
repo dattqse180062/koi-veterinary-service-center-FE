@@ -3,7 +3,10 @@
     justify-content: space-around;
     align-items: center;
     height: 100vh;
-    padding: 50px;
+    padding: 120px; /* Reduced padding */
+    gap: 40px; /* Add gap between sections */
+
+
 }
 
 .image-section {
@@ -12,19 +15,22 @@
 
     flex-direction: column;
 
-
 }
 
 .image-background {
-    width: 300px;  /* Set width to 300px */
+    width: 300px; /* Set width to 300px */
     height: 300px; /* Set height to 300px */
-    background-color: #edb664 ;/* Orange background */
-    border-radius: 8px;
+    background-color: #edb664; /* Orange background */
+    border-radius: 20px;
+
     box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.25); /* Shadow effect */
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden; /* Ensures the image stays within the container */
+
+    margin-bottom: 10px;
+
 }
 
 .uploaded-image {
@@ -50,9 +56,9 @@ input[type="file"] {
 }
 
 .upload-btn {
-
     background-color: #edb664;
-    padding: 10px;
+    padding: 6px;
+
     border-radius: 10px;
     color: white;
     cursor: pointer;
@@ -61,21 +67,34 @@ input[type="file"] {
 }
 
 .form-section {
-    flex:1;
-    max-width: 400px;
+
+    flex: 1;
+    max-width: 450px;
+    background-color: white; /* Optional: Add a background color for better visibility */
+    padding: 20px; /* Add some padding to the form */
+    border-radius: 20px; /* Optional: Add rounded corners */
+    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.25); /* Add shadow for a subtle 3D effect */
+    margin-top: 40px;
 }
 
 .profile-form {
-margin-top: 40px;
+    margin-top: 40px;
+
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
 .name-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px; /* Add gap between the two input fields */
+
+    display: flex; /* Sử dụng flexbox để sắp xếp các trường nhập */
+    justify-content: space-between; /* Căn chỉnh khoảng cách giữa các ô nhập */
+    gap: 10px; /* Khoảng cách giữa các ô nhập */
+}
+
+.name-row .form-group {
+    flex: 1; /* Tất cả các ô nhập sẽ có chiều rộng bằng nhau */
+
 }
 
 .form-group {
@@ -86,31 +105,117 @@ margin-top: 40px;
 }
 
 .input-field {
-    padding: 3px;
-    border: 2px solid #848484;
+    padding: 6px; /* Reduce padding to make the fields smaller */
+    border: 1px solid #848484; /* Make the border thinner */
     border-radius: 5px;
-    max-height: 60px;
+    max-height: 40px; /* Reduce max-height for smaller fields */
+    font-size: 1rem; /* Adjust this value to set the desired font size */
 
 }
 
 .button-group {
     display: flex;
-    justify-content: end;
-    gap: 10px;
+
+    justify-content: space-between; /* Distribute space between the left and right sections */
+    align-items: center; /* Center items vertically */
+    margin-top: 10px; /* Add some space above the buttons */
+}
+
+.left-buttons {
+    /* Allow the left section to take available space */
+}
+
+.right-buttons {
+    display: flex; /* Align right buttons in a row */
+    gap: 10px; /* Add space between Cancel and Save buttons */
+    justify-content: flex-end; /* Align buttons to the right */
+}
+
+.change-password-btn {
+    display: inline-block;
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+    text-decoration: none; /* Remove underline */
+    padding: 5px 10px;
+    border-radius: 9px; /* Optional: Add some rounded corners */
+    border: none; /* Remove border */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 0.88rem;
+}
+
+.cancel-btn,
+.save-btn {
+    background-color: #6c757d; /* Bootstrap secondary color */
+    color: white;
+    border: none;
+    border-radius: 9px;
+    padding: 10px 20px;
+    cursor: pointer; /* Pointer cursor on hover */
 
 }
 
 .cancel-btn {
     background-color: white;
     border: 2px solid #edb664;
-    padding: 10px;
-    border-radius: 5px;
+
+    padding: 5px 10px; /* Reduce padding */
+    border-radius: 9px;
     color: #edb664;
+    font-size: 14px; /* Optional: Change font size */
+
 }
 
 .save-btn {
     background-color: #edb664;
-    padding: 10px;
-    border-radius: 5px;
+
+    padding: 5px 10px; /* Reduce padding */
+    border-radius: 9px;
     color: white;
+    font-size: 14px; /* Optional: Change font size */
 }
+
+.address-row {
+    display: flex; /* Sử dụng flexbox để sắp xếp các trường nhập */
+    justify-content: space-between; /* Căn chỉnh khoảng cách giữa các ô nhập */
+    gap: 10px; /* Khoảng cách giữa các ô nhập */
+}
+
+.address-row .form-group {
+    flex: 1; /* Tất cả các ô nhập sẽ có chiều rộng bằng nhau */
+}
+
+/* Media Queries for responsive design */
+@media (max-width: 1050px) {
+    .profile-container {
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center items horizontally */
+        padding: 50px; /* Reduce padding on smaller screens */
+        margin-top: 5rem;
+
+    }
+
+    .image-section,
+    .form-section {
+        margin-top: 0px;
+        width: 100%; /* Make sections full width on smaller screens */
+        margin-bottom: 20px; /* Add space between sections */
+    }
+
+    .image-section {
+        max-width: 300px; /* Optional: Set a max width for image section */
+    }
+}
+.error-register {
+    color: red; /* Red text color */
+    font-weight: bold; /* Make the text bold */
+    font-style: italic; /* Make the text italic */
+    margin-top: 5px; /* Add some space above the error message */
+}
+
+.success-change {
+    color: green; /* Red text color */
+    font-weight: bold; /* Make the text bold */
+    font-style: italic; /* Make the text italic */
+    margin-top: 5px; /* Add some space above the error message */
+}
+

@@ -21,7 +21,7 @@ const PricingManagementTable: React.FC<PricingManagementTableProps> = ({
                                                                        }) => {
     return (
         <div className="table-responsive">
-            <table className="table table-bordered table-small table-striped">
+            <table className="table table-bordered table-small-pricing  table-striped">
                 <thead className="table-light">
                 <tr>
                     {columns.map((column, index) => (
