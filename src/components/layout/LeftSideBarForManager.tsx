@@ -31,7 +31,7 @@ const SideMenu: FC<SideMenuProps> = ({ activeMenu, onMenuClick }) => {
           className={`nav-link child-nav-link ${activeMenu === 'history' ? 'active-menu' : ''}`}
           onClick={() => onMenuClick('history')}
         >
-          <i className="bi bi-clock"></i> Service order history
+          <i className="bi bi-clock"></i> Appointment history
         </a>
         <a
           href="#"
@@ -42,10 +42,10 @@ const SideMenu: FC<SideMenuProps> = ({ activeMenu, onMenuClick }) => {
         </a>
         <a
           href="#"
-          className={`nav-link child-nav-link ${activeMenu === 'users' ? 'active-menu' : ''}`}
-          onClick={() => onMenuClick('users')}
+          className={`nav-link child-nav-link ${activeMenu === 'staff' ? 'active-menu' : ''}`}
+          onClick={() => onMenuClick('staff')}
         >
-          <i className="bi bi-people"></i> Users account management
+          <i className="bi bi-person-workspace"></i> Staff management
         </a>
         <a
           href="#"

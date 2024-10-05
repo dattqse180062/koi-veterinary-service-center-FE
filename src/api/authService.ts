@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://66e10816c831c8811b538fae.mockapi.io/api';
+const API_URL = 'https://66f4e0b477b5e889709aba92.mockapi.io/api';
 
 export const register = async (username: string, email: string, password: string) => {
     try {

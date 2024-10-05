@@ -16,6 +16,7 @@ const RegisterPage = lazy(() => import("./pages/RegisterPage"));
 const DangNhapNguoiDung = lazy(() => import("./pages/LoginPage"));
 const HomePage = lazy(() => import("./pages/HomePage"));
 const SecretPage = lazy(() => import("./pages/SecretPage"));
+const ManagerPage = lazy(() => import("./pages/ManagerPage"));
 
 function App() {
     return (
@@ -34,6 +35,10 @@ function App() {
 
                             {/* Public routes */}
                             <Route path="/" element={<HomePage />} />
+
+                            <Route path="/manager" element={<ManagerPage />} />
+                            {/* sửa dòng 24 thành page của manager, sửa cái path */}
+
                             <Route path="/vetshift" element={<VetShiftSchePage />} />
                             <Route path="/vetsche" element={<ViewScheduleOfVetPage />} />
                             <Route path="/service-pricing" element={<ServicePricingPage/>} />
@@ -47,6 +52,7 @@ function App() {
                                     <Route path="/secret" element={<SecretPage />} />
                                 </Route>
                             </Route>
+
                         </Routes>
                     </Suspense>
                 </BrowserRouter>

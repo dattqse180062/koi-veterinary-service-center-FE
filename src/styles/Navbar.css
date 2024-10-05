@@ -2,6 +2,9 @@
 .navbar {
     transition: background-color 0.3s ease;
     backdrop-filter: blur(7px);
+    z-index: 1000;
+    position: fixed;
+    /* position: sticky; */
 }
 
 .navbar.scrolled {

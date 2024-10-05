@@ -28,14 +28,21 @@ export default function DangNhapNguoiDung() {
             sessionStorage.setItem('token', user.token); // Store JWT
             sessionStorage.setItem('role', user.roles); // Store user role
 
+
             // Call login function from context to update state
             login(user.id); // Update login state
             console.log("isLoggedIn updated to true"); // Log login state
 
             // Navigate based on role
+            // trường hợp là admin
             if (user.roles === 'admin') {
                 navigate('/secret');
-            } else {
+            } 
+            // trường hợp là manager
+            else if (user.roles === 'manager') {
+                navigate('/manager');
+            } // trường hợp là user, các case còn lại !
+            else {
                 navigate('/');
             }
         } catch (err) {
