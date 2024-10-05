@@ -1,11 +1,11 @@
 
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from '../../hooks/context/AuthContext'; // Import your custom hook
+import {useAuth} from '../../hooks/context/AuthContext'; // Import your custom hook
 import '../../styles/Navbar.css'; // Import the CSS file
 
 function Navbar() {
-    const { isLoggedIn, logout } = useAuth(); // Use the custom hook
+    const {userId, logout } = useAuth(); // Get user and logout function from the custom hook
     const [bgColorClass, setBgColorClass] = useState('transparent');
     const [linkColorClass, setLinkColorClass] = useState('text-white');
     const [buttonStyleClass, setButtonStyleClass] = useState('btn-outline-warning');
@@ -68,7 +68,7 @@ function Navbar() {
                 </div>
 
                 <div className="d-flex align-items-center" style={{ gap: '12px' }}>
-                    {!isLoggedIn ? (
+                    {!userId ? ( // Check if the user object exists
                         <>
                             <Link to="/login">
                                 <button className={`btn btn-custom ${buttonStyleClass}`}>Log In</button>
