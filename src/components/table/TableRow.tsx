@@ -51,10 +51,10 @@ const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isK
                     </div>
                 ) : (
                     <button
-                        onClick={() => console.log("View Details for Koi Fish")}
+                        onClick={() => console.log("View ")}
                         className="btn btn-primary btn-sm"
                     >
-                        View Details
+                        View
                     </button>
                 )}
             </td>
