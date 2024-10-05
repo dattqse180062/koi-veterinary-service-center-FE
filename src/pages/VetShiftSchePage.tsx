@@ -65,6 +65,7 @@ const VetShiftSchePage: React.FC = () => {
                             columnHeaders={columnHeaders}
                             data={vets}
                             actions={actions} // Actions for Veterinarians
+                            isKoiFishPage={false}
                         />
                     </div>
                 </div>
