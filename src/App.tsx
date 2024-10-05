@@ -15,6 +15,7 @@ import TransportationPricingPage from "./pages/TransportationPricingPage";
 import PasswordChangePage from "./pages/PasswordChangePage";
 import KoiFishPage from "./pages/KoiFishPage";
 import AddKoiFishPage from "./pages/AddKoiFishPage";
+import VetDetails from "./pages/VetDetails";
 
 
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
@@ -48,6 +49,7 @@ function App() {
                             <Route path="/settings" element={<ProfilePage />} />
                             <Route path="/koi" element={<KoiFishPage />} />
                             <Route path="/add-koifish" element={<AddKoiFishPage />} />
+                            <Route path="/vet-details" element={<VetDetails />} />
                             {/* Authenticated routes */}
                             <Route element={<AuthGuard />}>
 

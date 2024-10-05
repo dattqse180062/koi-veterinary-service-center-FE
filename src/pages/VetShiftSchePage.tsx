@@ -33,7 +33,7 @@ const VetShiftSchePage: React.FC = () => {
     };
 
     const handleVetDetailsClick = (vetId: number) => {
-        navigate(`/vet-details/${vetId}`); // Example route for vet details
+        navigate('/vet-details', { state: { vetId } });
     };
 
     const actions = [
