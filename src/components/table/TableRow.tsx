@@ -2,18 +2,19 @@ import React from 'react';
 
 interface Action {
     label: string;
-    onClick: (id: number, fullName?: string) => void; // Updated to accept fullName as an optional parameter
-    icon?: string; // Optional icon property for actions
+    onClick: (id: number, fullName?: string) => void; // Giữ nguyên
+    icon?: string; // Tùy chọn
 }
 
 interface TableRowProps {
     columns: string[];
     rowData: any;
-    actions?: Action[]; // Action props as an optional array
+    actions?: Action[]; // Hành động
+    isKoiFishPage?: boolean; // Thêm prop để xác định trang
 }
 
-const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [] }) => {
-    const fullName = `${rowData.first_name || rowData.name} ${rowData.last_name || ''}`.trim(); // Construct full name
+const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isKoiFishPage }) => {
+    const fullName = `${rowData.first_name || rowData.name} ${rowData.last_name || ''}`.trim(); // Tạo fullName
 
     return (
         <tr>
@@ -34,13 +35,13 @@ const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [] }) =
                 </td>
             ))}
             <td>
-                {actions.length > 0 ? ( // Check if there are actions
+                {actions.length > 0 ? (
                     <div className="dropdown ms-auto">
                         <i className="fas fa-ellipsis-vertical" data-bs-toggle="dropdown" aria-expanded="false"></i>
                         <ul className="dropdown-menu dropdown-menu-end">
                             {actions.map((action, index) => (
                                 <li key={index}>
-                                    <span className="dropdown-item" onClick={() => action.onClick(rowData.user_id, fullName)}>
+                                    <span className="dropdown-item" onClick={() => action.onClick(isKoiFishPage ? rowData.fish_id : rowData.user_id, fullName)}>
                                         {action.icon && <i className={`${action.icon} mx-2`}></i>}
                                         {action.label}
                                     </span>

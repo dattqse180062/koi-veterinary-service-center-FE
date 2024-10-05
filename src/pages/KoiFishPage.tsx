@@ -27,7 +27,8 @@ const KoiFishPage: React.FC = () => {
     }, [navigate]);
 
     const handleKoiFishClick = (fishId: number) => {
-        navigate(`/koifish/${fishId}`);
+        console.log("Clicked fish ID:", fishId); // Thêm dòng này để kiểm tra
+        navigate(`/koi-details`, { state: { fishId } }); // Truyền fishId vào state
     };
 
     return (
@@ -52,6 +53,7 @@ const KoiFishPage: React.FC = () => {
                             columnHeaders={['Fish ID', 'Species', 'Age', 'Gender', 'Color', 'Size (cm)']}
                             data={koiFishData}
                             actions={[{ label: 'View Details', icon: 'fas fa-eye', onClick: handleKoiFishClick }]} // Action for Koi Fish
+                            isKoiFishPage={true} // Thêm prop này
                         />
                     </div>
                 </div>
