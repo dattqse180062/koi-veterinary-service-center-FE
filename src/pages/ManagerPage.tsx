@@ -59,7 +59,7 @@ const ManagerPage = () => {
             <div className="flex-grow-1 d-flex flex-column align-items-center justify-content-center">
                 {activeMenu === 'shift' && (
                     <>
-                        <h1>Not for Hung</h1>
+                        <h1>In process</h1>
                     </>
                 )}
                 {activeMenu === 'history' && (
@@ -79,17 +79,19 @@ const ManagerPage = () => {
                 )}
                 {activeMenu === 'feedback' && (
                     <>
-                        <FeedbackAndRatingTable />                        
+                        <FeedbackAndRatingTable />
                     </>
                 )}
                 {activeMenu === 'reports' && (
                     <>
-                        <h1>This task is not assigned for Hung </h1>
+                        <h1>In process</h1>
+
                     </>
                 )}
                 {activeMenu === 'price' && (
                     <>
-                        <h1>This task is not assigned for Hung.  </h1>
+                        <h1>In process</h1>
+
                     </>
                 )}
 

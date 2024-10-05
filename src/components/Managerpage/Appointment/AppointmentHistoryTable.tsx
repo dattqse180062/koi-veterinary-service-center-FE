@@ -119,7 +119,7 @@ const AppointmentHistoryTable: React.FC = () => {
           {currentOrders.map((order) => (
             <tr key={order.appointmentID}>
               <td className="fw-bold">{order.appointmentID}</td>
-              <td>{order.created}</td>
+              <td>{new Date(order.created).toLocaleDateString()}</td>
               <td>{order.customer}</td>
               <td>${order.totalPrice.toFixed(2)}</td>
               <td>{order.description}</td>
@@ -180,7 +180,7 @@ const AppointmentHistoryTable: React.FC = () => {
                 {selectedOrder && (
                   <>
                     <p><strong>Appointment ID:</strong> {selectedOrder.appointmentID}</p>
-                    <p><strong>Created Date:</strong> {selectedOrder.created}</p>
+                    <p><strong>Created Date:</strong>{new Date(selectedOrder.created).toLocaleDateString()}</p>
                     <p><strong>Customer Name:</strong> {selectedOrder.customer}</p>
                     <p><strong>Total Price:</strong> ${selectedOrder.totalPrice.toFixed(2)}</p>
                     <p><strong>Description:</strong> {selectedOrder.description}</p>

@@ -1,13 +1,9 @@
-import React from "react";
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SideMenu from "../components/layout/LeftSideBarForManager";
-import AppointmentHistoryTable from "../components/Managerpage/Appointment/AppointmentHistoryTable";
-import StaffTable from "../components/Managerpage/Staff/StaffTable";
-import FeedbackAndRatingTable from "../components/Managerpage/FeebackAndRating/FeedbackTable";
-import CustomerTable from "../components/Managerpage/Customer/CustomerTable";
+import FeedbackAndRatingTable from '../components/Veterinarianpage/FeedbackAndDetails/FeedbackAndRatingTable';
 
-const ManagerPage = () => {
+const VeterinarianPage = () => {
     const [loading, setLoading] = useState(true);
     const [isPriceOpen, setIsPriceOpen] = useState(false); // Trạng thái mở/đóng sub-menu Price Management
 
@@ -80,15 +76,11 @@ const ManagerPage = () => {
                     <>
                         {/* <StaffTable /> */}
                         <h1>In process - iter 2 </h1>
-
-
                     </>
                 )}
                 {activeMenu === 'feedback' && (
                     <>
                         <FeedbackAndRatingTable />
-                        <h1>In process - iter 2 </h1>
-
                     </>
                 )}
                 {activeMenu === 'reports' && (
@@ -109,4 +101,4 @@ const ManagerPage = () => {
     );
 };
 
-export default ManagerPage;
+export default VeterinarianPage;
