@@ -11,7 +11,7 @@ interface Order {
   status: 'Done' | 'In process' | 'Cancel';
 }
 
-const AppointmentHistoryTable: React.FC = () => {
+const AppointmentCustomerHistoryTable: React.FC = () => {
   // const initialOrderData: Order[] = [
   //   { appointmentID: 1, created: '2024-09-01', customer: 'Customer 1', totalPrice: 100, description: 'Service A Description', status: 'Done' },
   //   { appointmentID: 2, created: '2024-09-02', customer: 'Customer 2', totalPrice: 150, description: 'Service B Description', status: 'Done' },
@@ -91,7 +91,7 @@ const AppointmentHistoryTable: React.FC = () => {
   };
 
   return (
-    <div>
+    <div style={{padding: '25px'}}>
       <h5 style={{ paddingTop: '65px' }}>Appointment History Management</h5>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div className="d-flex">
@@ -221,4 +221,4 @@ const AppointmentHistoryTable: React.FC = () => {
   );
 };
 
-export default AppointmentHistoryTable;
+export default AppointmentCustomerHistoryTable;

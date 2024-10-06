@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-
+// Define the interface for the Customer object
 interface Customer {
-  avatar: string;
-  customerId: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
+  avatar: string;   // URL or path to the customer's avatar image
+  customerId: number; // Unique identifier for each customer
+  firstName: string; // Customer's first name
+  lastName: string;  // Customer's last name
+  email: string; // Customer's email address
+  phoneNumber: string;  // Customer's phone number
 }
 
+// Initial list of customers, with sample data
 const initialCustomers: Customer[] = [
   { avatar: 'passed-stamp_1017-8239.jpg', customerId: 1, firstName: 'John', lastName: 'Doe', email: 'john@example.com', phoneNumber: '1234567890' },
   { avatar: 'passed-stamp_1017-8239.jpg', customerId: 2, firstName: 'Jane', lastName: 'Smith', email: 'jane@example.com', phoneNumber: '9876543210' },
@@ -26,39 +27,43 @@ const initialCustomers: Customer[] = [
 ];
 
 const CustomerAccountTable: React.FC = () => {
-  const [customers, setCustomers] = useState<Customer[]>(initialCustomers);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
-  const [showDetailModal, setShowDetailModal] = useState(false);
-  const [newCustomer, setNewCustomer] = useState<Customer>({
+  const [customers, setCustomers] = useState<Customer[]>(initialCustomers); // State to store the list of customers
+  const [currentPage, setCurrentPage] = useState<number>(1); // State to store the current page number
+  const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false); // State to show/hide the delete confirmation modal
+  const [showAddModal, setShowAddModal] = useState(false); // State to show/hide the add new customer modal
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null); // State to store the selected customer
+  const [showDetailModal, setShowDetailModal] = useState(false); // State to show/hide the view details modal
+  const [newCustomer, setNewCustomer] = useState<Customer>({ // State to store the new customer data
     avatar: '',
     customerId: customers.length + 1,
     firstName: '', lastName: '',
     email: '',
     phoneNumber: ''
   });
-
-  const rowsPerPage = 5;
-  const indexOfLastCustomer = currentPage * rowsPerPage;
-  const indexOfFirstCustomer = indexOfLastCustomer - rowsPerPage;
-  const currentCustomers = customers.slice(indexOfFirstCustomer, indexOfLastCustomer);
-  const totalPages = Math.ceil(customers.length / rowsPerPage);
-
+  // Variables for pagination
+  const rowsPerPage = 5;   // Number of rows per page
+  const indexOfLastCustomer = currentPage * rowsPerPage; // Index of the last customer on the current page
+  const indexOfFirstCustomer = indexOfLastCustomer - rowsPerPage; // Index of the first customer on the current page
+  const currentCustomers = customers.slice(indexOfFirstCustomer, indexOfLastCustomer); // List of customers for the current page
+  const totalPages = Math.ceil(customers.length / rowsPerPage); // Total number of pages
+  // Handle page change
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+    setCurrentPage(page); // Set the current page number
   };
 
+  // Handle customer deletion logic
   const handleDeleteCustomer = () => {
     if (selectedCustomer) {
+      // Remove the selected customer from the list
       setCustomers(customers.filter((customer) => customer.customerId !== selectedCustomer.customerId));
-      setShowDeleteConfirmModal(false);
+      setShowDeleteConfirmModal(false); // Close the confirmation modal after deletion
     }
   };
-
+  // Handle adding a new customer
   const handleAddCustomer = () => {
+    // Add the new customer to the list
     setCustomers([...customers, newCustomer]);
+    // Reset the new customer form for future use
     setNewCustomer({
       avatar: '',
       customerId: customers.length + 1,
@@ -67,21 +72,22 @@ const CustomerAccountTable: React.FC = () => {
       email: '',
       phoneNumber: ''
     });
-    setShowAddModal(false);
+    setShowAddModal(false); // Close the add modal
   };
-
+  // Handle viewing details of a customer
   const handleViewDetails = (customer: Customer) => {
-    setSelectedCustomer(customer);
-    setShowDetailModal(true);
+    setSelectedCustomer(customer); // Set the selected customer for viewing details
+    setShowDetailModal(true); // Open the detail modal
   };
-
+  // Handle opening the delete confirmation modal
   const handleDeleteClick = (customer: Customer) => {
-    setSelectedCustomer(customer);
-    setShowDeleteConfirmModal(true);
+    setSelectedCustomer(customer); // Set the selected customer for deletion
+    setShowDeleteConfirmModal(true); // Open the delete confirmation modal
   };
-
+  // Handle input change for the new customer form
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; // Destructure the name and value from the input event
+    // Update the new customer object based on input changes
     setNewCustomer({ ...newCustomer, [name]: value });
   };
 
