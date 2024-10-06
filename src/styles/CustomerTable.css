@@ -1,6 +1,6 @@
 /* UserManagementTable.css */
 .table-responsive {
-    max-width: 60%; /* Bảng sẽ chỉ chiếm 60% chiều rộng màn hình */
+    max-width: 80%; /* Bảng sẽ chỉ chiếm 60% chiều rộng màn hình */
   }
   
   .table-hover tbody tr:hover {
