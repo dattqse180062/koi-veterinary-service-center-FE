@@ -33,20 +33,14 @@ const SideMenu: FC<SideMenuProps> = ({ activeMenu, onMenuClick }) => {
         >
           <i className="bi bi-clock"></i> Appointment history
         </a>
-        <a
+        
+        {/* <a
           href="#"
           className={`nav-link child-nav-link  ${activeMenu === 'customer' ? 'active-menu' : ''}`}
           onClick={() => onMenuClick('customer')}
         >
           <i className="bi bi-person"></i> Customer management
-        </a>
-        <a
-          href="#"
-          className={`nav-link child-nav-link ${activeMenu === 'staff' ? 'active-menu' : ''}`}
-          onClick={() => onMenuClick('staff')}
-        >
-          <i className="bi bi-person-workspace"></i> Staff management
-        </a>
+        </a>        */}
         <a
           href="#"
           className={`nav-link child-nav-link ${activeMenu === 'feedback' ? 'active-menu' : ''}`}
@@ -54,7 +48,7 @@ const SideMenu: FC<SideMenuProps> = ({ activeMenu, onMenuClick }) => {
         >
           <i className="bi bi-chat-dots"></i> Feedback & Rating
         </a>
-        <a
+        {/* <a
           href="#"
           className={`nav-link child-nav-link ${activeMenu === 'reports' ? 'active-menu' : ''}`}
           onClick={() => onMenuClick('reports')}
@@ -68,9 +62,7 @@ const SideMenu: FC<SideMenuProps> = ({ activeMenu, onMenuClick }) => {
         >
           <i className="bi bi-currency-dollar" /> Price management
           <i className={`dropdown-toggle`} style={{ paddingLeft: '10px' }} />
-        </a>
-
-          {/*  chưa làm, iteration 2 sẽ làm  */}
+        </a>           */}
 
       </div>
 
