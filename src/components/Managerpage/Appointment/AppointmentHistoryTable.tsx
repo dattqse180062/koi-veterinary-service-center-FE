@@ -59,7 +59,6 @@ const AppointmentHistoryTable: React.FC = () => {
         console.error('Error fetching data:', error);
       }
     };
-
     fetchAppointmentData();
   }, []);
 
