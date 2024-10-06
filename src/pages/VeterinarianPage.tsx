@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SideMenu from "../components/layout/LeftSideBarForManager";
+import SideMenu from "../components/layout/LeftSideBarForVeterinarian";
 import FeedbackAndRatingTable from '../components/Veterinarianpage/FeedbackAndDetails/FeedbackAndRatingTable';
 
 const VeterinarianPage = () => {
@@ -70,12 +70,6 @@ const VeterinarianPage = () => {
                         {/* <CustomerTable /> */}
                         <h1>In process - iter 2 </h1>
 
-                    </>
-                )}
-                {activeMenu === 'staff' && (
-                    <>
-                        {/* <StaffTable /> */}
-                        <h1>In process - iter 2 </h1>
                     </>
                 )}
                 {activeMenu === 'feedback' && (
