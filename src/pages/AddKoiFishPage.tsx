@@ -11,7 +11,7 @@ const AddKoiFish: React.FC = () => {
         weight: '',
         color: '',
         origin: '',
-        userId: 101, // example user ID
+        user_id: parseInt(sessionStorage.getItem('userId')!), // Ensure userId is fetched from session storage
     });
     const [images, setImages] = useState<File[]>([]);
     const [imagePaths, setImagePaths] = useState<string[]>([]);
@@ -67,6 +67,9 @@ const AddKoiFish: React.FC = () => {
             const fishResponse = await axios.post('https://66fa1da4afc569e13a9a726b.mockapi.io/api/koi', {
                 ...koiData,
                 fish_id: Math.floor(Math.random() * 1000), // Assuming fish_id is auto-generated
+                age: parseInt(koiData.age), // Ensure age is a number
+                size: parseInt(koiData.size), // Ensure size is a number
+                weight: parseFloat(koiData.weight), // Ensure weight is a float
             });
 
             const fishId = fishResponse.data.fish_id;
@@ -103,7 +106,7 @@ const AddKoiFish: React.FC = () => {
             </button>
             <div className="row w-100 h-100">
                 {/* Image Upload Section */}
-                <div className="col-md-6 col-sm-12 d-flex flex-column justify-content-center align-items-center mb-4" style={{marginTop:"6rem"}}>
+                <div className="col-md-6 col-sm-12 d-flex flex-column justify-content-center align-items-center mb-4" style={{ marginTop: "6rem" }}>
                     <div className="image-upload-container">
                         <div className="image-upload-card">
                             {imagePaths.length > 0 && (
@@ -127,7 +130,7 @@ const AddKoiFish: React.FC = () => {
                 </div>
 
                 {/* Form Section */}
-                <div className="col-md-6 col-sm-12 d-flex flex-column justify-content-center align-items-center  " style={{marginTop:"3.5rem"}}>
+                <div className="col-md-6 col-sm-12 d-flex flex-column justify-content-center align-items-center  " style={{ marginTop: "3.5rem" }}>
                     <div className="form-container card w-100">
                         <div className="card-body">
                             {/* Species */}

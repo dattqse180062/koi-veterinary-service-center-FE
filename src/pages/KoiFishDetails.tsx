@@ -31,7 +31,7 @@ const KoiDetail: React.FC = () => {
                 setInitialKoiData(data); // Store initial data for cancel button
                 // Fetch image paths based on fish ID if needed
                 // Assuming an API endpoint exists to get images for a specific fish
-                const imagesResponse = await axios.get(`https://66febd102b9aac9c997d2e78.mockapi.io/api/koi-image?fish_id=${fishId}`);
+                const imagesResponse = await axios.get(`https://66febd102b9aac9c997d2e78.mockapi.io/api/koi-image`);
                 setImagePaths(imagesResponse.data.map((image: any) => image.source_path));
             }
         };

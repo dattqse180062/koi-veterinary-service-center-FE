@@ -4,6 +4,15 @@ import TableComponent from '../components/table/TableComponent';
 import { useNavigate } from 'react-router-dom';
 import { fetchVets } from '../api/vetApi';
 
+interface Vet {
+    user_id: number;
+    fullName: string;
+    username: string;
+    email: string;
+    phone_number: string;
+    address: string;
+    // Include other fields as needed
+}
 const VetShiftSchePage: React.FC = () => {
     const [vets, setVets] = useState<any[]>([]);
     const columns = ['user_id', 'fullName', 'username', 'email', 'phone_number', 'address'];
@@ -18,7 +27,8 @@ const VetShiftSchePage: React.FC = () => {
                     const { password, ...rest } = vet; // Exclude password
                     return rest;
                 });
-                setVets(filteredData);
+                const sortedData = filteredData.sort((a: Vet, b: Vet) => a.user_id - b.user_id);
+                setVets(sortedData);
             } catch (error) {
                 console.error('Error fetching veterinarians:', error);
             }
