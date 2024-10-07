@@ -10,9 +10,10 @@ interface TableRowProps {
     columns: string[];
     rowData: any;
     actions?: Action[]; // Action props as an optional array
+    isKoiFishPage?: boolean;
 }
 
-const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [] }) => {
+const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isKoiFishPage  }) => {
     const fullName = `${rowData.first_name || rowData.name} ${rowData.last_name || ''}`.trim(); // Construct full name
 
     return (
@@ -40,7 +41,7 @@ const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [] }) =
                         <ul className="dropdown-menu dropdown-menu-end">
                             {actions.map((action, index) => (
                                 <li key={index}>
-                                    <span className="dropdown-item" onClick={() => action.onClick(rowData.user_id, fullName)}>
+                                    <span className="dropdown-item" onClick={() => action.onClick(isKoiFishPage ? rowData.fish_id : rowData.user_id, fullName)}>
                                         {action.icon && <i className={`${action.icon} mx-2`}></i>}
                                         {action.label}
                                     </span>
