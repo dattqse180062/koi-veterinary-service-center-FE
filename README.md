@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Phiên bản sửa lỗi từ iteration 1 của Duy Hưng
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
