@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import '../../../styles/FeedbackAndRatingTable.css';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 // Định nghĩa dữ liệu cho Feedback và Appointment
 interface Feedback {
@@ -33,13 +34,15 @@ interface TimeSlot {
 
 const FeedbackAndRatingTable: React.FC = () => {
 
-    const [feedbackData, setFeedbackData] = useState<Feedback[]>([]); // State để lưu trữ danh sách feedback
+    // const [feedbackData, setFeedbackData] = useState<Feedback[]>([]); // State để lưu trữ danh sách feedback
     const [selectedFeedback, setSelectedFeedback] = useState<Feedback | null>(null);  // State để lưu trữ feedback đã chọn cho việc hiển thị chi tiết
     const [showDetailModal, setShowDetailModal] = useState<boolean>(false); // State để kiểm soát việc hiển thị modal chi tiết feedback
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false); // State để kiểm soát việc hiển thị modal xác nhận xóa feedback
     const [currentPage, setCurrentPage] = useState<number>(1); // State để theo dõi trang hiện tại trong phân trang
     const [orderData, setOrderData] = useState<Feedback[]>([]);  // State để lưu trữ danh sách feedback từ API
     const rowsPerPage = 5; // Số hàng hiển thị trên mỗi trang
+
+    const navigate = useNavigate();
 
     // Fetch feedback data from the API when the component mounts
     useEffect(() => {
@@ -55,8 +58,9 @@ const FeedbackAndRatingTable: React.FC = () => {
     }, []);
 
     const handleViewDetail = (feedback: Feedback) => {
-        setSelectedFeedback(feedback);
-        setShowDetailModal(true); // Hiển thị modal
+        // setSelectedFeedback(feedback);
+        // setShowDetailModal(true); // Hiển thị modal
+        navigate(`/feedback/${feedback.feedback_id}`); // Điều hướng đến trang chi tiết
     };
 
     const handleOpenDeleteModal = (feedback: Feedback) => {
@@ -81,7 +85,7 @@ const FeedbackAndRatingTable: React.FC = () => {
     };
 
     return (
-        <div>
+        <div style={{ width: '80%' }}>
             <h5 style={{ paddingTop: '65px' }}>Feedback and Rating Management</h5>
             <table className="table table-hover bg-white">
                 <thead>
@@ -137,7 +141,7 @@ const FeedbackAndRatingTable: React.FC = () => {
                                 <p><strong>Rating:</strong> {selectedFeedback.rating}</p>
                                 <p><strong>Comment:</strong> {selectedFeedback.comment}</p>
                                 <p><strong>Date & Time:</strong> {new Date(selectedFeedback.date_time).toLocaleDateString('en-GB')}</p>
-                                
+
                                 {/* Hiển thị chi tiết từ bảng Appointment */}
                                 {selectedFeedback.appointment ? (
                                     <>
