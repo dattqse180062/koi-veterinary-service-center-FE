@@ -5,7 +5,7 @@ import axios from 'axios';
 
 // Định nghĩa dữ liệu cho Feedback và Appointment
 interface Feedback {
-    feedback_id: string;
+    feedback_id: number;
     rating: number;
     comment: string;
     date_time: string;
@@ -32,8 +32,7 @@ interface TimeSlot {
     appointments: any; // Có thể điều chỉnh theo nhu cầu của bạn
 }
 
-const FeedbackTable: React.FC = () => {
-
+const FeedbackAndRatingTable: React.FC = () => {
 
     // const [feedbackData, setFeedbackData] = useState<Feedback[]>([]); // State để lưu trữ danh sách feedback
     const [selectedFeedback, setSelectedFeedback] = useState<Feedback | null>(null);  // State để lưu trữ feedback đã chọn cho việc hiển thị chi tiết
@@ -42,9 +41,8 @@ const FeedbackTable: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<number>(1); // State để theo dõi trang hiện tại trong phân trang
     const [orderData, setOrderData] = useState<Feedback[]>([]);  // State để lưu trữ danh sách feedback từ API
     const rowsPerPage = 5; // Số hàng hiển thị trên mỗi trang
-    // const handleMove = 
-    const navigate = useNavigate();
 
+    const navigate = useNavigate();
 
     // Fetch feedback data from the API when the component mounts
     useEffect(() => {
@@ -59,11 +57,10 @@ const FeedbackTable: React.FC = () => {
         fetchFeedbackData();
     }, []);
 
-    const handleViewDetail = (feedbackId: string) => {
+    const handleViewDetail = (feedback: Feedback) => {
         // setSelectedFeedback(feedback);
         // setShowDetailModal(true); // Hiển thị modal
-        navigate(`/feedback-details/`, {state: {feedbackId}}); // Điều hướng đến trang chi tiết
-        // navigate(`/feedback-details`); // Điều hướng đến trang chi tiết
+        navigate(`/feedback/${feedback.feedback_id}`); // Điều hướng đến trang chi tiết
     };
 
     const handleOpenDeleteModal = (feedback: Feedback) => {
@@ -113,7 +110,7 @@ const FeedbackTable: React.FC = () => {
                                         <i className="bi bi-three-dots-vertical"></i>
                                     </button>
                                     <ul className="dropdown-menu" aria-labelledby="dropdown-basic">
-                                        <li><a className="dropdown-item" href="#" onClick={() => handleViewDetail(feedback.feedback_id)}>View Detail</a></li>
+                                        <li><a className="dropdown-item" href="#" onClick={() => handleViewDetail(feedback)}>View Detail</a></li>
                                         <li><a className="dropdown-item" href="#" onClick={() => handleOpenDeleteModal(feedback)}>Delete</a></li>
                                     </ul>
                                 </div>
@@ -220,5 +217,5 @@ const FeedbackTable: React.FC = () => {
     );
 };
 
-export default FeedbackTable;
+export default FeedbackAndRatingTable;
 

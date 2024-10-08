@@ -41,7 +41,11 @@ export default function DangNhapNguoiDung() {
             // trường hợp là manager
             else if (user.roles === 'manager') {
                 navigate('/manager');
-            } // trường hợp là user, các case còn lại !
+            }
+            // trường hợp là bác sĩ thú y 
+            else if(user.roles === 'veterinarian') {
+                navigate('/veterinarian');
+            }// trường hợp là user, các case còn lại !
             else {
                 navigate('/');
             }

@@ -1,19 +1,15 @@
-import React from "react";
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SideMenu from "../components/layout/LeftSideBarForManager";
-import AppointmentHistoryTable from "../components/Managerpage/Appointment/AppointmentHistoryTable";
-import StaffTable from "../components/Managerpage/Staff/StaffTable";
-import FeedbackAndRatingTable from "../components/Managerpage/FeebackAndRating/FeedbackTable";
-import CustomerTable from "../components/Managerpage/Customer/CustomerTable";
+import SideMenu from "../components/layout/LeftSideBarForVeterinarian";
+import FeedbackAndRatingTable from '../components/Veterinarianpage/FeedbackAndDetails/FeedbackAndRatingTable';
 
-const ManagerPage = () => {
+const VeterinarianPage = () => {
     const [loading, setLoading] = useState(true);
     const [isPriceOpen, setIsPriceOpen] = useState(false); // Trạng thái mở/đóng sub-menu Price Management
 
     const navigate = useNavigate();
 
-    const [activeMenu, setActiveMenu] = useState<string>('shift');
+    const [activeMenu, setActiveMenu] = useState<string>('feedback');
 
     const handleMenuClick = (menu: string): void => {
         // setActiveMenu(menu);
@@ -38,14 +34,14 @@ const ManagerPage = () => {
         }
 
         // Kiểm tra role chỉ sau khi xác thực token
-        if (role !== 'manager') {
+        if (role !== 'veterinarian') {
             alert('Bạn không có quyền truy cập trang này!'); // Hiển thị alert
             setLoading(false);
             navigate('/'); // Chuyển hướng sau khi người dùng đã thấy alert
             return;
         }
 
-        // Nếu đến đây có nghĩa là người dùng là manager
+        // Nếu đến đây có nghĩa là người dùng là veterinarian - bác sĩ thú y
         setLoading(false);
     }, [navigate]);
 
@@ -59,22 +55,21 @@ const ManagerPage = () => {
             <div className="flex-grow-1 d-flex flex-column align-items-center justify-content-center">
                 {activeMenu === 'shift' && (
                     <>
-                        <h1>In process</h1>
+                        <h1>In process - iter 2 </h1>
                     </>
                 )}
                 {activeMenu === 'history' && (
                     <>
-                        <AppointmentHistoryTable />
+                        {/* <AppointmentHistoryTable /> */}
+                        <h1>In process - iter 2 </h1>
+
                     </>
                 )}
                 {activeMenu === 'customer' && (
                     <>
-                        <CustomerTable />
-                    </>
-                )}
-                {activeMenu === 'staff' && (
-                    <>
-                        <StaffTable />
+                        {/* <CustomerTable /> */}
+                        <h1>In process - iter 2 </h1>
+
                     </>
                 )}
                 {activeMenu === 'feedback' && (
@@ -84,13 +79,13 @@ const ManagerPage = () => {
                 )}
                 {activeMenu === 'reports' && (
                     <>
-                        <h1>In process</h1>
+                        <h1>In process - iter 2 </h1>
 
                     </>
                 )}
                 {activeMenu === 'price' && (
                     <>
-                        <h1>In process</h1>
+                        <h1>In process - iter 2 </h1>
 
                     </>
                 )}
@@ -100,4 +95,4 @@ const ManagerPage = () => {
     );
 };
 
-export default ManagerPage;
+export default VeterinarianPage;

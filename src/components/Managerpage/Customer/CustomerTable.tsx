@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 // Define the interface for the Customer object
+import { useNavigate } from 'react-router-dom';
+
 interface Customer {
   avatar: string;   // URL or path to the customer's avatar image
   customerId: number; // Unique identifier for each customer
@@ -40,13 +42,16 @@ const CustomerAccountTable: React.FC = () => {
     email: '',
     phoneNumber: ''
   });
+
   // Variables for pagination
   const rowsPerPage = 5;   // Number of rows per page
   const indexOfLastCustomer = currentPage * rowsPerPage; // Index of the last customer on the current page
   const indexOfFirstCustomer = indexOfLastCustomer - rowsPerPage; // Index of the first customer on the current page
   const currentCustomers = customers.slice(indexOfFirstCustomer, indexOfLastCustomer); // List of customers for the current page
   const totalPages = Math.ceil(customers.length / rowsPerPage); // Total number of pages
+  const navigate = useNavigate();
   // Handle page change
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page); // Set the current page number
   };
@@ -74,10 +79,17 @@ const CustomerAccountTable: React.FC = () => {
     });
     setShowAddModal(false); // Close the add modal
   };
-  // Handle viewing details of a customer
-  const handleViewDetails = (customer: Customer) => {
-    setSelectedCustomer(customer); // Set the selected customer for viewing details
-    setShowDetailModal(true); // Open the detail modal
+
+
+  const handleViewDetails = (customerId: number) => {
+    // setSelectedCustomer(customer);
+    // setShowDetailModal(true);
+    navigate(`/customer/${customerId}`);
+  };
+
+  const handleAddCustomerClick = () => {
+    navigate('/add-customer');
+
   };
   // Handle opening the delete confirmation modal
   const handleDeleteClick = (customer: Customer) => {
@@ -92,7 +104,7 @@ const CustomerAccountTable: React.FC = () => {
   };
 
   return (
-    <div>
+    <div style={{width:'80%'}}>
       <h5 style={{ paddingTop: '65px' }}>Customer Management</h5>
       {/* Header of content */}
       <div className="d-flex mb-3">
@@ -129,7 +141,7 @@ const CustomerAccountTable: React.FC = () => {
                     <i className="bi bi-three-dots-vertical"></i>
                   </button>
                   <ul className="dropdown-menu" aria-labelledby="dropdown-basic">
-                    <li><a className="dropdown-item" href="#" onClick={() => handleViewDetails(customer)}>View Detail</a></li>
+                    <li><a className="dropdown-item" href="#" onClick={() => handleViewDetails(customer.customerId)}>View Detail</a></li>
                     <li><a className="dropdown-item" href="#" onClick={() => handleDeleteClick(customer)}>Delete</a></li>
                   </ul>
                 </div>
