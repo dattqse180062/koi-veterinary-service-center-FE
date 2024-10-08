@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../../../styles/AppointmentCustomerTable.css';
+
 interface Order {
-  
   appointmentID: number;
   created: string;
   veterinarianName: string;
@@ -13,7 +14,6 @@ interface Order {
 }
 
 const AppointmentCustomerHistoryTable: React.FC = () => {
- 
 
   const [orderData, setOrderData] = useState<Order[]>([]); // fixed, replace initialOrderData
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -21,6 +21,7 @@ const AppointmentCustomerHistoryTable: React.FC = () => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showDetailModal, setShowDetailModal] = useState<boolean>(false);
   const rowsPerPage = 5;
+  const navigate = useNavigate();
 
   // Fetch appointment data from the API when the component mounts
   useEffect(() => {
@@ -36,9 +37,8 @@ const AppointmentCustomerHistoryTable: React.FC = () => {
     fetchAppointmentData();
   }, []);
 
-  const handleViewDetail = (order: Order) => {
-    setSelectedOrder(order);
-    setShowDetailModal(true); // Mở modal thông qua state
+  const handleViewDetail = (appointmentID: number) => {
+    navigate(`/appointment/${appointmentID}`); // Điều hướng tới trang chi tiết
   };
 
   const handleOpenDeleteModal = (order: Order) => {
@@ -64,7 +64,7 @@ const AppointmentCustomerHistoryTable: React.FC = () => {
   };
 
   return (
-    <div style={{padding: '25px'}}>
+    <div style={{ padding: '25px' }}>
       <h5 style={{ paddingTop: '65px' }}>Appointment History Management</h5>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div className="d-flex">
@@ -92,7 +92,11 @@ const AppointmentCustomerHistoryTable: React.FC = () => {
           {currentOrders.map((order) => (
             <tr key={order.appointmentID}>
               <td className="fw-bold">{order.appointmentID}</td>
-              <td>{order.created}</td>
+              <td>
+                {/* {order.created} */}
+                {/* {new Date(order.created).toLocaleDateString('en-GB')} */}
+                {new Date(order.created).toLocaleString('en-GB')}
+              </td>
               <td>{order.veterinarianName}</td>
               <td>${order.totalPrice.toFixed(2)}</td>
               <td>{order.description}</td>
@@ -102,7 +106,12 @@ const AppointmentCustomerHistoryTable: React.FC = () => {
                     <i className="bi bi-three-dots-vertical"></i>
                   </button>
                   <ul className="dropdown-menu" aria-labelledby="dropdown-basic">
-                    <li><a className="dropdown-item" href="#" onClick={() => handleViewDetail(order)}>View Detail</a></li>
+                    {/* <li><a className="dropdown-item" href="#" onClick={() => handleViewDetail(order)}>View Detail</a></li> */}
+                    <li>
+                      <a className="dropdown-item" href="#" onClick={() => handleViewDetail(order.appointmentID)}>
+                        View Detail
+                      </a>
+                    </li>
                     <li><a className="dropdown-item" href="#" onClick={() => handleOpenDeleteModal(order)}>Delete</a></li>
                   </ul>
                 </div>
@@ -153,7 +162,7 @@ const AppointmentCustomerHistoryTable: React.FC = () => {
                 {selectedOrder && (
                   <>
                     <p><strong>Appointment ID:</strong> {selectedOrder.appointmentID}</p>
-                    <p><strong>Created Date:</strong> {selectedOrder.created}</p>
+                    <p><strong>Created Date:</strong> {new Date(selectedOrder.created).toLocaleString('en-gb')}</p>
                     <p><strong>Veterinarian Name:</strong> {selectedOrder.veterinarianName}</p>
                     <p><strong>Total Price:</strong> ${selectedOrder.totalPrice.toFixed(2)}</p>
                     <p><strong>Description:</strong> {selectedOrder.description}</p>
