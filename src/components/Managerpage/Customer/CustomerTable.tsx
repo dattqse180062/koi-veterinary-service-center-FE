@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface Customer {
   avatar: string;
@@ -46,6 +47,8 @@ const CustomerAccountTable: React.FC = () => {
   const currentCustomers = customers.slice(indexOfFirstCustomer, indexOfLastCustomer);
   const totalPages = Math.ceil(customers.length / rowsPerPage);
 
+  const navigate = useNavigate();
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
@@ -70,9 +73,14 @@ const CustomerAccountTable: React.FC = () => {
     setShowAddModal(false);
   };
 
-  const handleViewDetails = (customer: Customer) => {
-    setSelectedCustomer(customer);
-    setShowDetailModal(true);
+  const handleViewDetails = (customerId: number) => {
+    // setSelectedCustomer(customer);
+    // setShowDetailModal(true);
+    navigate(`/customer/${customerId}`);
+  };
+
+  const handleAddCustomerClick = () => {
+    navigate('/add-customer');
   };
 
   const handleDeleteClick = (customer: Customer) => {
@@ -86,7 +94,7 @@ const CustomerAccountTable: React.FC = () => {
   };
 
   return (
-    <div>
+    <div style={{width:'80%'}}>
       <h5 style={{ paddingTop: '65px' }}>Customer Management</h5>
       {/* Header of content */}
       <div className="d-flex mb-3">
@@ -123,7 +131,7 @@ const CustomerAccountTable: React.FC = () => {
                     <i className="bi bi-three-dots-vertical"></i>
                   </button>
                   <ul className="dropdown-menu" aria-labelledby="dropdown-basic">
-                    <li><a className="dropdown-item" href="#" onClick={() => handleViewDetails(customer)}>View Detail</a></li>
+                    <li><a className="dropdown-item" href="#" onClick={() => handleViewDetails(customer.customerId)}>View Detail</a></li>
                     <li><a className="dropdown-item" href="#" onClick={() => handleDeleteClick(customer)}>Delete</a></li>
                   </ul>
                 </div>
