@@ -34,7 +34,7 @@ const PasswordChangePage: React.FC = () => {
     // Handle password change request
     const handlePasswordChange = async () => {
         if (validatePasswords()) {
-            const userId = sessionStorage.getItem('userId');
+            const userId = Number(sessionStorage.getItem('userId'));
 
             if (!userId) {
                 setError('User ID not found. Please log in again.');

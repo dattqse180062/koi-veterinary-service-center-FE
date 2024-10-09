@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API_URL = 'https://66e10816c831c8811b538fae.mockapi.io/api';
-
+const BASE_URL = 'http://localhost:8080/api/v1/users';
 export const register = async (username: string, email: string, password: string) => {
     try {
         // Gửi yêu cầu tới /login để tạo tài khoản mới
@@ -29,23 +29,23 @@ export const login = async (username: string, password: string) => {
     }
 };
 // API để lấy thông tin người dùng
-export const getUserInfo = async (userId: string) => {
-    try {
-        const response = await axios.get(`${API_URL}/login/${userId}`);
-        return response.data;
-    } catch (error) {
-        console.error("Error fetching user info:", error);
-        throw new Error('Error fetching user info');
-    }
-};
-
-export const updateUserInfoAPI = async (userId: string, updatedData: any) => {
-    const response = await axios.put(`${API_URL}/login/${userId}`, updatedData);
+export const getUserInfo = async (userId: number) => {
+    const response = await axios.get(`${BASE_URL}/profile?userId=${userId}`);
     return response.data;
 };
 
-// Thay đổi mật khẩu
-export const changePassword = async (userId: string, currentPassword: string, newPassword: string) => {
+// Update user profile
+export const updateUserInfoAPI = async (userId: number, userData: any) => {
+    const response = await axios.put(`${BASE_URL}/profile?userId=${userId}`, userData);
+    return response.data;
+};
+
+// Update user address
+export const updateUserAddressAPI = async (userId: number, addressData: any) => {
+    const response = await axios.put(`${BASE_URL}/address?userId=${userId}`, addressData);
+    return response.data;
+};
+export const changePassword = async (userId: number, currentPassword: string, newPassword: string) => {
     const user = await getUserInfo(userId);
 
     if (user && user.password === currentPassword) {

@@ -1,69 +1,120 @@
 import React, { lazy, Suspense } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './styles/App.css';
 import Navbar from "./components/layout/Navbar";
 import { AuthProvider } from "./hooks/context/AuthContext";
-import ProfilePage from "./pages/ProfilePage";
 import AuthGuard from '../src/guards/AuthGuard';
 import GuestGuard from '../src/guards/GuestGuard';
 import RoleBasedGuard from '../src/guards/RoleBasedGuard';
-import VetShiftSchePage from "./pages/VetShiftSchePage";
-import ViewScheduleOfVetPage from "./pages/ViewScheduleOfVetPage";
-import ServicePricingPage from "./pages/ServicePricingPage";
-
-import TransportationPricingPage from "./pages/TransportationPricingPage";
-import PasswordChangePage from "./pages/PasswordChangePage";
-import KoiFishPage from "./pages/KoiFishPage";
-import AddKoiFishPage from "./pages/AddKoiFishPage";
-import KoiDetails from "./pages/KoiFishDetails";
-
+import UnauthorizedPage from "./pages/UnauthorizedPage";
 
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
 const DangNhapNguoiDung = lazy(() => import("./pages/LoginPage"));
 const HomePage = lazy(() => import("./pages/HomePage"));
-const SecretPage = lazy(() => import("./pages/SecretPage"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
+const PasswordChangePage = lazy(() => import("./pages/PasswordChangePage"));
+const KoiFishPage = lazy(() => import("./pages/KoiFishPage"));
+const AddKoiFishPage = lazy(() => import("./pages/AddKoiFishPage"));
+const KoiDetails = lazy(() => import("./pages/KoiFishDetails"));
+const VetShiftSchePage = lazy(() => import("./pages/VetShiftSchePage"));
+const ViewScheduleOfVetPage = lazy(() => import("./pages/ViewScheduleOfVetPage"));
+const ServicePricingPage = lazy(() => import("./pages/ServicePricingPage"));
+const TransportationPricingPage = lazy(() => import("./pages/TransportationPricingPage"));
 
 function App() {
     return (
         <div className="App">
             <AuthProvider>
-                <BrowserRouter>
-                    <Navbar />
+                <Router>
+                    <Navbar/>
                     <Suspense fallback={<div>Loading...</div>}>
-                        <Routes>
-                            {/* Guest-only routes */}
-                            <Route element={<GuestGuard />}>
-                                <Route path="/register" element={<RegisterPage />} />
-                                <Route path="/login" element={<DangNhapNguoiDung />} />
+                    <Routes>
+                        {/* Tất cả người dùng */}
+                        <Route path="/login" element={<DangNhapNguoiDung />} />
+                        <Route path="/register" element={<RegisterPage />} />
+                        <Route
+                            path="/settings"
+                            element={
+                                <AuthGuard>
+                                    <ProfilePage />
+                                </AuthGuard>
+                            }
+                        />
+                        <Route
+                            path="/password-change"
+                            element={
+                                <AuthGuard>
+                                    <PasswordChangePage />
+                                </AuthGuard>
+                            }
+                        />
 
-                            </Route>
+                        {/* Customer routes */}
+                        <Route
+                            path="/koi"
+                            element={
+                                <RoleBasedGuard allowedRoles={['CUS']}>
+                                    <KoiFishPage />
+                                </RoleBasedGuard>
+                            }
+                        />
+                        <Route
+                            path="/add-koifish"
+                            element={
+                                <RoleBasedGuard allowedRoles={['CUS']}>
+                                    <AddKoiFishPage />
+                                </RoleBasedGuard>
+                            }
+                        />
+                        <Route
+                            path="/koi-details"
+                            element={
+                                <RoleBasedGuard allowedRoles={['CUS']}>
+                                    <KoiDetails />
+                                </RoleBasedGuard>
+                            }
+                        />
 
-                            {/* Public routes */}
-                            <Route path="/" element={<HomePage />} />
-                            <Route path="/vetshift" element={<VetShiftSchePage />} />
-                            <Route path="/vetsche" element={<ViewScheduleOfVetPage />} />
+                        {/* Manager routes */}
+                        <Route
+                            path="/vetshift"
+                            element={
+                                <RoleBasedGuard allowedRoles={['MAN']}>
+                                    <VetShiftSchePage />
+                                </RoleBasedGuard>
+                            }
+                        />
+                        <Route
+                            path="/vetsche"
+                            element={
+                                <RoleBasedGuard allowedRoles={['MAN']}>
+                                    <ViewScheduleOfVetPage />
+                                </RoleBasedGuard>
+                            }
+                        />
+                        <Route
+                            path="/service-pricing"
+                            element={
+                                <RoleBasedGuard allowedRoles={['MAN']}>
+                                    <ServicePricingPage />
+                                </RoleBasedGuard>
+                            }
+                        />
+                        <Route
+                            path="/transport-pricing"
+                            element={
+                                <RoleBasedGuard allowedRoles={['MAN']}>
+                                    <TransportationPricingPage />
+                                </RoleBasedGuard>
+                            }
+                        />
 
-                            <Route path="/service-pricing" element={<ServicePricingPage/>} />
-                            <Route path="/transport-pricing" element={<TransportationPricingPage/>} />
-                            <Route path="/password-change" element={<PasswordChangePage/>} />
-                            <Route path="/settings" element={<ProfilePage />} />
-                            <Route path="/koi" element={<KoiFishPage />} />
-                            <Route path="/add-koifish" element={<AddKoiFishPage />} />
-                            <Route path="/koi-details" element={<KoiDetails />} />
-
-                            {/* Authenticated routes */}
-                            <Route element={<AuthGuard />}>
-
-
-
-                                {/* Role-based route */}
-                                <Route element={<RoleBasedGuard allowedRoles={['admin']} />}>
-                                    <Route path="/secret" element={<SecretPage />} />
-                                </Route>
-                            </Route>
-                        </Routes>
+                        {/* Trang chủ */}
+                        <Route path="/" element={<HomePage />} />
+                        <Route path="/no-access" element={<UnauthorizedPage />} />
+                    </Routes>
                     </Suspense>
-                </BrowserRouter>
+                </Router>
             </AuthProvider>
         </div>
     );

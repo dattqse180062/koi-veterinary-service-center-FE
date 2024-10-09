@@ -7,7 +7,6 @@ import axios from 'axios';
 const KoiDetail: React.FC = () => {
     const location = useLocation();
     const navigate = useNavigate();
-
     const fishId: number = location.state?.fishId; // Get fishId from state
     const [initialKoiData, setInitialKoiData] = useState({
         species: '',

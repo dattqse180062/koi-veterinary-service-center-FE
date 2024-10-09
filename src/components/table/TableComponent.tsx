@@ -1,6 +1,6 @@
 import React from 'react';
 import TableRow from './TableRow';
-
+import "../../styles/Schedule.css"
 interface TableComponentProps {
     columns: string[];
     columnHeaders: string[];

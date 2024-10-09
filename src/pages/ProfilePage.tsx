@@ -2,29 +2,30 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/layout/Sidebar";
 import { useAuth } from "../hooks/context/AuthContext";
-import { getUserInfo, updateUserInfoAPI } from "../api/authService"; // Import authService functions
+import {getUserInfo, updateUserAddressAPI, updateUserInfoAPI} from "../api/authService"; // Import authService functions
 import { Link } from "react-router-dom";
 import '../styles/Profile.css'
 
 // Define interfaces for user data
 interface UserAddress {
-    state: string;
+    district: string;
     city: string;
     ward: string;
-    homeNumber: string;
+    home_number: string;
 }
 
 interface UserData {
     username: string;
     email: string;
-    firstname: string;
-    lastname: string;
-    phone: string;
+    first_name: string;
+    last_name: string;
+    phone_number: string;
     address: UserAddress;
 }
 
 const Profile: React.FC = () => {
-    const { userId } = useAuth(); // Use Auth context to get userId
+    const { user  } = useAuth(); // Use Auth context to get userId
+    const userId = user?.userId; // Access userId safely
     const [userData, setUserData] = useState<UserData | null>(null);
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
@@ -41,17 +42,17 @@ const Profile: React.FC = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const userId = sessionStorage.getItem('userId');
+
                 if (userId) {
                     const user = await getUserInfo(userId); // Call authService function
                     setUserData(user);
-                    setFirstname(user.firstname || '');
-                    setLastname(user.lastname || '');
-                    setPhone(user.phone || '');
-                    setState(user.address?.state || '');
+                    setFirstname(user.first_name || '');
+                    setLastname(user.last_name || '');
+                    setPhone(user.phone_number || '');
+                    setState(user.address?.district || '');
                     setCity(user.address?.city || '');
                     setWard(user.address?.ward || '');
-                    setHomeNumber(user.address?.homeNumber || '');
+                    setHomeNumber(user.address?.home_number || '');
                 }
             } catch (error) {
                 console.error('Failed to fetch user data:', error);
@@ -115,9 +116,13 @@ const Profile: React.FC = () => {
                 },
             };
 
-            const userId = sessionStorage.getItem('userId');
+
             if (userId) {
                 await updateUserInfoAPI(userId, updatedData); // Use authService function
+                console.log("User profile updated successfully!");
+                const addressData = { state, city, ward, homeNumber };
+                console.log("Updating user address with data:", addressData);
+                await updateUserAddressAPI(userId, { state, city, ward, homeNumber });
                 alert('User data updated successfully!');
             }
         } catch (error) {
@@ -128,13 +133,13 @@ const Profile: React.FC = () => {
     // Handle cancel action to reset form values to original state
     const handleCancel = () => {
         if (userData) {
-            setFirstname(userData.firstname || '');
-            setLastname(userData.lastname || '');
-            setPhone(userData.phone || '');
-            setState(userData.address?.state || '');
+            setFirstname(userData.first_name || '');
+            setLastname(userData.last_name || '');
+            setPhone(userData.phone_number || '');
+            setState(userData.address?.district || '');
             setCity(userData.address?.city || '');
             setWard(userData.address?.ward || '');
-            setHomeNumber(userData.address?.homeNumber || '');
+            setHomeNumber(userData.address?.home_number || '');
         }
     };
 

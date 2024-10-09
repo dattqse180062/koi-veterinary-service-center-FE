@@ -1,23 +1,21 @@
-import React, { useEffect } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+// AuthGuard.tsx
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '../hooks/context/AuthContext';
 
-const AuthGuard: React.FC = () => {
-    const { isLoggedIn } = useAuth();
+const AuthGuard = ({ children }: { children: JSX.Element }) => {
+    const { isAuthenticated, loading } = useAuth();
 
-    useEffect(() => {
-        if (!isLoggedIn) {
-            alert('Bạn chưa đăng nhập!!!!'); // Alert message
-        }
-    }, [isLoggedIn]);
-
-    if (!isLoggedIn) {
-        return <Navigate to="/login" replace />;
+    // Nếu vẫn đang load xác thực từ localStorage, có thể hiển thị loading indicator
+    if (loading) {
+        return <div>Loading...</div>;
     }
 
-    return <Outlet />;
+    // Nếu chưa đăng nhập, điều hướng về trang login
+    if (!isAuthenticated) {
+        return <Navigate to="/login" />;
+    }
+
+    return children;
 };
 
 export default AuthGuard;
-
-//AuthGuard: Redirects users to the login page if they are not logged in and shows an alert.

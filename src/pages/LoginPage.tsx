@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import backgroundImage from "../assets/images/background.jpg";
 import googleIcon from "../assets/images/flat-color-icons_google.svg";
 import Navbar from "../components/layout/Navbar";
@@ -6,41 +6,33 @@ import { Link, useNavigate } from "react-router-dom";
 import { login as apiLogin } from '../api/authService';
 import { useAuth } from "../hooks/context/AuthContext";
 import "../styles/LoginRegister.css";
+import axios from  "axios"
 
-export default function DangNhapNguoiDung() {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+
+const DangNhapNguoiDung: React.FC = () => {
+    const { login } = useAuth();
+    const [username, setUsername] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
-    const { login } = useAuth();
 
+    // useEffect(() => {
+    //     // Check if user is already logged in
+    //     const token = localStorage.getItem('token');
+    //     if (token) {
+    //         login(token); // Set the token in context
+    //         navigate('/'); // Redirect to home if already logged in
+    //     }
+    // }, [login, navigate]);
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault(); // Prevent page refresh
-        setErrorMessage("");
-
-        console.log("Attempting to log in with username:", username); // Log username
-
+        e.preventDefault();
         try {
-            const user = await apiLogin(username, password);
-            console.log("User logged in:", user); // Log user information
-
-            // Store token and roles in sessionStorage
-            sessionStorage.setItem('token', user.token); // Store JWT
-            sessionStorage.setItem('role', user.roles); // Store user role
-
-            // Call login function from context to update state
-            login(user.id); // Update login state
-            console.log("isLoggedIn updated to true"); // Log login state
-
-            // Navigate based on role
-            if (user.roles === 'admin') {
-                navigate('/secret');
-            } else {
-                navigate('/');
-            }
+            const response = await axios.post('http://localhost:8080/api/v1/users/token', { username, password });
+            const token = response.data.result.token;
+            login(token);  // Lưu JWT sau khi đăng nhập
+            navigate('/');  // Chuyển hướng sau khi đăng nhập thành công
         } catch (err) {
-            alert('Tên đăng nhập hoặc mật khẩu không đúng!');
-            console.error("Login error:", err); // Log error
+            setErrorMessage('Login failed.');
         }
     };
 
@@ -107,7 +99,7 @@ export default function DangNhapNguoiDung() {
                         </div>
 
                         {/* Sign In Button */}
-                        {errorMessage && <div className="alert alert-danger">{errorMessage}</div>} {/* Show error message if exists */}
+                        {errorMessage && <div className="text-danger" style={{marginTop:"-15px"}}>{errorMessage}</div>} {/* Show error message if exists */}
                         <div className="d-grid mb-3">
                             <button type="submit" className="btn btn-primary fw-bold"
                                     style={{ backgroundColor: '#c19758', fontSize: '0.8rem', padding: '0.5rem', borderColor: "#c69533" }}>
@@ -148,3 +140,4 @@ export default function DangNhapNguoiDung() {
         </div>
     );
 }
+export default DangNhapNguoiDung;

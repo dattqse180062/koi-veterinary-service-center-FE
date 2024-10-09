@@ -73,6 +73,12 @@ const Sidebar: React.FC = () => {
                         <span className="fw-bold ms-2">Settings</span>
                     </div>
                 </Link>
+                <Link to="/koi" className="nav-link text-secondary">
+                    <div className="d-flex align-items-center">
+                        <div className="icon-placeholder"></div>
+                        <span className="fw-bold ms-2">Koi List</span>
+                    </div>
+                </Link>
             </div>
         </div>
     );

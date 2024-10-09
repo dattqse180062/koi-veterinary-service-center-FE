@@ -3,13 +3,14 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/layout/Sidebar';
 import TableComponent from '../components/table/TableComponent';
-
+import { useAuth } from "../hooks/context/AuthContext";
 const KoiFishPage: React.FC = () => {
     const [koiFishData, setKoiFishData] = useState<any[]>([]);
     const navigate = useNavigate();
-
+    const { user  } = useAuth(); // Use Auth context to get userId
+    const userId = user?.userId; // Access userId safely
     useEffect(() => {
-        const userId = sessionStorage.getItem('userId');
+
         if (!userId) {
             alert("Bạn chưa đăng nhập! Vui lòng đăng nhập!!!");
             navigate('/login');
