@@ -31,7 +31,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const logout = () => {
         sessionStorage.removeItem('token');
-
         sessionStorage.removeItem('userId');
         sessionStorage.removeItem('role');
         setIsLoggedIn(false);
