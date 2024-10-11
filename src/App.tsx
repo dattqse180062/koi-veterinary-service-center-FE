@@ -28,6 +28,7 @@ import FeedbackTable from './components/Managerpage/FeebackAndRating/FeedbackTab
 import FeedbackDetailPageForManager from './components/Managerpage/FeebackAndRating/FeedbackDetailsForManager';
 
 
+
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
 const DangNhapNguoiDung = lazy(() => import("./pages/LoginPage"));
 const HomePage = lazy(() => import("./pages/HomePage"));
@@ -49,14 +50,10 @@ function App() {
                             <Route element={<GuestGuard />}>
                                 <Route path="/register" element={<RegisterPage />} />
                                 <Route path="/login" element={<DangNhapNguoiDung />} />
-
                             </Route>
 
                             {/* Public routes */}
                             <Route path="/" element={<HomePage />} />
-
-
-                            <Route path="/manager" element={<ManagerPage />} />
 
                             <Route path="/vetshift" element={<VetShiftSchePage />} />
                             <Route path="/vetsche" element={<ViewScheduleOfVetPage />} />
@@ -68,55 +65,52 @@ function App() {
                             <Route path="/koi" element={<KoiFishPage />} />
                             <Route path="/add-koifish" element={<AddKoiFishPage />} />
 
-                                    {/* For customer */}
+                            {/* For customer */}
                             <Route path="/my-appointment" element={<AppointmentCustomerHistoryTable />} />
                             <Route path="/appointment/:id" element={<AppointmentDetailsPage />} /> {/* Đường dẫn cho trang chi tiết */}
 
+                            {/* Manager page */}
+                            <Route element={<AuthGuard />}>
+                                <Route element={<RoleBasedGuard allowedRoles={['manager']} />}>
+                                    <Route path="/manager" element={<ManagerPage />} />
+                                    <Route path="/appointment" element={<AppointmentHistoryTable />} />
+                                    <Route path="/appointment-details" element={<AppointmentHistoryDetailsPage />} />
+                                    <Route path="/manager/feedback/:id" element={<FeedbackDetailPage />} />
+                                </Route>
+                            </Route>
 
-                                    {/* Manager page */}
-                            <Route path="/manager" element={<ManagerPage />} />
+                            {/* View staff details: manager */}
 
-                                        {/* View staff details: manager */ }
-                            <Route path="/feedback/:id" element={<FeedbackDetailPage />} /> {/* Trang chi tiết */ }
-
-                                        {/* View appointment details: manager */ }
-                            <Route path="/appointment" element={<AppointmentHistoryTable />} />
-                            <Route path="/appointment-details" element={<AppointmentHistoryDetailsPage />} /> {/* Đường dẫn cho trang chi tiết */ }
-
-                                        {/* View customer details page: manager */ }
-                                        {/* NOTE: IN PROCESS , ĐANG CÓ NHIỀU TRỤC TRẶC 😭 */ }
+                            {/* View appointment details: manager */}
+                            
+                            {/* View customer details page: manager */}
+                            {/* NOTE: IN PROCESS , ĐANG CÓ NHIỀU TRỤC TRẶC 😭 */}
                             <Route path="/customer" element={<CustomerAccountTable />} />
-                            <Route path="/customer-details/:customerID" element={<CustomerDetailPage />} /> {/* Đường dẫn cho trang chi tiết */ }
+                            <Route path="/customer-details/:customerID" element={<CustomerDetailPage />} /> {/* Đường dẫn cho trang chi tiết */}
 
-                                        {/* View feedback details: manager */ }
+                            {/* View feedback details: manager */}
                             <Route path="/feedback" element={<FeedbackTable />} />
-                            <Route path="/feedback-details" element={<FeedbackDetailPageForManager />} /> {/* Đường dẫn cho trang chi tiết */ }
+                            <Route path="/feedback-details" element={<FeedbackDetailPageForManager />} /> {/* Đường dẫn cho trang chi tiết */}
 
-                                        {/* Veterinarian page */ }
+                            {/* Veterinarian page */}
                             <Route path="/veterinarian" element={<VeterinarianPage />} />
 
-                                        {/* View feedback details: veterinarian */ }
-                            {/* <Route path="/" element={<FeedbackTable />} /> */ }
-                            <Route path="/feedback/:id" element={<FeedbackDetailPage />} /> {/* Trang chi tiết */ }
+                            {/* View feedback details: veterinarian */}
+                            {/* <Route path="/" element={<FeedbackTable />} /> */}
+                            <Route path="/feedback/:id" element={<FeedbackDetailPage />} /> {/* Trang chi tiết */}
 
                             {/* Authenticated routes */}
-                            <Route element={<AuthGuard />}>
-
-                                {/* Role-based route */}
+                            <Route element={<AuthGuard />}>                                
+                                {/* For admin */}
                                 <Route element={<RoleBasedGuard allowedRoles={['admin']} />}>
                                     <Route path="/secret" element={<SecretPage />} />
                                 </Route>
                             </Route>
-
                             <Route path="/register" element={<RegisterPage />} />
-
 
                             {/* For guest */}
                             <Route path="/register" element={<RegisterPage />} />
                             <Route path="/login" element={<DangNhapNguoiDung />} />
-
-                            {/* For admin */}
-                            <Route path="/secret" element={<SecretPage />} />
 
                             {/* For user */}
                             <Route path="/" element={<HomePage />} />
