@@ -63,7 +63,7 @@ const PasswordChangePage: React.FC = () => {
         <div className="d-flex">
             <Sidebar />
             <div className="flex-grow-1 bg-light" style={{ height: '100vh' }}>
-                <div className="profile-container">
+                <div className="profile-container profile-page">
                     <div className="form-section">
                         <form className="profile-form">
                             <div className="form-group">

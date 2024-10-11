@@ -145,7 +145,7 @@ const Profile: React.FC = () => {
 
 
     return (
-        <div className="d-flex">
+        <div className="d-flex profile-page">
             <Sidebar />
 
             <div className="flex-grow-1 bg-light" style={{ height: '100vh' }}>

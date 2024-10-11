@@ -38,6 +38,7 @@ const TransportationPricingPage = lazy(() => import("./pages/TransportationPrici
 const SecretPage = lazy(() => import("./pages/SecretPage"));
 const ManagerPage = lazy(() => import("./pages/ManagerPage"));
 const VeterinarianPage = lazy(() => import("./pages/VeterinarianPage"));
+const VetDetails = lazy(() => import("./pages/VetDetails"));
 
 function App() {
     return (
@@ -102,6 +103,15 @@ function App() {
                                 </RoleBasedGuard>
                             }
                         />
+                        <Route
+                            path="/vet-details"
+                            element={
+                                <RoleBasedGuard allowedRoles={['MAN']}>
+                                    <VetDetails />
+                                </RoleBasedGuard>
+                            }
+                        />
+
                         <Route
                             path="/vetsche"
                             element={
