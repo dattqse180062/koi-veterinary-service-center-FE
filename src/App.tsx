@@ -1,25 +1,17 @@
 import React, { lazy, Suspense } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './styles/App.css';
 import Navbar from "./components/layout/Navbar";
 import { AuthProvider } from "./hooks/context/AuthContext";
-import ProfilePage from "./pages/ProfilePage";
 import AuthGuard from '../src/guards/AuthGuard';
 import GuestGuard from '../src/guards/GuestGuard';
 import RoleBasedGuard from '../src/guards/RoleBasedGuard';
-import VetShiftSchePage from "./pages/VetShiftSchePage";
-import ViewScheduleOfVetPage from "./pages/ViewScheduleOfVetPage";
-import ServicePricingPage from "./pages/ServicePricingPage";
-import TransportationPricingPage from "./pages/TransportationPricingPage";
-
-import PasswordChangePage from "./pages/PasswordChangePage";
-import KoiFishPage from "./pages/KoiFishPage";
-import AddKoiFishPage from "./pages/AddKoiFishPage";
-import VetDetails from "./pages/VetDetails";
+import UnauthorizedPage from "./pages/UnauthorizedPage";
 
 
 
-// >>>>>>> feature/kvfs-140-veterinarian-manage-feedback-and-rating
+
+
 import AppointmentCustomerHistoryTable from './components/Customerpage/Appointment/AppointmentTable';
 import AppointmentHistoryTable from './components/Managerpage/Appointment/AppointmentHistoryTable';
 import AppointmentDetailsPage from './components/Customerpage/Appointment/AppointmentDetailsPage';
@@ -34,6 +26,15 @@ import FeedbackDetailPageForManager from './components/Managerpage/FeebackAndRat
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
 const DangNhapNguoiDung = lazy(() => import("./pages/LoginPage"));
 const HomePage = lazy(() => import("./pages/HomePage"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
+const PasswordChangePage = lazy(() => import("./pages/PasswordChangePage"));
+const KoiFishPage = lazy(() => import("./pages/KoiFishPage"));
+const AddKoiFishPage = lazy(() => import("./pages/AddKoiFishPage"));
+const KoiDetails = lazy(() => import("./pages/KoiFishDetails"));
+const VetShiftSchePage = lazy(() => import("./pages/VetShiftSchePage"));
+const ViewScheduleOfVetPage = lazy(() => import("./pages/ViewScheduleOfVetPage"));
+const ServicePricingPage = lazy(() => import("./pages/ServicePricingPage"));
+const TransportationPricingPage = lazy(() => import("./pages/TransportationPricingPage"));
 const SecretPage = lazy(() => import("./pages/SecretPage"));
 const ManagerPage = lazy(() => import("./pages/ManagerPage"));
 const VeterinarianPage = lazy(() => import("./pages/VeterinarianPage"));
@@ -42,81 +43,207 @@ function App() {
     return (
         <div className="App">
             <AuthProvider>
-                <BrowserRouter>
-                    <Navbar />
+                <Router>
+                    <Navbar/>
                     <Suspense fallback={<div>Loading...</div>}>
-                        <Routes>
-                            {/* Guest-only routes */}
-                            <Route element={<GuestGuard />}>
-                                <Route path="/register" element={<RegisterPage />} />
-                                <Route path="/login" element={<DangNhapNguoiDung />} />
+                    <Routes>
+                        {/* Tất cả người dùng */}
+                        <Route path="/login" element={<DangNhapNguoiDung />} />
+                        <Route path="/register" element={<RegisterPage />} />
+                        <Route
+                            path="/settings"
+                            element={
+                                <AuthGuard>
+                                    <ProfilePage />
+                                </AuthGuard>
+                            }
+                        />
+                        <Route
+                            path="/password-change"
+                            element={
+                                <AuthGuard>
+                                    <PasswordChangePage />
+                                </AuthGuard>
+                            }
+                        />
 
-                            </Route>
+                        {/* Customer routes */}
+                        <Route
+                            path="/koi"
+                            element={
+                                <RoleBasedGuard allowedRoles={['CUS']}>
+                                    <KoiFishPage />
+                                </RoleBasedGuard>
+                            }
+                        />
+                        <Route
+                            path="/add-koifish"
+                            element={
+                                <RoleBasedGuard allowedRoles={['CUS']}>
+                                    <AddKoiFishPage />
+                                </RoleBasedGuard>
+                            }
+                        />
+                        <Route
+                            path="/koi-details"
+                            element={
+                                <RoleBasedGuard allowedRoles={['CUS']}>
+                                    <KoiDetails />
+                                </RoleBasedGuard>
+                            }
+                        />
 
-                            {/* Public routes */}
-                            <Route path="/" element={<HomePage />} />
-                            <Route path="/vetshift" element={<VetShiftSchePage />} />
-                            <Route path="/vetsche" element={<ViewScheduleOfVetPage />} />
-                            <Route path="/service-pricing" element={<ServicePricingPage/>} />
-                            <Route path="/transport-pricing" element={<TransportationPricingPage/>} />
+                        {/* Manager routes */}
+                        <Route
+                            path="/vetshift"
+                            element={
+                                <RoleBasedGuard allowedRoles={['MAN']}>
+                                    <VetShiftSchePage />
+                                </RoleBasedGuard>
+                            }
+                        />
+                        <Route
+                            path="/vetsche"
+                            element={
+                                <RoleBasedGuard allowedRoles={['MAN']}>
+                                    <ViewScheduleOfVetPage />
+                                </RoleBasedGuard>
+                            }
+                        />
+                        <Route
+                            path="/service-pricing"
+                            element={
+                                <RoleBasedGuard allowedRoles={['MAN']}>
+                                    <ServicePricingPage />
+                                </RoleBasedGuard>
+                            }
+                        />
+                        <Route
+                            path="/transport-pricing"
+                            element={
+                                <RoleBasedGuard allowedRoles={['MAN']}>
+                                    <TransportationPricingPage />
+                                </RoleBasedGuard>
+                            }
+                        />
 
-                            <Route path="/password-change" element={<PasswordChangePage/>} />
-                            <Route path="/settings" element={<ProfilePage />} />
-                            <Route path="/koi" element={<KoiFishPage />} />
-                            <Route path="/add-koifish" element={<AddKoiFishPage />} />
-                            <Route path="/vet-details" element={<VetDetails />} />
-                            {/* Authenticated routes */}
-                            <Route element={<AuthGuard />}>
+                        <Route
+                            path="/manager"
+                            element={
+                                <RoleBasedGuard allowedRoles={['MAN']}>
+                                    <ManagerPage />
+                                </RoleBasedGuard>
+                            }
+                        />
+
+                        <Route
+                            path="/customer"
+                            element={
+                                <RoleBasedGuard allowedRoles={['MAN']}>
+                                    <CustomerAccountTable />
+                                </RoleBasedGuard>
+                            }
+                        />
+
+                        <Route
+                            path="/customer-details/:customerID"
+                            element={
+                                <RoleBasedGuard allowedRoles={['MAN']}>
+                                    <CustomerDetailPage />
+                                </RoleBasedGuard>
+                            }
+                        />
+
+                        <Route
+                            path="/feedback"
+                            element={
+                                <RoleBasedGuard allowedRoles={['MAN']}>
+                                    <FeedbackTable />
+                                </RoleBasedGuard>
+                            }
+                        />
+
+                        <Route
+                            path="/feedback-details"
+                            element={
+                                <RoleBasedGuard allowedRoles={['MAN']}>
+                                    <FeedbackDetailPageForManager />
+                                </RoleBasedGuard>
+                            }
+                        />
+
+                        <Route
+                            path="/veterinarian"
+                            element={
+                                <RoleBasedGuard allowedRoles={['VET']}>
+                                    <VeterinarianPage />
+                                </RoleBasedGuard>
+                            }
+                        />
 
 
-                            <Route path="/service-pricing" element={<ServicePricingPage />} />
-                            <Route path="/transport-pricing" element={<TransportationPricingPage />} />
-                            <Route path="/password-change" element={<PasswordChangePage />} />
-                            <Route path="/settings" element={<ProfilePage />} />
-                            <Route path="/koi" element={<KoiFishPage />} />
-                            <Route path="/add-koifish" element={<AddKoiFishPage />} />
+                        <Route
+                            path="/feedback/:id"
+                            element={
+                                <RoleBasedGuard allowedRoles={['VET']}>
+                                    <FeedbackDetailPage />
+                                </RoleBasedGuard>
+                            }
+                        />
 
-                                    {/* For customer */}
-                            <Route path="/my-appointment" element={<AppointmentCustomerHistoryTable />} />
-                            <Route path="/appointment/:id" element={<AppointmentDetailsPage />} /> {/* Đường dẫn cho trang chi tiết */}
+                        <Route
+                            path="/feedback/:id"
+                            element={
+                                <RoleBasedGuard allowedRoles={['MAN']}>
+                                    <FeedbackDetailPage />
+                                </RoleBasedGuard>
+                            }
+                        />
 
+                        <Route
+                            path="/appointment"
+                            element={
+                                <RoleBasedGuard allowedRoles={['MAN']}>
+                                    <AppointmentHistoryTable />
+                                </RoleBasedGuard>
+                            }
+                        />
 
-                                    {/* Manager page */}
-                            <Route path="/manager" element={<ManagerPage />} />
-
-                                        {/* View staff details: manager */ }
-                            <Route path="/feedback/:id" element={<FeedbackDetailPage />} /> {/* Trang chi tiết */ }
-
-                                        {/* View appointment details: manager */ }
-                            <Route path="/appointment" element={<AppointmentHistoryTable />} />
-                            <Route path="/appointment-details" element={<AppointmentHistoryDetailsPage />} /> {/* Đường dẫn cho trang chi tiết */ }
-
-                                        {/* View customer details page: manager */ }
-                                        {/* NOTE: IN PROCESS , ĐANG CÓ NHIỀU TRỤC TRẶC 😭 */ }
-                            <Route path="/customer" element={<CustomerAccountTable />} />
-                            <Route path="/customer-details/:customerID" element={<CustomerDetailPage />} /> {/* Đường dẫn cho trang chi tiết */ }
-
-                                        {/* View feedback details: manager */ }
-                            <Route path="/feedback" element={<FeedbackTable />} />
-                            <Route path="/feedback-details" element={<FeedbackDetailPageForManager />} /> {/* Đường dẫn cho trang chi tiết */ }
-
-                                        {/* Veterinarian page */ }
-                            <Route path="/veterinarian" element={<VeterinarianPage />} />
-
-                                        {/* View feedback details: veterinarian */ }
-                            {/* <Route path="/" element={<FeedbackTable />} /> */ }
-                            <Route path="/feedback/:id" element={<FeedbackDetailPage />} /> {/* Trang chi tiết */ }
+                        <Route
+                            path="/appointment-details"
+                            element={
+                                <RoleBasedGuard allowedRoles={['MAN']}>
+                                    <AppointmentHistoryDetailsPage />
+                                </RoleBasedGuard>
+                            }
+                        />
 
 
 
-                                {/* Role-based route */}
-                                <Route element={<RoleBasedGuard allowedRoles={['admin']} />}>
-                                    <Route path="/secret" element={<SecretPage />} />
-                                </Route>
-                            </Route>
-                        </Routes>
+                        <Route
+                            path="/my-appointment"
+                            element={
+                                <RoleBasedGuard allowedRoles={['CUS']}>
+                                    <AppointmentCustomerHistoryTable />
+                                </RoleBasedGuard>
+                            }
+                        />
+
+                        <Route
+                            path="/appointment/:id"
+                            element={
+                                <RoleBasedGuard allowedRoles={['CUS']}>
+                                    <AppointmentDetailsPage  />
+                                </RoleBasedGuard>
+                            }
+                        />
+
+                        {/* Trang chủ */}
+                        <Route path="/" element={<HomePage />} />
+                        <Route path="/no-access" element={<UnauthorizedPage />} />
+                    </Routes>
                     </Suspense>
-                </BrowserRouter>
+                </Router>
             </AuthProvider>
         </div>
     );

@@ -1,25 +1,25 @@
-import React, { useEffect } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+// RoleBasedGuard.tsx
+import { Navigate} from 'react-router-dom';
 import { useAuth } from '../hooks/context/AuthContext';
 
-const RoleBasedGuard: React.FC<{ allowedRoles: string[] }> = ({ allowedRoles }) => {
-    const { isLoggedIn } = useAuth();
-    const role = sessionStorage.getItem('role');
+interface RoleBasedGuardProps {
+    allowedRoles: string[]; // Các quyền được phép truy cập vào route này
+    children: JSX.Element;
+}
 
-    useEffect(() => {
-        if (!isLoggedIn || (allowedRoles.length && !allowedRoles.includes(role!))) {
-            alert('Bạn không có quyền truy cập trang này!'); // Alert message
-        }
-    }, [isLoggedIn, allowedRoles, role]);
+const RoleBasedGuard = ({ allowedRoles, children }: RoleBasedGuardProps) => {
+    const { user, loading } = useAuth();
 
-    if (!isLoggedIn || (allowedRoles.length && !allowedRoles.includes(role!))) {
-        return <Navigate to="/" replace />;
+    // Loading khi đang kiểm tra xác thực
+    if (loading) {
+        return <div>Loading...</div>;
     }
 
-    return <Outlet />;
+    // Kiểm tra nếu user không có quyền, chuyển hướng về trang không đủ quyền
+    if (!user || !allowedRoles.includes(user.roleId)) {
+        return <Navigate to="/no-access" replace />;
+    }
+    return children;
 };
 
-
-
 export default RoleBasedGuard;
-//RoleBasedGuard: Redirects users without the required roles to the home page and shows an alert if they try to access restricted areas.

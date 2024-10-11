@@ -1,19 +1,19 @@
 import React from 'react';
 import TableRow from './TableRow';
-import styles from './ServicePricing.module.css';
-import '../../styles/ServicePricing.css';
+import "../../styles/Schedule.css"
+import "../../styles/ServicePricing.css"
 interface TableComponentProps {
     columns: string[];
     columnHeaders: string[];
     data: any[];
     actions?: { label: string; icon: string; onClick: (id: number, fullName?: string) => void }[]; // Actions prop
-    isKoiFishPage?: boolean;
+    isKoiFishPage?: boolean; // Thêm prop
 }
 
 const TableComponent: React.FC<TableComponentProps> = ({ columns, columnHeaders, data, actions, isKoiFishPage }) => {
     return (
-        <div className="table-responsive ">
-            <table className="table-bordered table-small">
+        <div className="table-responsive">
+            <table className="table-bordered table-small table-striped">
                 <thead className="table-light">
                 <tr>
                     {columnHeaders.map((header, index) => (
@@ -29,7 +29,7 @@ const TableComponent: React.FC<TableComponentProps> = ({ columns, columnHeaders,
                         columns={columns}
                         rowData={item}
                         actions={actions} // Pass actions prop
-                        isKoiFishPage={isKoiFishPage}
+                        isKoiFishPage={isKoiFishPage} // Truyền prop vào đây
                     />
                 ))}
                 </tbody>

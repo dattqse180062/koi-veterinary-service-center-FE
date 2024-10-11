@@ -3,13 +3,14 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/layout/Sidebar';
 import TableComponent from '../components/table/TableComponent';
-
+import { useAuth } from "../hooks/context/AuthContext";
 const KoiFishPage: React.FC = () => {
     const [koiFishData, setKoiFishData] = useState<any[]>([]);
     const navigate = useNavigate();
-
+    const { user  } = useAuth(); // Use Auth context to get userId
+    const userId = user?.userId; // Access userId safely
     useEffect(() => {
-        const userId = sessionStorage.getItem('userId');
+
         if (!userId) {
             alert("Bạn chưa đăng nhập! Vui lòng đăng nhập!!!");
             navigate('/login');
@@ -27,7 +28,8 @@ const KoiFishPage: React.FC = () => {
     }, [navigate]);
 
     const handleKoiFishClick = (fishId: number) => {
-        navigate(`/koifish/${fishId}`);
+        console.log("Clicked fish ID:", fishId); // Thêm dòng này để kiểm tra
+        navigate(`/koi-details`, { state: { fishId } }); // Truyền fishId vào state
     };
 
     return (
@@ -41,7 +43,7 @@ const KoiFishPage: React.FC = () => {
                         </h5>
                         <button
                             className="btn btn-primary"
-                            onClick={() => navigate(`/add-koifish?id=${sessionStorage.getItem('userId')}`)}
+                            onClick={() => navigate(`/add-koifish?id=${userId}`)}
                         >
                             Add Koi Fish
                         </button>
@@ -52,6 +54,7 @@ const KoiFishPage: React.FC = () => {
                             columnHeaders={['Fish ID', 'Species', 'Age', 'Gender', 'Color', 'Size (cm)']}
                             data={koiFishData}
                             actions={[{ label: 'View Details', icon: 'fas fa-eye', onClick: handleKoiFishClick }]} // Action for Koi Fish
+                            isKoiFishPage={true} // Thêm prop này
                         />
                     </div>
                 </div>

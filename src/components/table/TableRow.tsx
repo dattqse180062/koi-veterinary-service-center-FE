@@ -9,12 +9,12 @@ interface Action {
 interface TableRowProps {
     columns: string[];
     rowData: any;
-    actions?: Action[]; // Action props as an optional array
-    isKoiFishPage?: boolean;
+    actions?: Action[]; // Hành động
+    isKoiFishPage?: boolean; // Thêm prop để xác định trang
 }
 
-const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isKoiFishPage  }) => {
-    const fullName = `${rowData.first_name || rowData.name} ${rowData.last_name || ''}`.trim(); // Construct full name
+const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isKoiFishPage }) => {
+    const fullName = `${rowData.first_name || rowData.name} ${rowData.last_name || ''}`.trim(); // Tạo fullName
 
     return (
         <tr>
@@ -35,7 +35,7 @@ const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isK
                 </td>
             ))}
             <td>
-                {actions.length > 0 ? ( // Check if there are actions
+                {actions.length > 0 ? (
                     <div className="dropdown ms-auto">
                         <i className="fas fa-ellipsis-vertical" data-bs-toggle="dropdown" aria-expanded="false"></i>
                         <ul className="dropdown-menu dropdown-menu-end">
@@ -51,10 +51,10 @@ const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isK
                     </div>
                 ) : (
                     <button
-                        onClick={() => console.log("View Details for Koi Fish")}
+                        onClick={() => console.log("View ")}
                         className="btn btn-primary btn-sm"
                     >
-                        View Details
+                        View
                     </button>
                 )}
             </td>

@@ -5,7 +5,7 @@ import {useAuth} from '../../hooks/context/AuthContext'; // Import your custom h
 import '../../styles/Navbar.css'; // Import the CSS file
 
 function Navbar() {
-    const {userId, logout } = useAuth(); // Get user and logout function from the custom hook
+    const {user, logout } = useAuth(); // Get user and logout function from the custom hook
     const [bgColorClass, setBgColorClass] = useState('transparent');
     const [linkColorClass, setLinkColorClass] = useState('text-white');
     const [buttonStyleClass, setButtonStyleClass] = useState('btn-outline-warning');
@@ -68,7 +68,7 @@ function Navbar() {
                 </div>
 
                 <div className="d-flex align-items-center" style={{ gap: '12px' }}>
-                    {!userId ? ( // Check if the user object exists
+                    {!user ? ( // Check if the user object exists
                         <>
                             <Link to="/login">
                                 <button className={`btn btn-custom ${buttonStyleClass}`}>Log In</button>

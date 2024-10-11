@@ -1,49 +1,22 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+// context/AuthContext.tsx
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 
-interface AuthContextType {
-    isLoggedIn: boolean;
-    login: (userId: string) => void;
-    logout: () => void;
-    userId?: string; // Optionally store userId if needed
+interface User {
+    roleId: string;
+    userId: number;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+interface AuthContextProps {
+    isAuthenticated: boolean;
+    user: User | null;
+    loading: boolean;
+    login: (token: string) => void;
+    logout: () => void;
+}
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [userId, setUserId] = useState<string | undefined>(undefined);
-
-    useEffect(() => {
-        const token = sessionStorage.getItem('token');
-        const storedUserId = sessionStorage.getItem('userId');
-        if (token && storedUserId) {
-            setIsLoggedIn(true);
-            setUserId(storedUserId);
-
-        }
-    }, []);
-
-    const login = (userId: string) => {
-        setIsLoggedIn(true);
-        setUserId(userId);
-    };
-
-    const logout = () => {
-        sessionStorage.removeItem('token');
-        sessionStorage.removeItem('userId');
-        sessionStorage.removeItem('role');
-        setIsLoggedIn(false);
-        setUserId(undefined);
-        sessionStorage.clear();
-
-    };
-
-    return (
-        <AuthContext.Provider value={{ isLoggedIn, login, logout, userId }}>
-            {children}
-        </AuthContext.Provider>
-    );
-};
+const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const useAuth = () => {
     const context = useContext(AuthContext);
@@ -51,4 +24,54 @@ export const useAuth = () => {
         throw new Error('useAuth must be used within an AuthProvider');
     }
     return context;
+};
+
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState(true); // Thêm trạng thái loading để quản lý quá trình xác thực
+
+    // Lấy JWT từ localStorage và kiểm tra khi khởi động app
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const decodedToken: any = jwtDecode(token);
+                setIsAuthenticated(true);
+                setUser({ userId: decodedToken.userId, roleId: decodedToken.scope });
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            } catch (error) {
+                console.error("Invalid token:", error);
+                logout();
+            }
+        }
+        setLoading(false); // Khi quá trình kiểm tra token hoàn tất
+    }, []);
+
+    // Đăng nhập: lưu token vào localStorage và cập nhật trạng thái người dùng
+    const login = (token: string) => {
+        localStorage.setItem('token', token);
+        const decodedToken: any = jwtDecode(token);
+        console.log("Decoded Token:", decodedToken);
+        setIsAuthenticated(true);
+
+        setUser({ roleId: decodedToken.scope, userId: decodedToken.userId });
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+    };
+
+    // Đăng xuất: xóa token khỏi localStorage và reset trạng thái người dùng
+    const logout = () => {
+        localStorage.removeItem('token');
+        setIsAuthenticated(false);
+        setUser(null);
+        delete axios.defaults.headers.common['Authorization'];
+    };
+    console.log(isAuthenticated)
+    return (
+
+        <AuthContext.Provider value={{ isAuthenticated, user, loading, login, logout }}>
+            {children}
+        </AuthContext.Provider>
+    );
 };

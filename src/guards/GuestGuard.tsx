@@ -1,15 +1,18 @@
+// components/GuestGuard.tsx
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/context/AuthContext';
 
-const GuestGuard = () => {
-    const { isLoggedIn } = useAuth();
+const GuestGuard: React.FC = () => {
+    const { isAuthenticated } = useAuth(); // Kiểm tra trạng thái đăng nhập
 
-    if (isLoggedIn) {
-        return <Navigate to="/" replace />; // Redirect to home if logged in
+    // Nếu người dùng đã đăng nhập, chuyển hướng họ đến trang chủ
+    if (isAuthenticated) {
+        return <Navigate to="/" replace />;
     }
+
+    // Nếu người dùng chưa đăng nhập, hiển thị các route con
     return <Outlet />;
 };
 
 export default GuestGuard;
-//GuestGuard: Redirects logged-in users to the home page if they try to access the login page.
