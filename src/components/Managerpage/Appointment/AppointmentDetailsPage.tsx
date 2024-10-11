@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, replace } from 'react-router-dom';
 import axios from 'axios';
 
 interface Order {
@@ -38,6 +38,7 @@ const AppointmentHistoryDetailsPage: React.FC = () => {
 
   const handleGoBack = () => {
     navigate(-1); // Điều hướng quay lại trang trước
+    
   };
 
   return (
