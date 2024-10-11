@@ -1,0 +1,50 @@
+.service-card {
+    transition: transform 0.2s ease, opacity 0.2s ease; /* Smooth transition for scaling and opacity */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transform: scale(0.9); /* Default scale down */
+    opacity: 0.8; /* Default opacity */
+}
+
+.service-card:hover {
+    transform: scale(1.05); /* Scale up the card on hover */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Add a subtle shadow effect */
+    opacity: 1; /* Full opacity on hover */
+}
+
+.service-section {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    min-height: 100vh; /* Full viewport height */
+    background-color: #f8f9fa; /* Background color */
+}
+
+.vet-card{
+    transition: transform 0.2s ease, opacity 0.2s ease; /* Smooth transition for scaling and opacity */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transform: scale(0.95); /* Default scale down */
+    opacity: 0.8; /* Default opacity */
+}
+
+.vet-card:hover {
+    transform: scale(1.05); /* Scale up the card on hover */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Add a subtle shadow effect */
+    opacity: 1.05; /* Full opacity on hover */
+}
+
+.prev-next-button {
+    background-color: #02033B; /* Bootstrap primary color */
+    color: white;
+    border: none;
+    border-radius: 20px; /* Rounded corners */
+    padding: 7px 16px; /* Padding for button */
+    font-size: 16px; /* Font size */
+    transition: background-color 0.3s; /* Smooth transition */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+    display: flex; /* Flexbox for alignment */
+    align-items: center; /* Center icon and text vertically */
+}
+
+.prev-next-button:hover {
+    background-color: #070870; /* Darker shade on hover */
+}

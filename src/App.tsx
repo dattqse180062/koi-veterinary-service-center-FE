@@ -7,6 +7,8 @@ import AuthGuard from '../src/guards/AuthGuard';
 import GuestGuard from '../src/guards/GuestGuard';
 import RoleBasedGuard from '../src/guards/RoleBasedGuard';
 import UnauthorizedPage from "./pages/UnauthorizedPage";
+import ServiceSelectionPage from "./pages/Appointment/ServiceSelectionPage";
+import VeterinarianSelectionPage from "./pages/Appointment/VeterinarianSelectionPage";
 
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
 const DangNhapNguoiDung = lazy(() => import("./pages/LoginPage"));
@@ -106,6 +108,23 @@ function App() {
                                 <RoleBasedGuard allowedRoles={['MAN']}>
                                     <TransportationPricingPage />
                                 </RoleBasedGuard>
+                            }
+                        />
+
+                        <Route
+                            path="/appointment/service-selection"
+                            element={
+                                <AuthGuard>
+                                    <ServiceSelectionPage />
+                                </AuthGuard>
+                            }
+                        />
+                        <Route
+                            path="/appointment/vet-selection"
+                            element={
+                                <AuthGuard>
+                                    <VeterinarianSelectionPage />
+                                </AuthGuard>
                             }
                         />
 

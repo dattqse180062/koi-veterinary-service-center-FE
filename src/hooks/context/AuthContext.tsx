@@ -67,7 +67,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setUser(null);
         delete axios.defaults.headers.common['Authorization'];
     };
-    console.log(isAuthenticated)
+    // console.log(isAuthenticated)
     return (
 
         <AuthContext.Provider value={{ isAuthenticated, user, loading, login, logout }}>

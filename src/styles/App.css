@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Chiều cao 100% của viewport */
 }
 
 @import 'Font.css';
@@ -43,6 +46,8 @@
   position: relative; /* Ensure that child elements can be absolutely positioned */
   min-height: 100vh; /* Make sure the App component covers at least the viewport height */
 }
+
+
 
 .background {
   position: absolute;
@@ -90,7 +95,7 @@ input::placeholder {
 }
 
 .card-title {
-  width: 200px;
+  width: 220px;
   margin: 25px 0px;
   color: #02033B;
   font-weight: bold;
@@ -100,7 +105,7 @@ input::placeholder {
 }
 
 .card-title-service{
-  margin:25px 50px;
+  margin:25px 35px;
   height: 57.6px;
 }
 
