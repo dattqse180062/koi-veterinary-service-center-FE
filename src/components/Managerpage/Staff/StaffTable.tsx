@@ -84,7 +84,7 @@ const StaffTable: React.FC = () => {
   };
 
   return (
-    <div className="p-3">
+    <div className="p-3" style={{width:'80%'}}>
       <h5 style={{ paddingTop: '65px' }}>Staff Management</h5>
 
       <div className="d-flex mb-3">
