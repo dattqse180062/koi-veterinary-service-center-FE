@@ -5,27 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dfa0a0f8-c0d0-4cf7-b8ea-c32e2affc709" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/VetDetails.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/authService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/authService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Pricing/PricingManagementTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Pricing/PricingManagementTable.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ServicePriceManagement.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/schedule/DoctorSchedule.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/schedule/DoctorSchedule.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/vetApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/vetApi.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layout/Sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/Sidebar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/table/TableComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/table/TableComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/context/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/context/AuthContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/HomePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/HomePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/LoginPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/table/TableRow.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/table/TableRow.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/KoiFishPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/KoiFishPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ProfilePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/ServicePricingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ServicePricingPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/VetShiftSchePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/VetShiftSchePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/AppointmentCustomerTable.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/AppointmentCustomerTable.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/Pricing.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/Pricing.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/App.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/styles/Profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/Profile.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/Schedule.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/Schedule.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/ServicePricing.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/ServicePricing.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,20 +54,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Merging dev&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Admin\\Desktop\\reactjs\\test-fe\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Merging dev",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "C:\\Users\\Admin\\Desktop\\reactjs\\test-fe\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Admin\Desktop\reactjs\test-fe\src\pages" />
@@ -114,7 +108,7 @@
       <workItem from="1728441276673" duration="299000" />
       <workItem from="1728444258887" duration="1906000" />
       <workItem from="1728475660518" duration="300000" />
-      <workItem from="1728624215836" duration="6736000" />
+      <workItem from="1728624215836" duration="8343000" />
     </task>
     <servers />
   </component>

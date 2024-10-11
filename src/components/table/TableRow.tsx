@@ -1,13 +1,20 @@
 import React from 'react';
 
+interface Action {
+    label: string;
+    onClick: (id: number, fullName?: string) => void; // Updated to accept fullName as an optional parameter
+    icon?: string; // Optional icon property for actions
+}
+
 interface TableRowProps {
     columns: string[];
     rowData: any;
-    onButtonClick: (id: number, fullName: string) => void;
+    actions?: Action[]; // Action props as an optional array
+    isKoiFishPage?: boolean;
 }
 
-const TableRow: React.FC<TableRowProps> = ({ columns, rowData, onButtonClick }) => {
-    const fullName = `${rowData.first_name} ${rowData.last_name}`; // Construct full name
+const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isKoiFishPage  }) => {
+    const fullName = `${rowData.first_name || rowData.name} ${rowData.last_name || ''}`.trim(); // Construct full name
 
     return (
         <tr>
@@ -28,12 +35,28 @@ const TableRow: React.FC<TableRowProps> = ({ columns, rowData, onButtonClick }) 
                 </td>
             ))}
             <td>
-                <button
-                    onClick={() => onButtonClick(rowData.user_id, fullName)}// Always pass fullName
-                    className="btn btn-primary btn-sm"
-                >
-                    View
-                </button>
+                {actions.length > 0 ? ( // Check if there are actions
+                    <div className="dropdown ms-auto">
+                        <i className="fas fa-ellipsis-vertical" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                        <ul className="dropdown-menu dropdown-menu-end">
+                            {actions.map((action, index) => (
+                                <li key={index}>
+                                    <span className="dropdown-item" onClick={() => action.onClick(isKoiFishPage ? rowData.fish_id : rowData.user_id, fullName)}>
+                                        {action.icon && <i className={`${action.icon} mx-2`}></i>}
+                                        {action.label}
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ) : (
+                    <button
+                        onClick={() => console.log("View Details for Koi Fish")}
+                        className="btn btn-primary btn-sm"
+                    >
+                        View Details
+                    </button>
+                )}
             </td>
         </tr>
     );
