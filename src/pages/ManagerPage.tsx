@@ -1,4 +1,3 @@
-import React from "react";
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SideMenu from "../components/layout/LeftSideBarForManager";
@@ -13,7 +12,7 @@ const ManagerPage = () => {
 
     const navigate = useNavigate();
 
-    const [activeMenu, setActiveMenu] = useState<string>('shift');
+    const [activeMenu, setActiveMenu] = useState<string>('history');
 
     const handleMenuClick = (menu: string): void => {
         // setActiveMenu(menu);
@@ -38,17 +37,16 @@ const ManagerPage = () => {
         }
 
         // Kiểm tra role chỉ sau khi xác thực token
-        if (role !== 'manager') {
-            alert('Bạn không có quyền truy cập trang này!'); // Hiển thị alert
-            setLoading(false);
-            navigate('/'); // Chuyển hướng sau khi người dùng đã thấy alert
-            return;
-        }
+        // if (role !== 'manager') {
+        //     alert('Bạn không có quyền truy cập trang này!'); // Hiển thị alert
+        //     setLoading(false);
+        //     navigate('/'); // Chuyển hướng sau khi người dùng đã thấy alert
+        //     return;
+        // }
 
         // Nếu đến đây có nghĩa là người dùng là manager
         setLoading(false);
     }, [navigate]);
-
     if (loading) return <div>Loading...</div>;
 
     return (
@@ -91,7 +89,6 @@ const ManagerPage = () => {
                 {activeMenu === 'price' && (
                     <>
                         <h1>In process</h1>
-
                     </>
                 )}
 
