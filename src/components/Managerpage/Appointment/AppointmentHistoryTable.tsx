@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, replace, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 // Định nghĩa interface cho Order
@@ -38,8 +38,10 @@ const AppointmentHistoryTable: React.FC = () => {
 
   const handleViewDetail = (appointmentID: string) => {
     // setSelectedOrder(order);
-    // setShowDetailModal(true); // Mở modal thông qua state
+    // // setShowDetailModal(true); // Mở modal thông qua state
+    // replace(`/appointment-details`, { state: { appointmentID } }); // Điều hướng tới trang chi tiết
     navigate(`/appointment-details`, {state: {appointmentID}}); // Điều hướng tới trang chi tiết
+    // <Navigate to="/appointment-details"  replace/>
   };
 
   const handleOpenDeleteModal = (order: Order) => {
