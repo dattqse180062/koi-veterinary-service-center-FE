@@ -13,7 +13,7 @@
 
 /* Optional: Add a border to the table cells for better visibility */
 .table-small th, .table-small td {
-    border: 1px solid #dee2e6; /* Bootstrap default border color */
+    border: 1px solid #c2c5cd; /* Bootstrap default border color */
 }
 
 .table-small td {

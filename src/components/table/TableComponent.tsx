@@ -1,6 +1,7 @@
 import React from 'react';
 import TableRow from './TableRow';
-
+import styles from './ServicePricing.module.css';
+import '../../styles/ServicePricing.css';
 interface TableComponentProps {
     columns: string[];
     columnHeaders: string[]; // Thêm thuộc tính mới để nhận tiêu đề cột tùy chỉnh
@@ -12,8 +13,8 @@ interface TableComponentProps {
 
 const TableComponent: React.FC<TableComponentProps> = ({ columns, columnHeaders, data, onRowButtonClick }) => {
     return (
-        <div className="table-responsive">
-            <table className="table table-bordered table-small table-striped">
+        <div className="table-responsive ">
+            <table className="table-bordered table-small">
                 <thead className="table-light">
                 <tr>
                     {columnHeaders.map((header, index) => (

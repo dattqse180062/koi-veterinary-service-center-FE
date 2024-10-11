@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { fetchServices, updateServicePrice } from '../api/serviceApi';
 import PricingManagementTable from '../components/Pricing/PricingManagementTable';
 import Sidebar from "../components/layout/Sidebar";
+import "../styles/Pricing.css"
 
 const ServicePricingPage: React.FC = () => {
     const [services, setServices] = useState<any[]>([]);

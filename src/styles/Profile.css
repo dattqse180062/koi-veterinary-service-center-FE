@@ -3,10 +3,7 @@
     justify-content: space-around;
     align-items: center;
     height: 100vh;
-    padding: 120px; /* Reduced padding */
-    gap: 40px; /* Add gap between sections */
-
-
+    padding: 50px;
 }
 
 .image-section {
@@ -15,22 +12,19 @@
 
     flex-direction: column;
 
+
 }
 
 .image-background {
-    width: 300px; /* Set width to 300px */
+    width: 300px;  /* Set width to 300px */
     height: 300px; /* Set height to 300px */
-    background-color: #edb664; /* Orange background */
-    border-radius: 20px;
-
+    background-color: #edb664 ;/* Orange background */
+    border-radius: 8px;
     box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.25); /* Shadow effect */
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden; /* Ensures the image stays within the container */
-
-    margin-bottom: 10px;
-
 }
 
 .uploaded-image {
@@ -56,7 +50,9 @@ input[type="file"] {
 }
 
 .upload-btn {
+
     background-color: #edb664;
+
     padding: 6px;
 
     border-radius: 10px;
@@ -67,19 +63,12 @@ input[type="file"] {
 }
 
 .form-section {
-
-    flex: 1;
-    max-width: 450px;
-    background-color: white; /* Optional: Add a background color for better visibility */
-    padding: 20px; /* Add some padding to the form */
-    border-radius: 20px; /* Optional: Add rounded corners */
-    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.25); /* Add shadow for a subtle 3D effect */
-    margin-top: 40px;
+    flex:1;
+    max-width: 400px;
 }
 
 .profile-form {
-    margin-top: 40px;
-
+margin-top: 40px;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -94,7 +83,6 @@ input[type="file"] {
 
 .name-row .form-group {
     flex: 1; /* Tất cả các ô nhập sẽ có chiều rộng bằng nhau */
-
 }
 
 .form-group {
@@ -105,11 +93,10 @@ input[type="file"] {
 }
 
 .input-field {
-    padding: 6px; /* Reduce padding to make the fields smaller */
-    border: 1px solid #848484; /* Make the border thinner */
+    padding: 3px;
+    border: 2px solid #848484;
     border-radius: 5px;
-    max-height: 40px; /* Reduce max-height for smaller fields */
-    font-size: 1rem; /* Adjust this value to set the desired font size */
+    max-height: 60px;
 
 }
 
@@ -137,7 +124,7 @@ input[type="file"] {
     color: white;
     text-decoration: none; /* Remove underline */
     padding: 5px 10px;
-    border-radius: 9px; /* Optional: Add some rounded corners */
+    border-radius:9px; /* Optional: Add some rounded corners */
     border: none; /* Remove border */
     cursor: pointer; /* Pointer cursor on hover */
     font-size: 0.88rem;
@@ -173,7 +160,6 @@ input[type="file"] {
     color: white;
     font-size: 14px; /* Optional: Change font size */
 }
-
 .address-row {
     display: flex; /* Sử dụng flexbox để sắp xếp các trường nhập */
     justify-content: space-between; /* Căn chỉnh khoảng cách giữa các ô nhập */
@@ -182,40 +168,5 @@ input[type="file"] {
 
 .address-row .form-group {
     flex: 1; /* Tất cả các ô nhập sẽ có chiều rộng bằng nhau */
+
 }
-
-/* Media Queries for responsive design */
-@media (max-width: 1050px) {
-    .profile-container {
-        flex-direction: column; /* Stack items vertically */
-        align-items: center; /* Center items horizontally */
-        padding: 50px; /* Reduce padding on smaller screens */
-        margin-top: 5rem;
-
-    }
-
-    .image-section,
-    .form-section {
-        margin-top: 0px;
-        width: 100%; /* Make sections full width on smaller screens */
-        margin-bottom: 20px; /* Add space between sections */
-    }
-
-    .image-section {
-        max-width: 300px; /* Optional: Set a max width for image section */
-    }
-}
-.error-register {
-    color: red; /* Red text color */
-    font-weight: bold; /* Make the text bold */
-    font-style: italic; /* Make the text italic */
-    margin-top: 5px; /* Add some space above the error message */
-}
-
-.success-change {
-    color: green; /* Red text color */
-    font-weight: bold; /* Make the text bold */
-    font-style: italic; /* Make the text italic */
-    margin-top: 5px; /* Add some space above the error message */
-}
-
