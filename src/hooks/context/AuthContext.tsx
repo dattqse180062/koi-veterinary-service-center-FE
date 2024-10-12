@@ -37,9 +37,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         if (token) {
             try {
                 const decodedToken: any = jwtDecode(token);
-                setIsAuthenticated(true);
-                setUser({ userId: decodedToken.userId, roleId: decodedToken.scope });
-                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                const currentTime = Date.now() / 1000;
+                if (decodedToken.exp && decodedToken.exp < currentTime) {
+                    logout(); // Token expired, log out the user
+                } else {
+                    setIsAuthenticated(true);
+                    setUser({userId: decodedToken.userId, roleId: decodedToken.role});
+                    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                }
             } catch (error) {
                 console.error("Invalid token:", error);
                 logout();
@@ -52,12 +57,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const login = (token: string) => {
         localStorage.setItem('token', token);
         const decodedToken: any = jwtDecode(token);
+        const currentTime = Date.now() / 1000;
         console.log("Decoded Token:", decodedToken);
-        setIsAuthenticated(true);
-
-        setUser({ roleId: decodedToken.scope, userId: decodedToken.userId });
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
+        if (decodedToken.exp && decodedToken.exp < currentTime) {
+            logout(); // Token expired, log out the user
+        } else {
+            setIsAuthenticated(true);
+            setUser({roleId: decodedToken.role, userId: decodedToken.userId});
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        }
     };
 
     // Đăng xuất: xóa token khỏi localStorage và reset trạng thái người dùng
@@ -66,6 +74,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setIsAuthenticated(false);
         setUser(null);
         delete axios.defaults.headers.common['Authorization'];
+        localStorage.clear();
     };
     // console.log(isAuthenticated)
     return (

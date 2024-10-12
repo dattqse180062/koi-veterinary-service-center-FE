@@ -1,5 +1,8 @@
-import { createStore, combineReducers } from 'redux';
-import { rootReducer  } from './reducers';
+// store.ts
+import { createStore } from 'redux';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // Sử dụng local storage
+import { rootReducer } from './reducers';
 
 declare global {
     interface Window {
@@ -7,9 +10,22 @@ declare global {
     }
 }
 
+// Cấu hình persist cho Redux
+const persistConfig = {
+    key: 'root',
+    storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+// Tạo store với reducer đã được persist
 const store = createStore(
-    rootReducer,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-    // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() // Cho phép sử dụng Redux DevTools nếu có
+    persistedReducer,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-export default store;
+// Tạo persistor
+const persistor = persistStore(store);
+
+// Export store và persistor
+export { store, persistor };

@@ -30,7 +30,7 @@ const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isK
                             {fullName}
                         </div>
                     ) : (
-                        rowData[column] !== null ? rowData[column] : 'N/A'
+                        !rowData[column] ? 'N/A' : rowData[column]
                     )}
                 </td>
             ))}

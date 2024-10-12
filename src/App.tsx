@@ -9,6 +9,8 @@ import RoleBasedGuard from '../src/guards/RoleBasedGuard';
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 import ServiceSelectionPage from "./pages/Appointment/ServiceSelectionPage";
 import VeterinarianSelectionPage from "./pages/Appointment/VeterinarianSelectionPage";
+import SlotDateSelectionPage from "./pages/Appointment/SlotDateSelectionPage";
+import InformationPage from "./pages/Appointment/InformationPage";
 
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
 const DangNhapNguoiDung = lazy(() => import("./pages/LoginPage"));
@@ -124,6 +126,24 @@ function App() {
                             element={
                                 <AuthGuard>
                                     <VeterinarianSelectionPage />
+                                </AuthGuard>
+                            }
+                        />
+
+                        <Route
+                            path="/appointment/slot-date-selection"
+                            element={
+                                <AuthGuard>
+                                    <SlotDateSelectionPage />
+                                </AuthGuard>
+                            }
+                        />
+
+                        <Route
+                            path="/appointment/fill-information"
+                            element={
+                                <AuthGuard>
+                                    <InformationPage />
                                 </AuthGuard>
                             }
                         />

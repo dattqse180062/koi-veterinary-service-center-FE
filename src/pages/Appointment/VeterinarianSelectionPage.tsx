@@ -4,7 +4,7 @@ import { Rating } from '@mui/material';
 import {setDoctor} from "../../store/actions";
 import { useDispatch } from 'react-redux';
 import {useNavigate} from "react-router-dom";
-
+import { useSelector } from 'react-redux';
 interface Doctor {
     user_id: number;
     first_name: string;
@@ -23,6 +23,17 @@ const ChooseVeterinarianPage: React.FC = () => {
     const dispatch = useDispatch(); // Initialize useDispatch
     const navigate = useNavigate();
     // Function to fetch doctors from the API
+
+
+    const service = useSelector((state: any) => state.service);
+
+    useEffect(() => {
+        // Nếu service là null, điều hướng về trang chọn service
+        if (!service) {
+            navigate('/appointment/service-selection');
+            alert("You should choose service first!!!")
+        }
+    }, [service, navigate]);
     const fetchDoctors = async () => {
         try {
             const response = await axios.get('http://localhost:8080/api/v1/users/veterinarians');
@@ -31,7 +42,7 @@ const ChooseVeterinarianPage: React.FC = () => {
 
             // Fetch feedback for each doctor
             response.data.forEach(async (doctor: Doctor) => {
-                const feedbackResponse = await axios.get(`http://localhost:8080/api/v1/users/veterinarian/${doctor.user_id}/feedbacks`);
+                const feedbackResponse = await axios.get(`http://localhost:8080/api/v1/feedbacks/veterinarian/${doctor.user_id}`);
                 const feedbacks: Feedback[] = feedbackResponse.data;
 
                 // Calculate average rating
@@ -73,17 +84,18 @@ const ChooseVeterinarianPage: React.FC = () => {
             image: doctor.avatar,
 
         };
+
         dispatch(setDoctor(doctorData)); // Dispatch action to set service_id
         console.log('Selected user_id:', doctor);
         // Navigate to FishSelectionPage
-        navigate('/appointment/slot-selection'); // Replace with react-router navigate if needed
+        navigate('/appointment/slot-date-selection'); // Replace with react-router navigate if needed
     };
 
     const handleSkipClick = () => {
         dispatch(setDoctor(null)); // Dispatch null for user_id
 
         // Navigate to FishSelectionPage or any other page you want
-        navigate('/appointment/slot-selection');
+        navigate('/appointment/slot-date-selection');
 
     };
 
