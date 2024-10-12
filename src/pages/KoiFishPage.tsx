@@ -17,14 +17,16 @@ const KoiFishPage: React.FC = () => {
             return;
         }
 
-        axios.get('https://66fa1da4afc569e13a9a726b.mockapi.io/api/koi')
+        axios.get('http://localhost:8080/api/v1/fishes')
             .then(response => {
-                const filteredData = response.data.filter((fish: { user_id: number }) => fish.user_id === Number(userId));
+                const filteredData = response.data.filter((fish: { customer_id: number }) => fish.customer_id === Number(userId));
                 setKoiFishData(filteredData);
+                console.log(filteredData)
             })
             .catch(error => {
                 console.error('Error fetching Koi Fish data:', error);
             });
+
     }, [navigate]);
 
     const handleKoiFishClick = (fishId: number) => {

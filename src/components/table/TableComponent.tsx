@@ -12,7 +12,7 @@ interface TableComponentProps {
 const TableComponent: React.FC<TableComponentProps> = ({ columns, columnHeaders, data, actions, isKoiFishPage }) => {
     return (
         <div className="table-responsive">
-            <table className="table table-bordered table-small table-striped">
+            <table className="table table-bordered table-small table-small-auto table-striped">
                 <thead className="table-light">
                 <tr>
                     {columnHeaders.map((header, index) => (

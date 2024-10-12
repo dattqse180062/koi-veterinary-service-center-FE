@@ -1,7 +1,7 @@
 // api/koiApi.ts
 import axios from 'axios';
 
-const BASE_URL = 'https://66fa1da4afc569e13a9a726b.mockapi.io/api/koi';
+const BASE_URL = 'http://localhost:8080/api/v1/fishes';
 
 export const getKoiById = async (id: string) => {
     const response = await axios.get(`${BASE_URL}/${id}`);

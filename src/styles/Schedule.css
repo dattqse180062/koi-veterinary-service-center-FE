@@ -16,7 +16,9 @@
     border: 1px solid #dee2e6;
 }
 
-
+.table-small-auto th, .table-small-auto td {
+    height: auto; /* Override height for this specific table */
+}
 
 .table-small td {
 
