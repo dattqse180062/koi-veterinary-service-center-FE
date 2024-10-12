@@ -3,7 +3,7 @@ import Sidebar from '../components/layout/Sidebar';
 import TableComponent from '../components/table/TableComponent';
 import { useNavigate } from 'react-router-dom';
 import { fetchVets } from '../api/vetApi';
-
+import Pagination from '@mui/material/Pagination';
 interface Vet {
     user_id: number;
     fullName: string;
@@ -18,6 +18,8 @@ const VetShiftSchePage: React.FC = () => {
     const columns = ['user_id', 'fullName', 'username', 'email', 'phone_number', 'address'];
     const columnHeaders = ['Vet ID', 'Full Name', 'Username', 'Email', 'Phone Number', 'Address'];
     const navigate = useNavigate();
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [itemsPerPage] = useState<number>(8); // Set the number of items per page
 
     useEffect(() => {
         const getVets = async () => {
@@ -58,14 +60,22 @@ const VetShiftSchePage: React.FC = () => {
             onClick: handleVetDetailsClick,
         },
     ];
+// Calculate total pages
+    const indexOfLastAddress = currentPage * itemsPerPage;
+    const indexOfFirstAddress = indexOfLastAddress - itemsPerPage;
+    const currentVets = vets.slice(indexOfFirstAddress, indexOfLastAddress)
 
+    // Handle page change
+    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setCurrentPage(value);
+    };
     return (
         <div className="d-flex flex-grow-1">
             <Sidebar />
             <div className="container" style={{ marginTop: "6rem" }}>
                 <div className="card" style={{ width: '100%' }}>
                     <div className="card-header">
-                        <h5 className="text-start" style={{ fontWeight: "bold", color: "#02033B", fontSize: "2rem", padding: "1.2rem" }}>
+                        <h5 className="text-start" style={{ fontWeight: "bold", color: "#02033B", fontSize: "2.5rem", padding: "1.2rem" }}>
                             Veterinarians List
                         </h5>
                     </div>
@@ -73,9 +83,16 @@ const VetShiftSchePage: React.FC = () => {
                         <TableComponent
                             columns={columns}
                             columnHeaders={columnHeaders}
-                            data={vets}
+                            data={currentVets}
                             actions={actions} // Actions for Veterinarians
                             isKoiFishPage={false}
+                        />
+                        <Pagination
+                            count={Math.ceil(vets.length / itemsPerPage)} // Total pages
+                            shape="rounded"
+                            page={currentPage} // Current page
+                            onChange={handlePageChange} // Page change handler
+                            style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }} // Center the pagination
                         />
                     </div>
                 </div>
