@@ -8,9 +8,10 @@ interface TableComponentProps {
     data: any[];
     actions?: { label: string; icon: string; onClick: (id: number, fullName?: string) => void }[]; // Actions prop
     isKoiFishPage?: boolean; // Thêm prop
+    isAddressPage?: boolean;
 }
 
-const TableComponent: React.FC<TableComponentProps> = ({ columns, columnHeaders, data, actions, isKoiFishPage }) => {
+const TableComponent: React.FC<TableComponentProps> = ({ columns, columnHeaders, data, actions, isKoiFishPage, isAddressPage }) => {
     return (
         <div className="table-responsive">
             <table className="table-bordered table-small table-striped">
@@ -30,6 +31,7 @@ const TableComponent: React.FC<TableComponentProps> = ({ columns, columnHeaders,
                         rowData={item}
                         actions={actions} // Pass actions prop
                         isKoiFishPage={isKoiFishPage} // Truyền prop vào đây
+                        isAddressPage={isAddressPage}
                     />
                 ))}
                 </tbody>

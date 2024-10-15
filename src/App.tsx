@@ -21,6 +21,9 @@ import CustomerAccountTable from './components/Managerpage/Customer/CustomerTabl
 import CustomerDetailPage from './components/Managerpage/Customer/CustomerDetailsPage';
 import FeedbackTable from './components/Managerpage/FeebackAndRating/FeedbackTable';
 import FeedbackDetailPageForManager from './components/Managerpage/FeebackAndRating/FeedbackDetailsForManager';
+import AddressManagementPage from "./pages/AddressManagementPage";
+import AddressDetails from "./pages/AddressDetails";
+import AddAddressPage from "./pages/AddAddressPage";
 
 
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
@@ -90,6 +93,32 @@ function App() {
                             element={
                                 <RoleBasedGuard allowedRoles={['CUS']}>
                                     <KoiDetails />
+                                </RoleBasedGuard>
+                            }
+                        />
+
+                        <Route
+                            path="/addresses"
+                            element={
+                                <RoleBasedGuard allowedRoles={['CUS']}>
+                                    <AddressManagementPage />
+                                </RoleBasedGuard>
+                            }
+                        />
+                        <Route
+                            path="/address-details"
+                            element={
+                                <RoleBasedGuard allowedRoles={['CUS']}>
+                                    <AddressDetails />
+                                </RoleBasedGuard>
+                            }
+                        />
+
+                        <Route
+                            path="/add-address"
+                            element={
+                                <RoleBasedGuard allowedRoles={['CUS']}>
+                                    <AddAddressPage />
                                 </RoleBasedGuard>
                             }
                         />

@@ -4,11 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/layout/Sidebar';
 import TableComponent from '../components/table/TableComponent';
 import { useAuth } from "../hooks/context/AuthContext";
+import Pagination from '@mui/material/Pagination';
 const KoiFishPage: React.FC = () => {
     const [koiFishData, setKoiFishData] = useState<any[]>([]);
     const navigate = useNavigate();
     const { user  } = useAuth(); // Use Auth context to get userId
     const userId = user?.userId; // Access userId safely
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [itemsPerPage] = useState<number>(8); // Set the number of items per page
+
     useEffect(() => {
 
         if (!userId) {
@@ -31,14 +35,22 @@ const KoiFishPage: React.FC = () => {
         console.log("Clicked fish ID:", fishId); // Thêm dòng này để kiểm tra
         navigate(`/koi-details`, { state: { fishId } }); // Truyền fishId vào state
     };
+// Calculate total pages
+    const indexOfLastAddress = currentPage * itemsPerPage;
+    const indexOfFirstAddress = indexOfLastAddress - itemsPerPage;
+    const currentKoi = koiFishData.slice(indexOfFirstAddress, indexOfLastAddress)
 
+    // Handle page change
+    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setCurrentPage(value);
+    };
     return (
         <div className="d-flex flex-grow-1">
             <Sidebar />
             <div className="container" style={{ marginTop: "6rem" }}>
                 <div className="card" style={{ width: '100%' }}>
                     <div className="card-header d-flex justify-content-between align-items-center">
-                        <h5 className="text-start" style={{ fontWeight: "bold", color: "#02033B", fontSize: "2rem", padding: "1.2rem" }}>
+                        <h5 className="text-start" style={{ fontWeight: "bold", color: "#02033B", fontSize: "2.5rem", padding: "1.2rem" }}>
                             Koi Fish List
                         </h5>
                         <button
@@ -52,9 +64,16 @@ const KoiFishPage: React.FC = () => {
                         <TableComponent
                             columns={['fish_id', 'species', 'age', 'gender', 'color', 'size']}
                             columnHeaders={['Fish ID', 'Species', 'Age', 'Gender', 'Color', 'Size (cm)']}
-                            data={koiFishData}
+                            data={currentKoi}
                             actions={[{ label: 'View Details', icon: 'fas fa-eye', onClick: handleKoiFishClick }]} // Action for Koi Fish
                             isKoiFishPage={true} // Thêm prop này
+                        />
+                        <Pagination
+                            count={Math.ceil(koiFishData.length / itemsPerPage)} // Total pages
+                            shape="rounded"
+                            page={currentPage} // Current page
+                            onChange={handlePageChange} // Page change handler
+                            style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }} // Center the pagination
                         />
                     </div>
                 </div>
