@@ -1,9 +1,8 @@
-
 import React, { useEffect, useState } from 'react';
 import { fetchServices, updateServicePrice } from '../api/serviceApi';
 import PricingManagementTable from '../components/Pricing/PricingManagementTable';
 import Sidebar from "../components/layout/Sidebar";
-import "../styles/Pricing.css"
+
 
 const ServicePricingPage: React.FC = () => {
     const [services, setServices] = useState<any[]>([]);
@@ -37,19 +36,26 @@ const ServicePricingPage: React.FC = () => {
             alert('Service ID is missing.');
             return;
         }
-
+        const serviceToUpdate = services.find((service) => service.service_id === serviceId);
         if (updatedPrices[serviceId] === undefined) {
             alert('Please enter a new price.');
             return;
         }
 
+        const updatedService = {
+            service_id: serviceId,
+            service_name: serviceToUpdate.service_name,
+            description: serviceToUpdate.description,
+            service_price: updatedPrices[serviceId],
+        };
+
         try {
-            await updateServicePrice(serviceId, updatedPrices[serviceId]);
+            await updateServicePrice(serviceId, updatedService);
             alert('Price updated successfully!');
 
             setServices((prevServices) =>
                 prevServices.map((service) =>
-                    service.id === serviceId
+                    service.service_id === serviceId
                         ? { ...service, service_price: updatedPrices[serviceId] }
                         : service
                 )
@@ -59,7 +65,6 @@ const ServicePricingPage: React.FC = () => {
             alert('Failed to update price. Please try again later.');
         }
     };
-
     const formatPrice = (price: number) => {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " VND";
     };

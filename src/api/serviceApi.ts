@@ -13,12 +13,10 @@ export const fetchServices = async () => {
     }
 };
 
-export const updateServicePrice = async (serviceId: number, newPrice: number) => {
+export const updateServicePrice = async (serviceId: number, updatedService: any) => {
     try {
-        console.log('Updating service with ID:', serviceId, 'and new price:', newPrice);
-        await axios.put(`${API_URL}/${serviceId}`, {
-            service_price: newPrice,
-        });
+        console.log('Updating service with ID:', serviceId, 'and new data:', updatedService);
+        await axios.put(`${API_URL}/${serviceId}`, updatedService);
     } catch (error) {
         console.error('Error updating price:', error);
         throw error; // Rethrow the error for handling in the component

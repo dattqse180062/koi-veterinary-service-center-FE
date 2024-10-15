@@ -38,7 +38,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             try {
                 const decodedToken: any = jwtDecode(token);
                 setIsAuthenticated(true);
-                setUser({ userId: decodedToken.userId, roleId: decodedToken.role });
+                setUser({ userId: decodedToken.userId, roleId: decodedToken.scope });
                 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             } catch (error) {
                 console.error("Invalid token:", error);
@@ -55,7 +55,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         console.log("Decoded Token:", decodedToken);
         setIsAuthenticated(true);
 
-        setUser({ roleId: decodedToken.scope, userId: decodedToken.role });
+        setUser({ roleId: decodedToken.scope, userId: decodedToken.scope });
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
     };

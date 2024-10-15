@@ -1,6 +1,6 @@
 import React from 'react';
 import "../../styles/ServicePricing.css"
-
+import "../../styles/Pricing.css"
 interface PricingManagementTableProps {
     data: {
         id: number;
