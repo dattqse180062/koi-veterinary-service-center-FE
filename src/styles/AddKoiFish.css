@@ -95,7 +95,11 @@
 
 .back-button {
     position: fixed;
-    top: 80px;
-    left: 30px;
-
+    top: 10%;
+    left: 1%;
+    z-index: 1000;
+}
+.border-danger {
+    border-color: rgba(255, 0, 0, 0.39) !important;
+    box-shadow: 0 0 6px rgba(255, 0, 0, 0.15), 0 0 6px rgba(255, 0, 0, 0.15); /* Softer glowing effect */
 }

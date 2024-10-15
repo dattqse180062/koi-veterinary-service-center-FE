@@ -55,7 +55,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         console.log("Decoded Token:", decodedToken);
         setIsAuthenticated(true);
 
-        setUser({ roleId: decodedToken.scope, userId: decodedToken.scope });
+        setUser({ roleId: decodedToken.scope, userId: decodedToken.userId });
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
     };

@@ -11,9 +11,10 @@ interface TableRowProps {
     rowData: any;
     actions?: Action[]; // Hành động
     isKoiFishPage?: boolean; // Thêm prop để xác định trang
+    isAddressPage?: boolean;
 }
 
-const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isKoiFishPage }) => {
+const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isKoiFishPage, isAddressPage  }) => {
     const fullName = `${rowData.first_name || rowData.name} ${rowData.last_name || ''}`.trim(); // Tạo fullName
 
     return (
@@ -41,7 +42,10 @@ const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isK
                         <ul className="dropdown-menu dropdown-menu-end">
                             {actions.map((action, index) => (
                                 <li key={index}>
-                                    <span className="dropdown-item" onClick={() => action.onClick(isKoiFishPage ? rowData.fish_id : rowData.user_id, fullName)}>
+                                    <span className="dropdown-item" onClick={() => {
+                                        const id = isKoiFishPage ? rowData.fish_id : isAddressPage ? rowData.address_id : rowData.user_id;
+                                        action.onClick(id, fullName);
+                                    }}>
                                         {action.icon && <i className={`${action.icon} mx-2`}></i>}
                                         {action.label}
                                     </span>
