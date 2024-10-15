@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { fetchTransportationPrices, updateTransportationPrice } from '../api/transportApi';
 import PricingManagementTable from '../components/Pricing/PricingManagementTable';
 import Sidebar from "../components/layout/Sidebar";
-import {fetchServices} from "../api/serviceApi";
+import Pagination from '@mui/material/Pagination';
+
 
 const TransportationPricingPage: React.FC = () => {
     const [locations, setLocations] = useState<any[]>([]);
     const [updatedPrices, setUpdatedPrices] = useState<{ [key: string]: number }>({});
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [itemsPerPage] = useState<number>(8); // Set the number of items per page
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -70,6 +74,16 @@ const TransportationPricingPage: React.FC = () => {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " VND";
     };
 
+    // Calculate total pages
+    const indexOfLastAddress = currentPage * itemsPerPage;
+    const indexOfFirstAddress = indexOfLastAddress - itemsPerPage;
+    const currentLocations = locations.slice(indexOfFirstAddress, indexOfLastAddress)
+
+    // Handle page change
+    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setCurrentPage(value);
+    };
+
     return (
         <div className="d-flex flex-grow-1">
             <Sidebar />
@@ -85,7 +99,7 @@ const TransportationPricingPage: React.FC = () => {
                     </div>
                     <div className="card-body">
                         <PricingManagementTable
-                            data={locations.map((location) => ({
+                            data={currentLocations.map((location) => ({
                                 id: location.moving_surcharge_id,
                                 name: location.district,
                                 price: location.price,
@@ -94,6 +108,13 @@ const TransportationPricingPage: React.FC = () => {
                             onSubmit={handleSubmit}
                             columns={['Location', 'Current Price', 'New Price', 'Actions']}
                             formatPrice={formatPrice}
+                        />
+                        <Pagination
+                            count={Math.ceil(locations.length / itemsPerPage)} // Total pages
+                            shape="rounded"
+                            page={currentPage} // Current page
+                            onChange={handlePageChange} // Page change handler
+                            style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }} // Center the pagination
                         />
                     </div>
                 </div>

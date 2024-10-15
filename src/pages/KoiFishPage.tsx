@@ -65,7 +65,7 @@ const KoiFishPage: React.FC = () => {
                             columns={['fish_id', 'species', 'age', 'gender', 'color', 'size']}
                             columnHeaders={['Fish ID', 'Species', 'Age', 'Gender', 'Color', 'Size (cm)']}
                             data={currentKoi}
-                            actions={[{ label: 'View Details', icon: 'fas fa-eye', onClick: handleKoiFishClick }]} // Action for Koi Fish
+                            actions={[{ label: 'View Details', icon: 'fas fa-info-circle', onClick: handleKoiFishClick }]} // Action for Koi Fish
                             isKoiFishPage={true} // Thêm prop này
                         />
                         <Pagination

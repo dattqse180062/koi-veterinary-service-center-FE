@@ -1,145 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import '../../styles/Schedule.css';
-import Sidebar from "../layout/Sidebar"; // Import your custom CSS
-
-const doctor = {
-    id: 'D123',
-    name: 'Dr. Emily Clark',
-};
-
-// Mock time slots data structured with year, month, day, slot_order, and status
-const mockAppointments = [
-    // Week 1 (September 23 - September 29, 2024)
-    {
-        time_slot: { slot_id: 1, year: 2024, month: 9, day: 23, slot_order: 1 },
-        status: 'BOOKED',
-    },
-    {
-        time_slot: { slot_id: 2, year: 2024, month: 9, day: 23, slot_order: 2 },
-        status: 'AVAILABLE',
-    },
-    {
-        time_slot: { slot_id: 3, year: 2024, month: 9, day: 24, slot_order: 1 },
-        status: 'BOOKED',
-    },
-    {
-        time_slot: { slot_id: 4, year: 2024, month: 9, day: 24, slot_order: 2 },
-        status: 'AVAILABLE',
-    },
-    {
-        time_slot: { slot_id: 5, year: 2024, month: 9, day: 25, slot_order: 3 },
-        status: 'BOOKED',
-    },
-    {
-        time_slot: { slot_id: 6, year: 2024, month: 9, day: 26, slot_order: 1 },
-        status: 'AVAILABLE',
-    },
-    {
-        time_slot: { slot_id: 7, year: 2024, month: 9, day: 27, slot_order: 2 },
-        status: 'BOOKED',
-    },
-    {
-        time_slot: { slot_id: 8, year: 2024, month: 9, day: 28, slot_order: 3 },
-        status: 'AVAILABLE',
-    },
-    {
-        time_slot: { slot_id: 9, year: 2024, month: 9, day: 29, slot_order: 4 },
-        status: 'BOOKED',
-    },
-
-    // Week 2 (September 30 - October 6, 2024)
-    {
-        time_slot: { slot_id: 10, year: 2024, month: 9, day: 30, slot_order: 1 },
-        status: 'AVAILABLE',
-    },
-    {
-        time_slot: { slot_id: 11, year: 2024, month: 10, day: 1, slot_order: 2 },
-        status: 'BOOKED',
-    },
-    {
-        time_slot: { slot_id: 12, year: 2024, month: 10, day: 2, slot_order: 3 },
-        status: 'AVAILABLE',
-    },
-    {
-        time_slot: { slot_id: 13, year: 2024, month: 10, day: 3, slot_order: 1 },
-        status: 'BOOKED',
-    },
-    {
-        time_slot: { slot_id: 14, year: 2024, month: 10, day: 4, slot_order: 2 },
-        status: 'AVAILABLE',
-    },
-    {
-        time_slot: { slot_id: 15, year: 2024, month: 10, day: 5, slot_order: 3 },
-        status: 'BOOKED',
-    },
-    {
-        time_slot: { slot_id: 16, year: 2024, month: 10, day: 6, slot_order: 4 },
-        status: 'AVAILABLE',
-    },
-
-    // Week 3 (October 7 - October 13, 2024)
-    {
-        time_slot: { slot_id: 17, year: 2024, month: 10, day: 7, slot_order: 1 },
-        status: 'BOOKED',
-    },
-    {
-        time_slot: { slot_id: 18, year: 2024, month: 10, day: 8, slot_order: 2 },
-        status: 'AVAILABLE',
-    },
-    {
-        time_slot: { slot_id: 19, year: 2024, month: 10, day: 9, slot_order: 3 },
-        status: 'BOOKED',
-    },
-    {
-        time_slot: { slot_id: 20, year: 2024, month: 10, day: 10, slot_order: 4 },
-        status: 'AVAILABLE',
-    },
-    {
-        time_slot: { slot_id: 21, year: 2024, month: 10, day: 11, slot_order: 1 },
-        status: 'BOOKED',
-    },
-    {
-        time_slot: { slot_id: 22, year: 2024, month: 10, day: 12, slot_order: 2 },
-        status: 'AVAILABLE',
-    },
-    {
-        time_slot: { slot_id: 23, year: 2024, month: 10, day: 13, slot_order: 3 },
-        status: 'BOOKED',
-    },
-
-    // Week 4 (October 14 - October 20, 2024)
-    {
-        time_slot: { slot_id: 24, year: 2024, month: 10, day: 14, slot_order: 1 },
-        status: 'AVAILABLE',
-    },
-    {
-        time_slot: { slot_id: 25, year: 2024, month: 10, day: 15, slot_order: 2 },
-        status: 'BOOKED',
-    },
-    {
-        time_slot: { slot_id: 26, year: 2024, month: 10, day: 16, slot_order: 3 },
-        status: 'AVAILABLE',
-    },
-    {
-        time_slot: { slot_id: 27, year: 2024, month: 10, day: 17, slot_order: 4 },
-        status: 'BOOKED',
-    },
-    {
-        time_slot: { slot_id: 28, year: 2024, month: 10, day: 18, slot_order: 1 },
-        status: 'AVAILABLE',
-    },
-    {
-        time_slot: { slot_id: 29, year: 2024, month: 10, day: 19, slot_order: 2 },
-        status: 'BOOKED',
-    },
-    {
-        time_slot: { slot_id: 30, year: 2024, month: 10, day: 20, slot_order: 3 },
-        status: 'AVAILABLE',
-    },
-
-    // Add more weeks as needed...
-];
+import Sidebar from "../layout/Sidebar";
+import axios from "axios";
+import {fetchVetSlots} from "../../api/scheduleApi"; // Import your custom CSS
 
 
 // Map slot_order to time ranges
@@ -197,8 +61,6 @@ const DoctorSchedule: React.FC = () => {
 
     const { vetId, fullName } = location.state; //
 
-
-
     const currentYear = new Date().getUTCFullYear();
     const [selectedYear, setSelectedYear] = useState(currentYear);
     const currentWeekStart = getCurrentWeekStart();
@@ -206,6 +68,22 @@ const DoctorSchedule: React.FC = () => {
     const [selectedWeekStart, setSelectedWeekStart] = useState(currentWeekStart.toISOString().split('T')[0]);
     const [weekDates, setWeekDates] = useState<string[]>(getWeekDates(currentWeekStart));
     const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const [appointments, setAppointments] = useState<any[]>([]);
+
+    useEffect(() => {
+        // Fetch veterinarian slots from the API
+        const loadVetSlots = async () => {
+            try {
+                const slots = await fetchVetSlots(vetId);
+                setAppointments(slots);  // Store the fetched appointments
+            } catch (error) {
+                console.error('Error fetching slots:', error);
+            }
+        };
+
+        loadVetSlots();
+    }, [vetId, selectedWeekStart]);
+
 
     const handleWeekChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const newWeekStart = event.target.value;
@@ -285,18 +163,29 @@ const DoctorSchedule: React.FC = () => {
                         <tr key={slotId}>
                             <td>{`Slot ${slotId}`}</td>
                             {weekDates.map((date, dateIndex) => {
-                                const appointment = mockAppointments.find(appointment => (
-                                    appointment.time_slot.year === new Date(date).getUTCFullYear() &&
-                                    appointment.time_slot.month === new Date(date).getUTCMonth() + 1 &&
-                                    appointment.time_slot.day === new Date(date).getUTCDate() &&
-                                    appointment.time_slot.slot_order === slotId
+                                const appointment = appointments.find(appointment => (
+                                    appointment.year === new Date(date).getUTCFullYear() &&
+                                    appointment.month === new Date(date).getUTCMonth() + 1 &&
+                                    appointment.day === new Date(date).getUTCDate() &&
+                                    appointment.slot_order === slotId
                                 ));
                                 return (
                                     <td key={dateIndex}>
                                         {appointment ? (
                                             <>
-                                                <p className={`text-${appointment.status === 'AVAILABLE' ? 'success' : 'warning'} fw-bold` } >
-                                                    {appointment.status}
+
+                                                {/* Phân màu theo current_status */}
+                                                <p className={`fw-bold ${
+                                                    appointment.appointment.current_status === 'PENDING' ? 'text-warning' :
+                                                        appointment.appointment.current_status === 'CONFIRMED' ? 'text-primary' :
+                                                            appointment.appointment.current_status === 'CHECKED_IN' ? 'text-info' :
+                                                                appointment.appointment.current_status === 'CANCEL' ? 'text-danger' :
+                                                                    appointment.appointment.current_status === 'ON_GOING' ? 'text-secondary' :
+                                                                        appointment.appointment.current_status === 'DONE' ? 'text-success' :
+                                                                            ''
+                                                }`}>
+                                                    {appointment.appointment.current_status}
+
                                                 </p>
                                                 <p>{slotOrderToTime[slotId as keyof typeof slotOrderToTime]}</p>
                                             </>

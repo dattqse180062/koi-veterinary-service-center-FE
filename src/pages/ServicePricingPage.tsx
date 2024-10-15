@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { fetchServices, updateServicePrice } from '../api/serviceApi';
 import PricingManagementTable from '../components/Pricing/PricingManagementTable';
 import Sidebar from "../components/layout/Sidebar";
-
+import Pagination from '@mui/material/Pagination';
 
 const ServicePricingPage: React.FC = () => {
     const [services, setServices] = useState<any[]>([]);
     const [updatedPrices, setUpdatedPrices] = useState<{ [key: string]: number }>({});
-
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [itemsPerPage] = useState<number>(8); // Set the number of items per page
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -69,6 +70,16 @@ const ServicePricingPage: React.FC = () => {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " VND";
     };
 
+    // Calculate total pages
+    const indexOfLastAddress = currentPage * itemsPerPage;
+    const indexOfFirstAddress = indexOfLastAddress - itemsPerPage;
+    const currentServices = services.slice(indexOfFirstAddress, indexOfLastAddress)
+
+    // Handle page change
+    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setCurrentPage(value);
+    };
+
     return (
         <div className="d-flex flex-grow-1">
             <Sidebar />
@@ -84,7 +95,7 @@ const ServicePricingPage: React.FC = () => {
                     </div>
                     <div className="card-body">
                         <PricingManagementTable
-                            data={services.map((service) => ({
+                            data={currentServices.map((service) => ({
                                 id: service.service_id,
                                 name: service.service_name,
                                 price: service.service_price,
@@ -93,6 +104,13 @@ const ServicePricingPage: React.FC = () => {
                             onSubmit={handleSubmit}
                             columns={['Service Name', 'Current Price', 'New Price', 'Actions']}
                             formatPrice={formatPrice}
+                        />
+                        <Pagination
+                            count={Math.ceil(services.length / itemsPerPage)} // Total pages
+                            shape="rounded"
+                            page={currentPage} // Current page
+                            onChange={handlePageChange} // Page change handler
+                            style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }} // Center the pagination
                         />
                     </div>
                 </div>
