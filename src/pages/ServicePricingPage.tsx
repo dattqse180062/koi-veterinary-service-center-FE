@@ -13,7 +13,9 @@ const ServicePricingPage: React.FC = () => {
         const fetchData = async () => {
             try {
                 const servicesData = await fetchServices();
+                console.log('Fetched services:', servicesData);
                 setServices(servicesData);
+
             } catch (error) {
                 alert('Failed to fetch services. Please try again later.');
             }
@@ -22,7 +24,7 @@ const ServicePricingPage: React.FC = () => {
         fetchData();
     }, []);
 
-    const handlePriceChange = (serviceId: string, price: number) => {
+    const handlePriceChange = (serviceId: number, price: number) => {
         if (price < 0) {
             alert('Price cannot be negative.');
             return;
@@ -30,7 +32,12 @@ const ServicePricingPage: React.FC = () => {
         setUpdatedPrices((prev) => ({ ...prev, [serviceId]: price }));
     };
 
-    const handleSubmit = async (serviceId: string) => {
+    const handleSubmit = async (serviceId: number) => {
+        if (!serviceId) {
+            alert('Service ID is missing.');
+            return;
+        }
+
         if (updatedPrices[serviceId] === undefined) {
             alert('Please enter a new price.');
             return;
@@ -48,6 +55,7 @@ const ServicePricingPage: React.FC = () => {
                 )
             );
         } catch (error) {
+            console.error('Error updating price:', error);
             alert('Failed to update price. Please try again later.');
         }
     };
@@ -72,7 +80,7 @@ const ServicePricingPage: React.FC = () => {
                     <div className="card-body">
                         <PricingManagementTable
                             data={services.map((service) => ({
-                                id: service.id,
+                                id: service.service_id,
                                 name: service.service_name,
                                 price: service.service_price,
                             }))}

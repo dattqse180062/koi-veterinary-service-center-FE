@@ -1,7 +1,7 @@
 // src/api/serviceApi.ts
 import axios from 'axios';
 
-const API_URL = 'https://66e10816c831c8811b538fae.mockapi.io/api/service';
+const API_URL = 'http://localhost:8080/api/v1/services';
 
 export const fetchServices = async () => {
     try {
@@ -13,8 +13,9 @@ export const fetchServices = async () => {
     }
 };
 
-export const updateServicePrice = async (serviceId: string, newPrice: number) => {
+export const updateServicePrice = async (serviceId: number, newPrice: number) => {
     try {
+        console.log('Updating service with ID:', serviceId, 'and new price:', newPrice);
         await axios.put(`${API_URL}/${serviceId}`, {
             service_price: newPrice,
         });

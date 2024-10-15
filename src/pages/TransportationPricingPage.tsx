@@ -20,7 +20,7 @@ const TransportationPricingPage: React.FC = () => {
         fetchData();
     }, []);
 
-    const handlePriceChange = (locationId: string, price: number) => {
+    const handlePriceChange = (locationId: number, price: number) => {
         if (price < 0) {
             alert('Price cannot be negative.');
             return;
@@ -28,7 +28,7 @@ const TransportationPricingPage: React.FC = () => {
         setUpdatedPrices((prev) => ({ ...prev, [locationId]: price }));
     };
 
-    const handleSubmit = async (locationId: string) => {
+    const handleSubmit = async (locationId: number) => {
         if (updatedPrices[locationId] === undefined) {
             alert('Please enter a new price.');
             return;

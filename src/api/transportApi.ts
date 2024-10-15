@@ -13,7 +13,7 @@ export const fetchTransportationPrices = async () => {
     }
 };
 
-export const updateTransportationPrice = async (district_name: string, newPrice: number) => {
+export const updateTransportationPrice = async (district_name: number, newPrice: number) => {
     try {
         await axios.put(`${TRANSPORT_API_URL}/${district_name}`, {
             price: newPrice,

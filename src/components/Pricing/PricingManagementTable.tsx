@@ -3,12 +3,12 @@ import "../../styles/ServicePricing.css"
 
 interface PricingManagementTableProps {
     data: {
-        id: string;
+        id: number;
         name: string;
         price: number;
     }[];
-    onPriceChange: (locationId: string, price: number) => void;
-    onSubmit: (locationId: string) => void;
+    onPriceChange: (locationId: number, price: number) => void;
+    onSubmit: (locationId: number) => void;
     columns: string[];
     formatPrice: (price: number) => string;
 }
@@ -47,7 +47,10 @@ const PricingManagementTable: React.FC<PricingManagementTableProps> = ({
                         <td>
                             <button
                                 className="btn btn-primary btn-sm"
-                                onClick={() => onSubmit(location.id)}
+                                onClick={() => {
+                                    console.log('Submitting ID:', location.id); // Debugging line
+                                    onSubmit(location.id);
+                                }}
                             >
                                 Update
                             </button>
