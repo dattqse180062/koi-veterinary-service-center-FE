@@ -6,13 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="dfa0a0f8-c0d0-4cf7-b8ea-c32e2affc709" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/scheduleApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/scheduleApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/schedule/DoctorSchedule.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/schedule/DoctorSchedule.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/table/TableRow.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/table/TableRow.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/KoiFishPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/KoiFishPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/ServicePricingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ServicePricingPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/TransportationPricingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/TransportationPricingPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/App.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +95,7 @@
       <workItem from="1728444258887" duration="1906000" />
       <workItem from="1728475660518" duration="300000" />
       <workItem from="1728624215836" duration="13212000" />
-      <workItem from="1728981550862" duration="5941000" />
+      <workItem from="1728981550862" duration="6595000" />
     </task>
     <servers />
   </component>
