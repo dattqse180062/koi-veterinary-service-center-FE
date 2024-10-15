@@ -5,24 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dfa0a0f8-c0d0-4cf7-b8ea-c32e2affc709" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/api/addressApi.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/AddAddressPage.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/AddressDetails.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/AddressManagementPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/table/TableComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/table/TableComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/table/TableRow.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/table/TableRow.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/context/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/context/AuthContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/KoiFishPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/KoiFishPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/PasswordChangePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PasswordChangePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ProfilePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/UnauthorizedPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/UnauthorizedPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/VetShiftSchePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/VetShiftSchePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/AddKoiFish.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/AddKoiFish.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/Profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/Profile.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/Schedule.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/Schedule.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/ServicePricing.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/ServicePricing.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,9 +32,6 @@
     &quot;accountId&quot;: &quot;6ae1e59b-d1dc-479d-ace6-7067e08a20ec&quot;
   }
 }</component>
-  <component name="PackageJsonUpdateNotifier">
-    <dismissed value="$PROJECT_DIR$/package.json" />
-  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -63,7 +43,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;modify-feature/profile-address&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;modify-feature/change-api-surcharges&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -115,7 +95,6 @@
       <workItem from="1728444258887" duration="1906000" />
       <workItem from="1728475660518" duration="300000" />
       <workItem from="1728624215836" duration="13212000" />
-      <workItem from="1728749781093" duration="12990000" />
     </task>
     <servers />
   </component>
