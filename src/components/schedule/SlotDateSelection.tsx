@@ -70,7 +70,7 @@ const DoctorSchedule: React.FC = () => {
     const [weekDates, setWeekDates] = useState<string[]>(getWeekDates(currentWeekStart));
 
     const [appointments, setAppointments] = useState<any[]>([]);
-    const [selectedSlot, setSelectedSlot] = useState<{ year: number; month: number; day: number; slot_order: number } | null>(null); // New state for selected slot
+    const [selectedSlot, setSelectedSlot] = useState<{ year: number; month: number; day: number; slot_order: number; slot_id: number } | null>(null); // New state for selected slot
     const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 
@@ -107,7 +107,7 @@ const DoctorSchedule: React.FC = () => {
         setWeekDates(getWeekDates(currentStartDate));
     };
 
-    const handleSlotSelection = (year: number, month: number, day: number, slot_order: number) => {
+    const handleSlotSelection = (year: number, month: number, day: number, slot_order: number, slot_id:number) => {
         const selectedDate = new Date(year, month - 1, day); // Create a Date object for the selected date
         const today = new Date(); // Get today's date
 
@@ -128,7 +128,7 @@ const DoctorSchedule: React.FC = () => {
         ));
 
         if (selectedDate >= localToday && !appointment) {
-            setSelectedSlot({ year, month, day, slot_order }); // Set the selected slot
+            setSelectedSlot({ year, month, day, slot_order, slot_id }); // Set the selected slot
         }
     };
 
@@ -157,11 +157,13 @@ const DoctorSchedule: React.FC = () => {
     return (
         <div className="d-flex flex-grow-1 align-items-center">
             <div className="container-fluid">
-                <div className="position-absolute" style={{top: '10%', left: '5%x'}}>
-                    <button className="btn btn-secondary" onClick={handleBackClick}>
-                        Back
-                    </button>
-                </div>
+                <button
+                    className="btn btn-secondary mb-3"
+                    style={{position: 'absolute', top: '12%', left: '3%'}}
+                    onClick={handleBackClick}>
+                    Back
+                </button>
+
                 <div className="row justify-content-center">
                     {/* Card Component */}
                     <div className="col-md-3 mb-4 d-flex justify-content-center align-items-center">
@@ -252,7 +254,7 @@ const DoctorSchedule: React.FC = () => {
                                         return (
                                             <td key={dateIndex}
                                                 className={`${isWorkingSlot ? (isSelectedSlot ? 'selected' : 'notSelected') : 'inactive'} ${appointment ? 'booked' : ''} ${isPastDate(cellDate) ? 'past-date' : ''}`} // Add past-date class
-                                                onClick={() => isWorkingSlot && handleSlotSelection(new Date(date).getUTCFullYear(), new Date(date).getUTCMonth() + 1, new Date(date).getUTCDate(), slotId)}
+                                                onClick={() => isWorkingSlot && handleSlotSelection(new Date(date).getUTCFullYear(), new Date(date).getUTCMonth() + 1, new Date(date).getUTCDate(), slotId, 0)}
                                                 style={{backgroundColor: isPastDate(cellDate) ? '#ccd1d1' : ''}} // Change color for past dates
                                             >
                                                 {isWorkingSlot ? (

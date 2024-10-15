@@ -11,8 +11,9 @@ const SlotDateSelectionPage: React.FC = () => {
     useEffect(() => {
         // Nếu service là null, điều hướng về trang chọn service
         if (!service) {
-            navigate('/appointment/service-selection');
             alert("You should choose service first!!!")
+            navigate('/appointment/service-selection');
+
         }
     }, [service, navigate]);
     return (

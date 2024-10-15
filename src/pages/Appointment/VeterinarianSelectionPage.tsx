@@ -30,8 +30,9 @@ const ChooseVeterinarianPage: React.FC = () => {
     useEffect(() => {
         // Nếu service là null, điều hướng về trang chọn service
         if (!service) {
-            navigate('/appointment/service-selection');
             alert("You should choose service first!!!")
+            navigate('/appointment/service-selection');
+
         }
     }, [service, navigate]);
     const fetchDoctors = async () => {
@@ -110,17 +111,16 @@ const ChooseVeterinarianPage: React.FC = () => {
         >
 
             <div className="container-fluid">
-                <div className="position-absolute" style={{top: '10%', left: '5%x'}}>
-                    <button className="btn btn-secondary" onClick={handleBackClick}>
-                        Back
-                    </button>
-                </div>
+                <button
+                    className="btn btn-secondary mb-3"
+                    style={{position: 'absolute', top: '12%', left: '3%'}}
+                    onClick={handleBackClick}>
+                    Back
+                </button>
                 {/* Main content */}
                 <div className="text-center my-4">
                     <h1 className="display-4 fw-bold" style={{color: '#02033B'}}>Choose Veterinarian</h1>
                 </div>
-
-
 
 
                 {/* Doctors Grid */}

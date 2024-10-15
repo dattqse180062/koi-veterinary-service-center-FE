@@ -45,6 +45,20 @@ const generateWeeksOfYear = (selectedYear: number) => {
     return weeks;
 };
 
+const isDateWithinRange = (date: Date): boolean => {
+    const today = new Date();
+    const maxDate = new Date(today);
+    const minDate = new Date(today);
+
+    // Set max date to 3 months from today
+    maxDate.setMonth(maxDate.getMonth() + 3);
+
+    // Set min date to 3 hours from now
+    minDate.setHours(minDate.getHours() + 3);
+
+    return date <= maxDate && date >= minDate;
+};
+
 const AvailableSlot: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -54,14 +68,20 @@ const AvailableSlot: React.FC = () => {
     const [selectedWeekStart, setSelectedWeekStart] = useState(currentWeekStart.toISOString().split('T')[0]);
     const [weekDates, setWeekDates] = useState<string[]>(getWeekDates(currentWeekStart));
     const [availableSlots, setAvailableSlots] = useState<any[]>([]);
-    const [selectedSlot, setSelectedSlot] = useState<{ year: number; month: number; day: number; slot_order: number } | null>(null);
+    const [selectedSlot, setSelectedSlot] = useState<{ year: number; month: number; day: number; slot_order: number, slot_id:number } | null>(null);
 
     const weeks = generateWeeksOfYear(selectedYear);
 
     useEffect(() => {
+        // Fetch available slots
         axios.get(`http://localhost:8080/api/v1/slots/available`)
             .then((response) => {
-                setAvailableSlots(response.data);
+                // Filter available slots based on date range criteria
+                const filteredSlots = response.data.filter((slot: any) => {
+                    const slotDate = new Date(`${slot.year}-${slot.month}-${slot.day}`);
+                    return isDateWithinRange(slotDate);
+                });
+                setAvailableSlots(filteredSlots);
             })
             .catch((error) => {
                 console.error('Error fetching available slots:', error);
@@ -81,8 +101,8 @@ const AvailableSlot: React.FC = () => {
         setWeekDates(getWeekDates(currentStartDate));
     };
 
-    const handleSlotSelection = (year: number, month: number, day: number, slot_order: number) => {
-        setSelectedSlot({ year, month, day, slot_order });
+    const handleSlotSelection = (year: number, month: number, day: number, slot_order: number, slot_id: number) => {
+        setSelectedSlot({ year, month, day, slot_order, slot_id });
     };
 
     const handleNextClick = () => {
@@ -97,15 +117,16 @@ const AvailableSlot: React.FC = () => {
     return (
         <div className="d-flex flex-grow-1 align-items-center">
             <div className="container-fluid">
-                <div className="position-absolute" style={{top: '10%', left: '5%x'}}>
-                    <button className="btn btn-secondary" onClick={handleBackClick}>
-                        Back
-                    </button>
-                </div>
+                <button
+                    className="btn btn-secondary mb-3"
+                    style={{position: 'absolute', top: '12%', left: '3%'}}
+                    onClick={handleBackClick}>
+                    Back
+                </button>
                 <div className="row justify-content-center">
                     <div className="col-md-7">
                         <h3 className="text-start" style={{fontWeight: "bold", color: "#02033B", fontSize: "2.5rem"}}>
-                            Available Slots
+                        Available Slots
                         </h3>
                         <div className="d-flex justify-content-between align-items-center mb-2">
                             <div className="d-flex align-items-center">
@@ -139,18 +160,18 @@ const AvailableSlot: React.FC = () => {
                             </tr>
                             </thead>
                             <tbody>
-                            {[1, 2, 3, 4].map((slotId) => (
-                                <tr key={slotId}>
-                                    <td>{`Slot ${slotId}`}</td>
+                            {[1, 2, 3, 4].map((slotOrder) => (
+                                <tr key={slotOrder}>
+                                    <td>{`Slot ${slotOrder}`}</td>
                                     {weekDates.map((date, dateIndex) => {
                                         const isAvailable = availableSlots.some(slot =>
                                             slot.year === new Date(date).getUTCFullYear() &&
                                             slot.month === new Date(date).getUTCMonth() + 1 &&
                                             slot.day === new Date(date).getUTCDate() &&
-                                            slot.slot_order === slotId
+                                            slot.slot_order === slotOrder
                                         );
 
-                                        const isSelectedSlot = selectedSlot?.slot_order === slotId &&
+                                        const isSelectedSlot = selectedSlot?.slot_order === slotOrder &&
                                             selectedSlot.year === new Date(date).getUTCFullYear() &&
                                             selectedSlot.month === new Date(date).getUTCMonth() + 1 &&
                                             selectedSlot.day === new Date(date).getUTCDate();
@@ -165,9 +186,12 @@ const AvailableSlot: React.FC = () => {
                                         };
                                         const cellDate = new Date(date);
                                         return (
-                                            <td key={dateIndex}
-                                                className={`${isAvailable ? 'available' : 'unavailable'} ${isSelectedSlot ? 'selected' : 'notSelected'} ${isPastDate(cellDate) ? 'past-date' : ''}`}
-                                                onClick={() => !isPastDate(cellDate) && isAvailable && handleSlotSelection(cellDate.getUTCFullYear(), cellDate.getUTCMonth() + 1, cellDate.getUTCDate(), slotId)}
+                                            <td key={dateIndex} className={`text-center ${isAvailable ? 'available' : 'unavailable'} ${isSelectedSlot ? 'selected' : ''}`}
+                                                onClick={() => isAvailable && !isPastDate(new Date(date)) && handleSlotSelection(new Date(date).getUTCFullYear(), new Date(date).getUTCMonth() + 1, new Date(date).getUTCDate(), slotOrder, availableSlots.find(slot =>
+                                                    slot.year === new Date(date).getUTCFullYear() &&
+                                                    slot.month === new Date(date).getUTCMonth() + 1 &&
+                                                    slot.day === new Date(date).getUTCDate() &&
+                                                    slot.slot_order === slotOrder)?.slot_id )}
                                                 style={{backgroundColor: isPastDate(cellDate) ? '#ccd1d1' : ''}}
                                             >
                                                 {isPastDate(cellDate) ? ( // Kiểm tra nếu đây là ngày trong quá khứ
@@ -175,7 +199,7 @@ const AvailableSlot: React.FC = () => {
                                                 ) : isAvailable ? (
                                                     <>
                                                         <p className="text-success fw-bold">AVAILABLE</p>
-                                                        <p>{slotOrderToTime[slotId as keyof typeof slotOrderToTime]}</p>
+                                                        <p>{slotOrderToTime[slotOrder as keyof typeof slotOrderToTime]}</p>
                                                     </>
                                                 ) : (
                                                     <p className="fw-bold">-</p>

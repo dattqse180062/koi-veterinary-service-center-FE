@@ -11,6 +11,7 @@ import ServiceSelectionPage from "./pages/Appointment/ServiceSelectionPage";
 import VeterinarianSelectionPage from "./pages/Appointment/VeterinarianSelectionPage";
 import SlotDateSelectionPage from "./pages/Appointment/SlotDateSelectionPage";
 import InformationPage from "./pages/Appointment/InformationPage";
+import OrderConfirmPage from "./pages/Appointment/OrderConfirmPage";
 
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
 const DangNhapNguoiDung = lazy(() => import("./pages/LoginPage"));
@@ -144,6 +145,15 @@ function App() {
                             element={
                                 <AuthGuard>
                                     <InformationPage />
+                                </AuthGuard>
+                            }
+                        />
+
+                        <Route
+                            path="/appointment/order-confirm"
+                            element={
+                                <AuthGuard>
+                                    <OrderConfirmPage />
                                 </AuthGuard>
                             }
                         />

@@ -1,4 +1,4 @@
-import { SET_SERVICE, SET_DOCTOR, SET_SLOT } from './actions';
+import { SET_SERVICE, SET_DOCTOR, SET_SLOT, SET_FORM_DATA  } from './actions';
 
 interface Doctor {
     user_id: number;
@@ -12,6 +12,17 @@ interface Slot {
     month: number;
     day: number;
     slot_order: number;
+    slot_id:number;
+}
+
+interface FormData {
+    name: string;
+    phone: string;
+    email: string;
+    address_id: number | null; // or number
+    fish_id: number | null; // or number
+    description: string;
+    payment_method: string;
 }
 
 interface State {
@@ -42,6 +53,11 @@ export const rootReducer = (state = initialState, action: any) => {
             return {
                 ...state,
                 slot: action.payload.slot, // Save the slot object in state
+            };
+        case SET_FORM_DATA: // Handle the new action
+            return {
+                ...state,
+                formData: action.payload.formData, // Save formData in state
             };
         default:
             return state;

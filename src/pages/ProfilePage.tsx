@@ -8,6 +8,7 @@ import '../styles/Profile.css'
 
 // Define interfaces for user data
 interface UserAddress {
+    address_id:number;
     district: string;
     city: string;
     ward: string;
