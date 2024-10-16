@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dfa0a0f8-c0d0-4cf7-b8ea-c32e2affc709" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/appointmentManagerAPI.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/appointmentApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/scheduleApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/scheduleApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/context/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/context/AuthContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/AppointmentDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/AppointmentDetails.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/VetSchedulePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/VetSchedulePage.tsx" afterDir="false" />
-    </list>
+    <list default="true" id="dfa0a0f8-c0d0-4cf7-b8ea-c32e2affc709" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -102,7 +94,7 @@
       <workItem from="1728475660518" duration="300000" />
       <workItem from="1728624215836" duration="13212000" />
       <workItem from="1729047383851" duration="5453000" />
-      <workItem from="1729084672240" duration="664000" />
+      <workItem from="1729084672240" duration="1042000" />
     </task>
     <servers />
   </component>
