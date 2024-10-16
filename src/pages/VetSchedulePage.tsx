@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import '../../styles/Schedule.css';
+import {useLocation, useNavigate} from 'react-router-dom';
+import '../../src/styles/Schedule.css';
 import Sidebar from "../../src/components/layout/Sidebar";
 import { fetchVetSlots } from "../../src/api/scheduleApi";
 import { useDispatch } from 'react-redux';
+import {useAuth} from "../hooks/context/AuthContext";
 // import { setAppointmentDetails } from '../../redux/actions/appointmentActions'; // Redux action to set appointment details
 
 // Map slot_order to time ranges
@@ -56,7 +57,10 @@ const generateWeeksOfYear = (selectedYear: number) => {
 
 const DoctorSchedule: React.FC = () => {
     const location = useLocation();
-    const { vetId, fullName } = location.state;
+    const { user } = useAuth();
+    const vetId = user?.userId;
+    const navigate = useNavigate();
+
     const currentYear = new Date().getUTCFullYear();
     const [selectedYear, setSelectedYear] = useState(currentYear);
     const currentWeekStart = getCurrentWeekStart();
@@ -65,16 +69,20 @@ const DoctorSchedule: React.FC = () => {
     const [weekDates, setWeekDates] = useState<string[]>(getWeekDates(currentWeekStart));
     const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     const [appointments, setAppointments] = useState<any[]>([]);
-    const dispatch = useDispatch();
+
 
     useEffect(() => {
         const loadVetSlots = async () => {
+            if (vetId) {
             try {
                 const slots = await fetchVetSlots(vetId);
                 setAppointments(slots);
             } catch (error) {
                 console.error('Error fetching slots:', error);
             }
+        } else {
+            alert('User ID is not available');
+        }
         };
 
         loadVetSlots();
@@ -102,10 +110,10 @@ const DoctorSchedule: React.FC = () => {
         setWeekDates(getWeekDates(currentStartDate));
     };
 
-    const handleCellClick = (appointment: any) => {
-        // Dispatch action to set appointment details in Redux
-        // dispatch(setAppointmentDetails(appointment));
-        // Navigate to appointment details page (implement routing as needed)
+    const handleCellClick = (appointmentId: number) => {
+        console.log('Clicked appointment ID:', appointmentId);
+        // Navigate to the details page with appointmentId
+        navigate(`/appointment-details/${appointmentId}/veterinarian`);
     };
 
     return (
@@ -117,7 +125,7 @@ const DoctorSchedule: React.FC = () => {
                         Doctor Schedule
                     </h3>
                     <h3 className="text-end fst-italic">
-                        {`${fullName} (ID: ${vetId})`}
+                        {`(ID: ${vetId})`}
                     </h3>
                 </div>
                 <div className="d-flex justify-content-between align-items-center mb-3">
@@ -170,7 +178,7 @@ const DoctorSchedule: React.FC = () => {
                                     appointment.slot_order === slotId
                                 ));
                                 return (
-                                    <td key={dateIndex} onClick={() => appointment && handleCellClick(appointment)} style={{ cursor: 'pointer' }}>
+                                    <td key={dateIndex} onClick={() => appointment && handleCellClick(appointment.appointment.appointment_id)} style={{ cursor: appointment? 'pointer': 'default' }}>
                                         {appointment ? (
                                             <>
                                                 <p className={`fw-bold ${
@@ -186,7 +194,7 @@ const DoctorSchedule: React.FC = () => {
                                                 <p>{slotOrderToTime[slotId as keyof typeof slotOrderToTime]}</p>
                                             </>
                                         ) : (
-                                            <p className="text-muted">No Appointment</p>
+                                            <p className="text-muted">-</p>
                                         )}
                                     </td>
                                 );

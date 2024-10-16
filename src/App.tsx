@@ -24,6 +24,8 @@ import FeedbackDetailPageForManager from './components/Managerpage/FeebackAndRat
 import AddressManagementPage from "./pages/AddressManagementPage";
 import AddressDetails from "./pages/AddressDetails";
 import AddAddressPage from "./pages/AddAddressPage";
+import VetSchedulePage from "./pages/VetSchedulePage";
+import AppointmentDetails from "./pages/AppointmentDetails";
 
 
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
@@ -165,6 +167,25 @@ function App() {
                                 </RoleBasedGuard>
                             }
                         />
+
+                        <Route
+                            path="/veterinarian-schedule"
+                            element={
+                                <RoleBasedGuard allowedRoles={['VET']}>
+                                    <VetSchedulePage />
+                                </RoleBasedGuard>
+                            }
+                        />
+
+                        <Route
+                            path="/appointment-details/:appointmentId/veterinarian"
+                            element={
+                                <RoleBasedGuard allowedRoles={['VET']}>
+                                    <AppointmentDetails />
+                                </RoleBasedGuard>
+                            }
+                        />
+
 
                         <Route
                             path="/manager"
