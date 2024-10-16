@@ -3,7 +3,7 @@ import backgroundImage from "../assets/images/background.jpg";
 import googleIcon from "../assets/images/flat-color-icons_google.svg";
 import Navbar from "../components/layout/Navbar";
 import { Link, useNavigate } from "react-router-dom";
-import { login as apiLogin } from '../api/authService';
+
 import { useAuth } from "../hooks/context/AuthContext";
 import "../styles/LoginRegister.css";
 import axios from  "axios"

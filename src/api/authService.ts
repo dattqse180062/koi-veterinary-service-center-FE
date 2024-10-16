@@ -12,22 +12,7 @@ export const register = async (username: string, email: string, password: string
     }
 };
 
-export const login = async (username: string, password: string) => {
-    const response = await axios.get(`${API_URL}/login`);
-    const users = response.data;
-    const user = users.find((u: any) => u.username === username && u.password === password);
 
-    if (user) {
-        sessionStorage.setItem('token', user.token); // Lưu token (hoặc id) vào sessionStorage
-        sessionStorage.setItem('role', user.role); // Lưu role vào sessionStorage
-
-        sessionStorage.setItem('userId', user.id);
-
-        return user; // Trả về thông tin người dùng nếu đăng nhập thành công
-    } else {
-        throw new Error('Invalid credentials');
-    }
-};
 // API để lấy thông tin người dùng
 export const getUserInfo = async (userId: number) => {
     const response = await axios.get(`${BASE_URL}/profile?userId=${userId}`);
@@ -56,4 +41,20 @@ export const changePassword = async (userId: number, currentPassword: string, ne
     }
 };
 
+export const login = async (username: string, password: string) => {
+    const response = await axios.get(`${API_URL}/login`);
+    const users = response.data;
+    const user = users.find((u: any) => u.username === username && u.password === password);
+
+    if (user) {
+        sessionStorage.setItem('token', user.token); // Lưu token (hoặc id) vào sessionStorage
+        sessionStorage.setItem('role', user.role); // Lưu role vào sessionStorage
+
+        sessionStorage.setItem('userId', user.id);
+
+        return user; // Trả về thông tin người dùng nếu đăng nhập thành công
+    } else {
+        throw new Error('Invalid credentials');
+    }
+};
 

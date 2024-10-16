@@ -47,7 +47,7 @@
 }
 
 .form-container {
-    max-width: 500px;
+    max-width: 515px;
     border-radius: 15px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
     padding: 20px;
@@ -96,7 +96,7 @@
 .back-button {
     position: fixed;
     top: 10%;
-    left: 1%;
+    left: 2%;
     z-index: 1000;
 }
 .border-danger {

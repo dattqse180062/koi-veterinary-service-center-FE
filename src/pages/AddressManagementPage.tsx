@@ -6,6 +6,7 @@ import {useAuth} from "../hooks/context/AuthContext";
 import axios from "axios";
 import {fetchAddresses} from "../api/addressApi";
 import Pagination from '@mui/material/Pagination';
+import {getUserInfo} from "../api/authService";
 // interface Address {
 //     address_id:number
 //     district: string;
@@ -19,6 +20,8 @@ const AddressManagementPage: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const [userCurrenAddress, setCurrentAddress] = useState<{ address_id:number, city: string; district: string; ward: string; home_number: string } | null>(null);
+
     const [itemsPerPage] = useState<number>(8); // Set the number of items per page
     const columns = ['address_id', 'district', 'city', 'ward', 'home_number'];
     const columnHeaders = ['Id', 'District', 'City', 'Ward', 'Home Number'];
@@ -29,7 +32,9 @@ const AddressManagementPage: React.FC = () => {
         const getAddresses = async () => {
             if (userId) {  // Kiểm tra nếu userId không undefined
                 try {
-                    const data = await fetchAddresses(userId); // Gọi API để lấy danh sách địa chỉ
+                    const userInfo = await getUserInfo(userId);
+                    setCurrentAddress(userInfo.address);
+                    const data = await fetchAddresses(); // Gọi API để lấy danh sách địa chỉ
                     setAddresses(data); // Cập nhật state với dữ liệu địa chỉ
                 } catch (err) {
                     setError('Failed to fetch addresses');
@@ -52,6 +57,8 @@ const AddressManagementPage: React.FC = () => {
 
         navigate('/address-details', { state: { addressId } });
     };
+
+
 
     const actions = [
 
@@ -88,6 +95,11 @@ const AddressManagementPage: React.FC = () => {
                         </button>
                     </div>
                     <div className="card-body">
+                        {userCurrenAddress && (
+                            <h5 className="text-start address-list fw-bold">
+                                Current Address: ID: {userCurrenAddress.address_id} | {userCurrenAddress.home_number}, {userCurrenAddress.ward}, {userCurrenAddress.district}, {userCurrenAddress.city}
+                            </h5>
+                        )}
                         <TableComponent
                             columns={columns}
                             columnHeaders={columnHeaders}

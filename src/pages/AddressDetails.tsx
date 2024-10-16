@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import {fetchAddressById, updateAddressById, deleteAddress, fetchDistricts} from "../api/addressApi";
-import axios from 'axios';
+import {fetchAddressById, updateAddressById, deleteAddress, fetchDistricts, setCurrentAddress} from "../api/addressApi";
 import { useAuth } from "../hooks/context/AuthContext";
 import '../styles/AddKoiFish.css';
+import {getUserInfo} from "../api/authService";
 interface District {
     moving_surcharge_id: number;
     district: string;
@@ -31,16 +31,46 @@ const AddressDetail: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [errorSumbit, setErrorSumbit] = useState<boolean>(false);
+    const [currentAddressId, setCurrentAddressId] = useState<number | null>(null);
+
+    const fetchUserProfile = async () => {
+        if (userId) {
+            const profileData = await getUserInfo(userId); // Gọi API để lấy thông tin người dùng
+            return profileData;
+        }
+        throw new Error('User ID is not provided');
+    };
+
+    useEffect(() => {
+        const getUserProfile = async () => {
+            try {
+                const profileData = await fetchUserProfile();
+
+                // Lưu address_id từ profile
+                if (profileData && profileData.address && profileData.address.address_id) {
+                    setCurrentAddressId(profileData.address.address_id);
+                }
+            } catch (error) {
+                setError("Failed to fetch user profile");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        getUserProfile();
+    }, [userId]);
+
     // Fetch Address details by ID
     useEffect(() => {
         const getAddressDetails = async () => {
             if (userId) {
                 try {
-                const data = await fetchAddressById(addressId, userId); // Pass customerId here
+                const data = await fetchAddressById(addressId); // Pass customerId here
                 setAddress(data);
                 setSelectedDistrict(data.district);
                 setWard(data.ward);
                 setHomeNumber(data.home_number);
+
             } catch (error) {
                 setError("Failed to fetch address details");
             } finally {
@@ -84,7 +114,7 @@ const AddressDetail: React.FC = () => {
         };
         if (userId) {
         try {
-            await updateAddressById(addressId, userId, updatedAddress); // Pass customerId here
+            await updateAddressById(addressId, updatedAddress); // Pass customerId here
             alert("Address updated successfully!");
             navigate('/addresses'); // Navigate back to address list
         } catch (error) {
@@ -100,11 +130,11 @@ const AddressDetail: React.FC = () => {
     const handleDelete = async () => {
         if (userId) {
         try {
-            await deleteAddress(userId, addressId); // Pass customerId here
+            await deleteAddress( addressId); // Pass customerId here
             alert("Address deleted successfully!");
             navigate('/addresses'); // Navigate back to address list
         } catch (error) {
-            alert("Failed to delete address");
+            alert("You can not delete current address");
         }
         }else {
             setError('User ID is not available');
@@ -125,6 +155,17 @@ const AddressDetail: React.FC = () => {
         }
     };
 
+    const handleSetCurrentAddress = async () => {
+        try {
+            await setCurrentAddress(addressId); // Call API to set the current address
+            alert("Current address set successfully!");
+            setCurrentAddressId(addressId);
+        } catch (error) {
+            alert("Failed to set current address");
+        }
+    };
+    const isCurrentAddress = currentAddressId === addressId;
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -142,7 +183,11 @@ const AddressDetail: React.FC = () => {
 
                     <div className="form-container card w-100">
                         <div className="card-body">
-
+                            {isCurrentAddress && ( // Hiển thị thông báo nếu là current address
+                                <div className="alert alert-info fw-bold " style={{padding:"10px"}}>
+                                    This is your current address
+                                </div>
+                            )}
 
                             {/* District Select */}
                             <div className="mb-3">
@@ -198,6 +243,10 @@ const AddressDetail: React.FC = () => {
                                 <button className="btn btn-primary" onClick={handleUpdate}>Save</button>
                                 <button className="btn btn-secondary" onClick={handleCancel}>Cancel</button>
                                 <button className="btn btn-danger" onClick={handleDelete}>Delete</button>
+                                {!isCurrentAddress && (<button className="btn btn-success" onClick={handleSetCurrentAddress}>Set Current
+                                    Address
+                                </button>
+                                )}
                             </div>
                         </div>
                     </div>

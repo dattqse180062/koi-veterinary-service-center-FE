@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:8080/api/v1/users/veterinarians';
 const API_BASE_URL = 'http://localhost:8080/api/v1/users';
+const API_CERTIFICATE = 'http://localhost:8080/api/v1/certificates';
 // Function to fetch veterinarians
 export const fetchVets = async () => {
     try {
@@ -52,4 +53,25 @@ export const updateUserAddress = async (userId: number, addressData: any): Promi
         console.error('Error updating user address:', error);
         throw error;
     }
+};
+
+// Function to upload a certificate
+export const uploadCertificate = async (veterinarianId: number, certificateName: string, file: File) => {
+    const formData = new FormData();
+    formData.append('certificateName', certificateName);
+    formData.append('file', file);
+
+    const response = await axios.post(`${API_CERTIFICATE}/veterinarians/${veterinarianId}`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+
+    return response.data; // Returns the path or response from the server
+};
+
+// Function to get certificates
+export const getCertificates = async (veterinarianId: number) => {
+    const response = await axios.get(`${API_CERTIFICATE}/veterinarians/${veterinarianId}`);
+    return response.data; // Returns the list of certificates
 };

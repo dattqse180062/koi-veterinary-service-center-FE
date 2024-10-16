@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/layout/Sidebar";
 import { useLocation } from "react-router-dom";
-import { getUserProfile, updateUserProfile, updateUserAddress } from "../api/vetApi"; // Import the API functions
+import {getUserProfile, updateUserProfile, updateUserAddress, getCertificates, uploadCertificate} from "../api/vetApi"; // Import the API functions
 import '../styles/Profile.css'; // Create a new CSS file for specific styles
 
 // Define interfaces for veterinarian data
@@ -22,6 +22,13 @@ interface VetData {
     image?: string; // Optional field for the veterinarian's image
 }
 
+interface Certificate {
+    certificate_id: number;
+    certificate_name: string;
+    file_path: string; // Assuming the response contains this field
+}
+
+
 const VetDetails: React.FC = () => {
     const location = useLocation();
     const { vetId } = location.state; // Get veterinarian ID passed via state
@@ -36,7 +43,12 @@ const VetDetails: React.FC = () => {
     const [errorPhone, setErrorPhone] = useState("");
     const [errorAddress, setErrorAddress] = useState("");
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [email, setEmail] = useState("");
 
+    const [certificates, setCertificates] = useState<Certificate[]>([]);
+    const [certificateName, setCertificateName] = useState("");
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [showCertificateDiv, setShowCertificateDiv] = useState(false);
     // Fetch veterinarian data from API on component mount
     useEffect(() => {
         const fetchVetData = async () => {
@@ -58,6 +70,43 @@ const VetDetails: React.FC = () => {
 
         fetchVetData();
     }, [vetId]);
+
+    // Fetch certificates from the API
+    const fetchCertificates = async () => {
+        try {
+            const certs = await getCertificates(vetId);
+            setCertificates(certs);
+        } catch (error) {
+            console.error('Failed to fetch certificates:', error);
+        }
+    };
+
+    // Handle file selection for certificate upload
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            setSelectedFile(file);
+        }
+    };
+
+    // Handle uploading a certificate
+    const handleUploadCertificate = async () => {
+        if (!selectedFile || !certificateName) {
+            alert("Please enter a certificate name and select a file.");
+            return;
+        }
+
+        try {
+            await uploadCertificate(vetId, certificateName, selectedFile);
+            alert('Certificate uploaded successfully!');
+            setCertificateName(""); // Clear the input
+            setSelectedFile(null); // Clear file selection
+            await fetchCertificates(); // Refresh the list of certificates
+        } catch (error) {
+            console.error('Failed to upload certificate:', error);
+        }
+    };
+
 
     // Handle image upload
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,19 +149,20 @@ const VetDetails: React.FC = () => {
         validatePhone();
         const isAddressValid = validateAddress();
 
-        if (errorPhone || !isAddressValid) return; // Ensure no validation errors
+        if (errorPhone || !isAddressValid) return;
 
         try {
             const updatedProfileData = {
                 firstname,
                 lastname,
                 phone,
-                image: selectedImage, // Include image if uploaded
+                email,
+                image: selectedImage,
             };
 
-            await updateUserProfile(vetId, updatedProfileData); // Call the update profile API
+            await updateUserProfile(vetId, updatedProfileData);
 
-            // Only update address if at least one field is filled
+
             const addressData = { district, city, ward, homeNumber };
             const anyAddressFieldFilled = [district, city, ward, homeNumber].some(field => field.trim() !== "");
 
@@ -139,16 +189,25 @@ const VetDetails: React.FC = () => {
             setSelectedImage(vetData.image || null);
         }
     };
+    // Show/hide certificate input div
+
+    const toggleCertificateDiv = () => {
+        setShowCertificateDiv(!showCertificateDiv);
+        if (!showCertificateDiv) {
+            fetchCertificates(); // Fetch certificates when opening the modal
+        }
+    };
 
     return (
         <div className="d-flex profile-page">
             <Sidebar />
             <div className="flex-grow-1 bg-light" style={{ height: '100vh' }}>
                 <div className="profile-container">
+
                     <div className="image-section">
                         <div className="image-background">
                             {selectedImage ? (
-                                <img src={selectedImage} alt="Uploaded" className="uploaded-image" />
+                                <img src={selectedImage} alt="Uploaded" className="uploaded-image"/>
                             ) : (
                                 <div className="image-placeholder">No Image Selected</div>
                             )}
@@ -159,10 +218,14 @@ const VetDetails: React.FC = () => {
                                 type="file"
                                 accept="image/*"
                                 onChange={handleImageChange}
-                                style={{ display: 'none' }}
+                                style={{display: 'none'}}
                             />
                         </label>
+                        <button className="btn btn-success" onClick={toggleCertificateDiv}>
+                            Certificate
+                        </button>
                     </div>
+
                     <div className="form-section">
                         <form className="profile-form">
                             <div className="form-group">
@@ -175,9 +238,9 @@ const VetDetails: React.FC = () => {
                                 <input
                                     type="email"
                                     className="form-control input-field"
-                                    value={vetData?.email || ''} // Use empty string if vetData?.email is null
-                                    placeholder="Enter your email" // Add placeholder text
-                                    readOnly // Keep the field read-only
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)} // Update email state
+                                    placeholder="Enter your email"
                                 />
                             </div>
                             <div className="name-row">
@@ -226,12 +289,53 @@ const VetDetails: React.FC = () => {
                             {errorAddress && <div className="error-register">{errorAddress}</div>}
                             <div className="button-group">
                                 <div className="right-buttons">
-                                    <button type="button" className="btn btn-secondary" onClick={handleCancel}>Cancel</button>
+                                    <button type="button" className="btn btn-secondary" onClick={handleCancel}>Cancel
+                                    </button>
                                     <button type="button" className="btn btn-primary" onClick={handleSave}>Save</button>
+
                                 </div>
                             </div>
+
                         </form>
                     </div>
+                    {/* Certificate Button */}
+
+
+                    {/* Certificate Modal */}
+                    {showCertificateDiv && (
+                        <div className="certificate-modal">
+                            <div className="modal-backdrop" onClick={toggleCertificateDiv}></div>
+                            <div className="modal-content">
+                                <h2>Add Certificate</h2>
+                                <form>
+                                    <div className="form-group">
+                                        <label>Certificate Name</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={certificateName}
+                                            onChange={(e) => setCertificateName(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Upload File</label>
+                                        <input type="file" accept="application/pdf" onChange={handleFileChange} />
+                                    </div>
+                                    <button type="button" className="btn btn-primary" onClick={handleUploadCertificate}>
+                                        Upload
+                                    </button>
+                                </form>
+                                <h3>Existing Certificates:</h3>
+                                <ul className="certificate-list">
+                                    {certificates.map(cert => (
+                                        <li key={cert.certificate_id}>
+                                            <a href={cert.file_path} target="_blank" rel="noopener noreferrer">{cert.certificate_name}</a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
