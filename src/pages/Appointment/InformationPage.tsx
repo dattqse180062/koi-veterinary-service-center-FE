@@ -35,7 +35,7 @@ const FillInformationPage: React.FC = () => {
         address: '',
         fish: '',
         description: '',
-        payment_method: 'ONLINE', // Default to online payment if service_id is 1
+        payment_method: 'VN_PAY', // Default to online payment if service_id is 1
         address_id: null as number | null,
         fish_id: null as number | null,
         district: '',
@@ -53,14 +53,18 @@ const FillInformationPage: React.FC = () => {
     const slotDate = useSelector((state: any) => state.slot);
 
     useEffect(() => {
-        // Nếu service là null, điều hướng về trang chọn service
-        if (!slotDate) {
-            alert("You should choose slot first!!!")
-            navigate('/appointment/slot-date-selection');
-
+        // If service is null, navigate to service selection
+        if (!service) {
+            alert("You need to choose a service first!");
+            navigate('/appointment/service-selection');
         }
-    }, [service, navigate]);
-    const service_id = service.service_id;
+        // If service is present but slotDate is null, navigate to slot date selection
+        else if (!slotDate) {
+            alert("You should choose a slot first!");
+            navigate('/appointment/slot-date-selection');
+        }
+    }, [service, slotDate, navigate]);
+    const service_id = service?.service_id;
 
     useEffect(() => {
         const getUserProfile = async () => {
@@ -237,7 +241,7 @@ const FillInformationPage: React.FC = () => {
                 <form onSubmit={handleNext} className="profile-form ">
                     <div className="row">
                         <div>
-                            <h5 className="mb-3" style={{fontWeight: "bold", color: "#02033B", fontSize: "2.6rem"}}>
+                            <h5 className="mb-3" style={{fontWeight: "bold", color: "#02033B", fontSize: "2.7rem"}}>
                                 Fill Information
                             </h5>
                         </div>
@@ -349,10 +353,10 @@ const FillInformationPage: React.FC = () => {
                                         className="form-check-input"
                                         type="radio"
                                         name="payment_method"
-                                        value="ONLINE"
-                                        checked={formData.payment_method === 'ONLINE'}
+                                        value="VN_PAY"
+                                        checked={formData.payment_method === 'VN_PAY'}
                                         onChange={handleChange}
-                                        // disabled={service_id === 1 ? false : false} // Only enable online payment if service_id is 1
+
                                     />
                                     <label className="form-check-label">Pay Online</label>
                                 </div>

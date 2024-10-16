@@ -76,6 +76,7 @@ const AvailableSlot: React.FC = () => {
         // Fetch available slots
         axios.get(`http://localhost:8080/api/v1/slots/available`)
             .then((response) => {
+                console.log(response)
                 // Filter available slots based on date range criteria
                 const filteredSlots = response.data.filter((slot: any) => {
                     const slotDate = new Date(`${slot.year}-${slot.month}-${slot.day}`);
@@ -125,7 +126,7 @@ const AvailableSlot: React.FC = () => {
                 </button>
                 <div className="row justify-content-center">
                     <div className="col-md-7">
-                        <h3 className="text-start" style={{fontWeight: "bold", color: "#02033B", fontSize: "2.5rem"}}>
+                        <h3 className="text-start" style={{fontWeight: "bold", color: "#02033B", fontSize: "2.7rem"}}>
                         Available Slots
                         </h3>
                         <div className="d-flex justify-content-between align-items-center mb-2">
