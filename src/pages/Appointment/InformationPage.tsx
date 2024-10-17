@@ -95,7 +95,7 @@ const FillInformationPage: React.FC = () => {
         const getAddresses = async () => {
             if (userId) {
                 try {
-                    const data = await fetchAddresses(userId); // Gọi API để lấy danh sách địa chỉ
+                    const data = await fetchAddresses(); // Gọi API để lấy danh sách địa chỉ
                     setAddresses(data); // Cập nhật state với dữ liệu địa chỉ
                 } catch (err) {
                     setError('Failed to fetch addresses');

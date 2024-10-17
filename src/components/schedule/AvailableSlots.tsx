@@ -45,20 +45,6 @@ const generateWeeksOfYear = (selectedYear: number) => {
     return weeks;
 };
 
-const isDateWithinRange = (date: Date): boolean => {
-    const today = new Date();
-    const maxDate = new Date(today);
-    const minDate = new Date(today);
-
-    // Set max date to 3 months from today
-    maxDate.setMonth(maxDate.getMonth() + 3);
-
-    // Set min date to 3 hours from now
-    minDate.setHours(minDate.getHours() + 3);
-
-    return date <= maxDate && date >= minDate;
-};
-
 const AvailableSlot: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -77,12 +63,8 @@ const AvailableSlot: React.FC = () => {
         axios.get(`http://localhost:8080/api/v1/slots/available`)
             .then((response) => {
                 console.log(response)
-                // Filter available slots based on date range criteria
-                const filteredSlots = response.data.filter((slot: any) => {
-                    const slotDate = new Date(`${slot.year}-${slot.month}-${slot.day}`);
-                    return isDateWithinRange(slotDate);
-                });
-                setAvailableSlots(filteredSlots);
+
+                setAvailableSlots(response.data);
             })
             .catch((error) => {
                 console.error('Error fetching available slots:', error);

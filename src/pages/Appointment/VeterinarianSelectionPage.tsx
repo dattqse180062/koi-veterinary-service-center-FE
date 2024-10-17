@@ -42,18 +42,7 @@ const ChooseVeterinarianPage: React.FC = () => {
             setDoctors(response.data); // Assume the API response is an array of doctors
 
             // Fetch feedback for each doctor
-            response.data.forEach(async (doctor: Doctor) => {
-                const feedbackResponse = await axios.get(`http://localhost:8080/api/v1/feedbacks/veterinarian/${doctor.user_id}`);
-                const feedbacks: Feedback[] = feedbackResponse.data;
 
-                // Calculate average rating
-                if (feedbacks.length > 0) {
-                    const averageRating = feedbacks.reduce((sum, feedback) => sum + feedback.rating, 0) / feedbacks.length;
-                    setRatings((prev) => ({ ...prev, [doctor.user_id]: averageRating }));
-                } else {
-                    setRatings((prev) => ({ ...prev, [doctor.user_id]: 0 })); // If no feedback
-                }
-            });
         } catch (error) {
             console.error('Error fetching doctors:', error);
         }
@@ -154,12 +143,7 @@ const ChooseVeterinarianPage: React.FC = () => {
                                 <div className="card-body text-center">
                                     <h5 className="card-title text-center font-weight-bold"
                                         style={{marginLeft: "25px"}}>{`${doctor.first_name} ${doctor.last_name}`}</h5>
-                                    <Rating
-                                        name={`rating-${doctor.user_id}`} // Unique name for each doctor
-                                        value={ratings[doctor.user_id] || 0} // Average rating
-                                        readOnly // Read-only mode
-                                        precision={0.5} // Precision for rating
-                                    />
+
                                 </div>
                             </div>
                         </div>

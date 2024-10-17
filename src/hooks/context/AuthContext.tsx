@@ -42,7 +42,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                     logout(); // Token expired, log out the user
                 } else {
                     setIsAuthenticated(true);
-                    setUser({userId: decodedToken.userId, roleId: decodedToken.scope});
+                    setUser({userId: decodedToken.userId, roleId: decodedToken.role});
                     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                 }
             } catch (error) {
@@ -63,7 +63,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             logout(); // Token expired, log out the user
         } else {
             setIsAuthenticated(true);
-            setUser({roleId: decodedToken.scope, userId: decodedToken.userId});
+            setUser({roleId: decodedToken.role, userId: decodedToken.userId});
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         }
     };

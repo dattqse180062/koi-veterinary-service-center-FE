@@ -344,19 +344,7 @@ const generateWeeksOfYear = (selectedYear: number) => {
     return weeks;
 };
 
-const isDateWithinRange = (date: Date): boolean => {
-    const today = new Date();
-    const maxDate = new Date(today);
-    const minDate = new Date(today);
 
-    // Set max date to 3 months from today
-    maxDate.setMonth(maxDate.getMonth() + 3);
-
-    // Set min date to 3 hours from now
-    minDate.setHours(minDate.getHours() + 3);
-
-    return date <= maxDate && date >= minDate;
-};
 
 const AvailableSlot: React.FC = () => {
     const navigate = useNavigate();
@@ -379,12 +367,8 @@ const AvailableSlot: React.FC = () => {
         axios.get(`http://localhost:8080/api/v1/slots/${doctor.user_id}/available`)
             .then((response) => {
                 console.log(response)
-                // Filter available slots based on date range criteria
-                const filteredSlots = response.data.filter((slot: any) => {
-                    const slotDate = new Date(`${slot.year}-${slot.month}-${slot.day}`);
-                    return isDateWithinRange(slotDate);
-                });
-                setAvailableSlots(filteredSlots);
+
+                setAvailableSlots(response.data);
             })
             .catch((error) => {
                 console.error('Error fetching available slots:', error);
@@ -449,7 +433,7 @@ const AvailableSlot: React.FC = () => {
                     </div>
                     <div className="col-md-7">
                         <h3 className="text-start" style={{fontWeight: "bold", color: "#02033B", fontSize: "2.7rem"}}>
-                            Available Slots
+                            Doctor Schedule
                         </h3>
                         <div className="d-flex justify-content-between align-items-center mb-2">
                             <div className="d-flex align-items-center">

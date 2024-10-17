@@ -4,9 +4,9 @@ import axios from 'axios';
 const BASE_URL = 'http://localhost:8080/api/v1/addresses';
 const DISTRICT_URL = 'http://localhost:8080/api/v1';
 // API để lấy tất cả địa chỉ của khách hàng
-export const fetchAddresses = async (customerId: number) => {
+export const fetchAddresses = async () => {
     try {
-        const response = await axios.get(`${BASE_URL}/customer/${customerId}`);
+        const response = await axios.get(`${BASE_URL}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching addresses:', error);
