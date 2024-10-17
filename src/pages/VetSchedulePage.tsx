@@ -60,6 +60,7 @@ const DoctorSchedule: React.FC = () => {
     const { user } = useAuth();
     const vetId = user?.userId;
     const navigate = useNavigate();
+    
 
     const currentYear = new Date().getUTCFullYear();
     const [selectedYear, setSelectedYear] = useState(currentYear);
