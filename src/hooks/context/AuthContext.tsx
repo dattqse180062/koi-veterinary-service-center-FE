@@ -38,7 +38,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             try {
                 const decodedToken: any = jwtDecode(token);
                 setIsAuthenticated(true);
-                setUser({ userId: decodedToken.userId, roleId: decodedToken.role });
+                setUser({ userId: decodedToken.userId, roleId: decodedToken.role }); // fixed từ role sang scope cho đỡ 403 ngập mồm
                 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             } catch (error) {
                 console.error("Invalid token:", error);
