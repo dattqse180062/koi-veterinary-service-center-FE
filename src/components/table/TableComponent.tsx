@@ -9,27 +9,13 @@ interface TableComponentProps {
     columns: string[];
     columnHeaders: string[];
     data: any[];
-    actions?: { label: string; icon: string; onClick: (id: number, fullName?: string) => void }[]; // Actions prop
+    actions?: { label: string; icon: string; onClick: (id: number, fullName?: string, slotId?: number) => void }[]; // Actions prop
     isKoiFishPage?: boolean; // Thêm prop
-
     isAppointmentPage?: boolean; // Thêm prop
     isAddressPage?: boolean; // Thêm prop
     isFeedbackPage?: boolean; // Thêm prop
     rowsPerPage?: number; // Optional prop for rows per page
 } // Define the TableComponentProps interface
-
-// Function to format DateTime
-// const formatDateTime = (dateString: string) => {
-//     const options: Intl.DateTimeFormatOptions = {
-//       day: '2-digit',
-//       month: '2-digit',
-//       year: 'numeric',
-//       hour: '2-digit',
-//       minute: '2-digit',
-//       second: '2-digit',
-//     };
-//     return new Date(dateString).toLocaleString('vi-VN', options);
-//   };
 
 
 const TableComponent: React.FC<TableComponentProps> = ({ columns, columnHeaders, data, actions, isKoiFishPage, isAddressPage, isAppointmentPage, isFeedbackPage ,  rowsPerPage = 5 }) => {
@@ -68,7 +54,12 @@ const TableComponent: React.FC<TableComponentProps> = ({ columns, columnHeaders,
                                 ...item
                                 // datetime: formatDateTime(item.date_time) // Format DateTime column
                             }}
-                            actions={actions} // Pass actions prop
+                            actions={
+                                actions?.map((action) => ({
+                                    ...action,
+                                    onClick: () => action.onClick(item[columns[0]], item.full_name, item.slot_id) // Assuming first column is ID
+                                }))
+                            } // Pass actions prop
                             isKoiFishPage={isKoiFishPage} // Truyền prop vào đây
                             isAddressPage={isAddressPage} // Truyền prop vào đây
                             isAppointmentPage={isAppointmentPage} // Truyền prop vào đây
