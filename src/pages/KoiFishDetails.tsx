@@ -125,12 +125,12 @@ const KoiDetail: React.FC = () => {
                                 </div>
                                 <div className="col-md-8 col-sm-6 d-flex align-items-end gap-3 mt-2">
                                     <div className="form-check">
-                                        <input className="form-check-input" type="radio" name="gender" value="male" checked={koiData.gender === 'male'}
+                                        <input className="form-check-input" type="radio" name="gender" value="MALE" checked={koiData.gender === 'MALE'}
                                                onChange={(e) => setKoiData({ ...koiData, gender: e.target.value })} />
                                         <label className="form-check-label" htmlFor="male">Male</label>
                                     </div>
                                     <div className="form-check">
-                                        <input className="form-check-input" type="radio" name="gender" value="female" checked={koiData.gender === 'female'}
+                                        <input className="form-check-input" type="radio" name="gender" value="FEMALE" checked={koiData.gender === 'FEMALE'}
                                                onChange={(e) => setKoiData({ ...koiData, gender: e.target.value })} />
                                         <label className="form-check-label" htmlFor="female">Female</label>
                                     </div>
