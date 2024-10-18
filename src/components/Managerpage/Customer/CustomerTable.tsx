@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 // Define the interface for the Customer object
 import { useNavigate } from 'react-router-dom';
+import Sidebar from '../../layout/Sidebar';
+import TableComponent from '../../table/TableComponent';
+
 
 interface Customer {
   avatar: string;   // URL or path to the customer's avatar image
@@ -12,29 +15,32 @@ interface Customer {
 }
 
 // Initial list of customers, with sample data
-const initialCustomers: Customer[] = [
-  { avatar: 'passed-stamp_1017-8239.jpg', customerId: 1, firstName: 'John', lastName: 'Doe', email: 'john@example.com', phoneNumber: '1234567890' },
-  { avatar: 'passed-stamp_1017-8239.jpg', customerId: 2, firstName: 'Jane', lastName: 'Smith', email: 'jane@example.com', phoneNumber: '9876543210' },
-  { avatar: 'passed-stamp_1017-8239.jpg', customerId: 3, firstName: 'John', lastName: 'Doe', email: 'john@example.com', phoneNumber: '1234567890' },
-  { avatar: 'passed-stamp_1017-8239.jpg', customerId: 4, firstName: 'Emily', lastName: 'Johnson', email: 'emily@example.com', phoneNumber: '2345678901' },
-  { avatar: 'passed-stamp_1017-8239.jpg', customerId: 5, firstName: 'Michael', lastName: 'Brown', email: 'michael@example.com', phoneNumber: '3456789012' },
-  { avatar: 'passed-stamp_1017-8239.jpg', customerId: 6, firstName: 'Sarah', lastName: 'Davis', email: 'sarah@example.com', phoneNumber: '4567890123' },
-  { avatar: 'passed-stamp_1017-8239.jpg', customerId: 7, firstName: 'David', lastName: 'Wilson', email: 'david@example.com', phoneNumber: '5678901234' },
-  { avatar: 'passed-stamp_1017-8239.jpg', customerId: 8, firstName: 'Emma', lastName: 'Taylor', email: 'emma@example.com', phoneNumber: '6789012345' },
-  { avatar: 'passed-stamp_1017-8239.jpg', customerId: 9, firstName: 'Daniel', lastName: 'Anderson', email: 'daniel@example.com', phoneNumber: '7890123456' },
-  { avatar: 'passed-stamp_1017-8239.jpg', customerId: 10, firstName: 'Olivia', lastName: 'Thomas', email: 'olivia@example.com', phoneNumber: '8901234567' },
-  { avatar: 'passed-stamp_1017-8239.jpg', customerId: 11, firstName: 'James', lastName: 'Jackson', email: 'james@example.com', phoneNumber: '9012345678' },
-  { avatar: 'passed-stamp_1017-8239.jpg', customerId: 12, firstName: 'Sophia', lastName: 'White', email: 'sophia@example.com', phoneNumber: '0123456789' }
-  // Add more customers if necessary
-];
+// const initialCustomers: Customer[] = [
+//   { avatar: 'passed-stamp_1017-8239.jpg', customerId: 1, firstName: 'John', lastName: 'Doe', email: 'john@example.com', phoneNumber: '1234567890' },
+//   { avatar: 'passed-stamp_1017-8239.jpg', customerId: 2, firstName: 'Jane', lastName: 'Smith', email: 'jane@example.com', phoneNumber: '9876543210' },
+//   { avatar: 'passed-stamp_1017-8239.jpg', customerId: 3, firstName: 'John', lastName: 'Doe', email: 'john@example.com', phoneNumber: '1234567890' },
+//   { avatar: 'passed-stamp_1017-8239.jpg', customerId: 4, firstName: 'Emily', lastName: 'Johnson', email: 'emily@example.com', phoneNumber: '2345678901' },
+//   { avatar: 'passed-stamp_1017-8239.jpg', customerId: 5, firstName: 'Michael', lastName: 'Brown', email: 'michael@example.com', phoneNumber: '3456789012' },
+//   { avatar: 'passed-stamp_1017-8239.jpg', customerId: 6, firstName: 'Sarah', lastName: 'Davis', email: 'sarah@example.com', phoneNumber: '4567890123' },
+//   { avatar: 'passed-stamp_1017-8239.jpg', customerId: 7, firstName: 'David', lastName: 'Wilson', email: 'david@example.com', phoneNumber: '5678901234' },
+//   { avatar: 'passed-stamp_1017-8239.jpg', customerId: 8, firstName: 'Emma', lastName: 'Taylor', email: 'emma@example.com', phoneNumber: '6789012345' },
+//   { avatar: 'passed-stamp_1017-8239.jpg', customerId: 9, firstName: 'Daniel', lastName: 'Anderson', email: 'daniel@example.com', phoneNumber: '7890123456' },
+//   { avatar: 'passed-stamp_1017-8239.jpg', customerId: 10, firstName: 'Olivia', lastName: 'Thomas', email: 'olivia@example.com', phoneNumber: '8901234567' },
+//   { avatar: 'passed-stamp_1017-8239.jpg', customerId: 11, firstName: 'James', lastName: 'Jackson', email: 'james@example.com', phoneNumber: '9012345678' },
+//   { avatar: 'passed-stamp_1017-8239.jpg', customerId: 12, firstName: 'Sophia', lastName: 'White', email: 'sophia@example.com', phoneNumber: '0123456789' }
+//   // Add more customers if necessary
+// ];
 
 const CustomerAccountTable: React.FC = () => {
-  const [customers, setCustomers] = useState<Customer[]>(initialCustomers); // State to store the list of customers
+  const [customers, setCustomers] = useState<Customer[]>([]); // State to store the list of customers
+  const columns = ['avatar', 'customerId', 'firstName', 'lastName', 'email', 'phoneNumber'];
+  const columnHeaders = ['Avatar', 'Full Name', 'First name', 'Last name', 'Email', 'Phone Number'];
   const [currentPage, setCurrentPage] = useState<number>(1); // State to store the current page number
   const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false); // State to show/hide the delete confirmation modal
   const [showAddModal, setShowAddModal] = useState(false); // State to show/hide the add new customer modal
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null); // State to store the selected customer
   const [showDetailModal, setShowDetailModal] = useState(false); // State to show/hide the view details modal
+
   const [newCustomer, setNewCustomer] = useState<Customer>({ // State to store the new customer data
     avatar: '',
     customerId: customers.length + 1,
@@ -89,8 +95,8 @@ const CustomerAccountTable: React.FC = () => {
 
   const handleAddCustomerClick = () => {
     navigate('/add-customer');
-
   };
+  
   // Handle opening the delete confirmation modal
   const handleDeleteClick = (customer: Customer) => {
     setSelectedCustomer(customer); // Set the selected customer for deletion
@@ -103,70 +109,52 @@ const CustomerAccountTable: React.FC = () => {
     setNewCustomer({ ...newCustomer, [name]: value });
   };
 
+  const actions = [
+    {
+      label: 'View details',
+      icon: 'fas fa-calendar-alt',
+      onClick: handleViewDetails, // This is now compatible
+    },
+    {
+      label: 'Delete',
+      icon: 'fas fa-info-circle',
+      onClick: handleDeleteCustomer,
+    },
+  ];
+
   return (
-    <div style={{width:'80%'}}>
-      <h5 style={{ paddingTop: '65px' }}>Customer Management</h5>
-      {/* Header of content */}
-      <div className="d-flex mb-3">
-        {/* Search customer */}
-        <div className="input-group input-group-sm me-2" style={{ width: '200px' }}>
-          <input type="text" className="form-control" placeholder="Search customer..." />
+    <div className="d-flex flex-grow-1">
+      <Sidebar />
+      <div className='container' style={{ marginTop: "6rem" }}>
+        <div className='card' style={{ width: '100%' }}>
+          {/* Header of content */}
+          <div className='card-header'>
+            <h5 className='text-start' style={{ fontWeight: "bold", color: "#02033B", fontSize: "2rem", padding: "1.2rem" }}>Customer Management</h5>
+            {/* Search customer */}
+            {/* <div className="input-group input-group-sm me-2" style={{ width: '200px' }}>
+              <input type="text" className="form-control" placeholder="Search customer..." />
+            </div> */}
+            {/* New Customer Button */}
+            {/* <button className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#newCustomerModal" >
+              + New Customer
+            </button> */}
+          </div>
+          <div className='card-body'>
+            <TableComponent
+              columns={columns}
+              columnHeaders={columnHeaders}
+              data={customers}
+              actions={actions} // Actions for Veterinarians
+              isKoiFishPage={false}
+            />
+          </div>
+         
         </div>
-        {/* New Customer Button */}
-        <button className="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#newCustomerModal" >
-          + New Customer
-        </button>
+
+       
+        
+
       </div>
-
-      <table className="table table-hover">
-        <thead>
-          <tr>
-            <th>Avatar</th>
-            <th>Full Name</th>
-            <th>Email</th>
-            <th>Phone Number</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentCustomers.map((customer) => (
-            <tr key={customer.customerId}>
-              <td><img src={customer.avatar} alt={customer.firstName} className="rounded-circle" style={{ width: '50px', height: '50px' }} /></td>
-              <td>{`${customer.firstName} ${customer.lastName}`}</td>
-              <td>{customer.email}</td>
-              <td>{customer.phoneNumber}</td>
-              <td>
-                <div className="dropdown">
-                  <button className="btn btn-light btn-sm dropdown-toggle" type="button" id="dropdown-basic" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i className="bi bi-three-dots-vertical"></i>
-                  </button>
-                  <ul className="dropdown-menu" aria-labelledby="dropdown-basic">
-                    <li><a className="dropdown-item" href="#" onClick={() => handleViewDetails(customer.customerId)}>View Detail</a></li>
-                    <li><a className="dropdown-item" href="#" onClick={() => handleDeleteClick(customer)}>Delete</a></li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* Pagination */}
-      <nav aria-label="Page navigation">
-        <ul className="pagination justify-content-center">
-          <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-            <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>Previous</button>
-          </li>
-          {[...Array(totalPages)].map((_, index) => (
-            <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
-              <button className="page-link" onClick={() => handlePageChange(index + 1)}>{index + 1}</button>
-            </li>
-          ))}
-          <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-            <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}>Next</button>
-          </li>
-        </ul>
-      </nav>
 
       {/* Modal for View Details */}
       {selectedCustomer && (
