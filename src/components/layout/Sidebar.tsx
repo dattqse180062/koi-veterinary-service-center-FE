@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
-
+import { Route, Routes } from 'react-router-dom';
+import RoleBasedGuard from '../../guards/RoleBasedGuard';
 import { Link } from 'react-router-dom';
 import '../../styles/Sidebar.css'; // Import your CSS for additional styling if needed
 
@@ -22,6 +23,22 @@ const Sidebar: React.FC = () => {
                     </div>
                 </Link>
 
+                {/* Manager Menu */}
+                <Link to="/customer" className="nav-link text-secondary">
+                    <div className="d-flex align-items-center">
+                        <div className="icon-placeholder"></div>
+                        <span className="fw-bold ms-2">Customer</span>
+                    </div>
+                </Link>
+
+                <Link to="/feedback" className="nav-link text-secondary">
+                    <div className="d-flex align-items-center">
+                        <div className="icon-placeholder"></div>
+                        <span className="fw-bold ms-2">Feedback</span>
+                    </div>
+                </Link>
+
+                
                 <Link to="/vetshift" className="nav-link text-secondary">
                     <div className="d-flex align-items-center">
                         <div className="icon-placeholder"></div>
@@ -73,12 +90,15 @@ const Sidebar: React.FC = () => {
                         <span className="fw-bold ms-2">Settings</span>
                     </div>
                 </Link>
+
                 <Link to="/koi" className="nav-link text-secondary">
                     <div className="d-flex align-items-center">
                         <div className="icon-placeholder"></div>
                         <span className="fw-bold ms-2">Koi List</span>
                     </div>
                 </Link>
+
+
             </div>
         </div>
     );

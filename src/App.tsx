@@ -14,17 +14,9 @@ import InformationPage from "./pages/Appointment/InformationPage";
 import OrderConfirmPage from "./pages/Appointment/OrderConfirmPage";
 
 
-
-
-
-import AppointmentCustomerHistoryTable from './components/Customerpage/Appointment/AppointmentTable';
 import AppointmentHistoryTable from './components/Managerpage/Appointment/AppointmentHistoryTable';
-import AppointmentDetailsPage from './components/Customerpage/Appointment/AppointmentDetailsPage';
 import AppointmentHistoryDetailsPage from './components/Managerpage/Appointment/AppointmentDetailsPage';
 import FeedbackDetailPage from './components/Veterinarianpage/FeedbackAndDetails/FeedbackDetailsPage';
-import CustomerAccountTable from './components/Managerpage/Customer/CustomerTable';
-import CustomerDetailPage from './components/Managerpage/Customer/CustomerDetailsPage';
-import FeedbackTable from './components/Managerpage/FeebackAndRating/FeedbackTable';
 import FeedbackDetailPageForManager from './components/Managerpage/FeebackAndRating/FeedbackDetailsForManager';
 import AddressManagementPage from "./pages/AddressManagementPage";
 import AddressDetails from "./pages/AddressDetails";
@@ -48,6 +40,17 @@ const ManagerPage = lazy(() => import("./pages/ManagerPage"));
 const VeterinarianPage = lazy(() => import("./pages/VeterinarianPage"));
 const VetDetails = lazy(() => import("./pages/VetDetails"));
 
+
+// NEW
+const CustomerManagementPage = lazy(() => import("./pages/CustomerManagementPage"))
+const CustomerDetailPage = lazy(() => import("./pages/CustomerDetails"))
+const FeedbackManagementPage = lazy(() => import("./pages/FeedbackManagementPage"))
+const FeedbackDetail = lazy(() => import("./pages/FeedbackDetails"))
+const StaffAppointment = lazy(() => import("./pages/StaffAppointment"))
+const StaffAppointmentDetails = lazy(() => import("./pages/StaffAppointmentDetails"))
+const ManagerAppointment = lazy(() => import("./pages/ManagerAppointment"))
+
+
 // Define a higher-order component with authentication
 const withAuth = (Component: React.ComponentType) => (
     <AuthGuard>
@@ -70,39 +73,53 @@ function App() {
         <div className="App">
             <AuthProvider>
                 <Router>
-                    <Navbar/>
+                    <Navbar />
                     <Suspense fallback={<div>Loading...</div>}>
-                    <Routes>
-                        {/* Public routes */}
-                        <Route path="/login" element={<DangNhapNguoiDung />} />
-                        <Route path="/register" element={<RegisterPage />} />
+                        <Routes>
+                            {/* Public routes */}
+                            <Route path="/login" element={<DangNhapNguoiDung />} />
+                            <Route path="/register" element={<RegisterPage />} />
+                            <Route path="/" element={<HomePage />} />
+                            <Route path="/no-access" element={<UnauthorizedPage />} />
 
-                        <Route path="/" element={<HomePage />} />
-                        <Route path="/no-access" element={<UnauthorizedPage />} />
+                            {/* Authenticated routes */}
+                            <Route path="/settings" element={withAuth(ProfilePage)} />
+                            <Route path="/password-change" element={withAuth(PasswordChangePage)} />
 
-                        {/* Authenticated routes */}
-                        <Route path="/settings" element={withAuth(ProfilePage)} />
-                        <Route path="/password-change" element={withAuth(PasswordChangePage)} />
+                            {/* Customer routes */}
+                            <Route path="/koi" element={withRole(KoiFishPage, ['CUS'])} />
+                            <Route path="/add-koifish" element={withRole(AddKoiFishPage, ['CUS'])} />
+                            <Route path="/koi-details" element={withRole(KoiDetails, ['CUS'])} />
 
-                        {/* Customer routes */}
-                        <Route path="/koi" element={withRole(KoiFishPage, ['CUS'])} />
-                        <Route path="/add-koifish" element={withRole(AddKoiFishPage, ['CUS'])} />
-                        <Route path="/koi-details" element={withRole(KoiDetails, ['CUS'])} />
+                            {/* Make appointment  */}
+                            <Route path="/appointment/service-selection" element={withRole(ServiceSelectionPage, ['CUS'])} />
+                            <Route path="/appointment/vet-selection" element={withRole(VeterinarianSelectionPage, ['CUS'])} />
+                            <Route path="/appointment/slot-date-selection" element={withRole(SlotDateSelectionPage, ['CUS'])} />
+                            <Route path="/appointment/fill-information" element={withRole(InformationPage, ['CUS'])} />
+                            <Route path="/appointment/order-confirm" element={withRole(OrderConfirmPage, ['CUS'])} />
 
-                        {/* Make appointment  */}
-                        <Route path="/appointment/service-selection" element={withRole(ServiceSelectionPage, ['CUS'])} />
-                        <Route path="/appointment/vet-selection" element={withRole(VeterinarianSelectionPage, ['CUS'])} />
-                        <Route path="/appointment/slot-date-selection" element={withRole(SlotDateSelectionPage, ['CUS'])} />
-                        <Route path="/appointment/fill-information" element={withRole(InformationPage, ['CUS'])} />
-                        <Route path="/appointment/order-confirm" element={withRole(OrderConfirmPage, ['CUS'])} />
+                            {/* Manager routes */}
+                            <Route path="/vetshift" element={withRole(VetShiftSchePage, ['MAN'])} />
+                            <Route path="/vet-details" element={withRole(VetDetails, ['MAN'])} />
+                            <Route path="/vetsche" element={withRole(ViewScheduleOfVetPage, ['MAN'])} />
+                            <Route path="/service-pricing" element={withRole(ServicePricingPage, ['MAN'])} />
+                            <Route path="/transport-pricing" element={withRole(TransportationPricingPage, ['MAN'])} />
+                            <Route path="/customer" element={withRole(CustomerManagementPage, ['MAN'])} />
+                            <Route path="/customer-details" element={withRole(CustomerDetailPage, ['MAN'])} />
+                            <Route path="/feedback" element={withRole(FeedbackManagementPage, ['MAN'])} />
+                            <Route path="/feedback-details" element={withRole(FeedbackDetail, ['MAN'])} />
+                            <Route path="/history" element={withRole(ManagerAppointment, ['MAN'])} />
+                            <Route path="/appointment" element={withRole(AppointmentHistoryTable, ['MAN'])} />
+                            <Route path="/appointment-details" element={withRole(AppointmentHistoryDetailsPage, ['MAN'])} />
 
-                        {/* Manager routes */}
-                        <Route path="/vetshift" element={withRole(VetShiftSchePage, ['MAN'])} />
-                        <Route path="/vet-details" element={withRole(VetDetails, ['MAN'])} />
-                        <Route path="/vetsche" element={withRole(ViewScheduleOfVetPage, ['MAN'])} />
-                        <Route path="/service-pricing" element={withRole(ServicePricingPage, ['MAN'])} />
-                        <Route path="/transport-pricing" element={withRole(TransportationPricingPage, ['MAN'])} />
-                    </Routes>
+                            {/* Staff routes */}
+                            <Route path="/my-appointment" element={withRole(StaffAppointment, ['STA'])} />
+                            <Route path="/my-appointment-details" element={withRole(StaffAppointmentDetails, ['STA'])} />
+
+                            {/* Role: Veterinarian */}
+
+                        </Routes>
+
                     </Suspense>
                 </Router>
             </AuthProvider>
