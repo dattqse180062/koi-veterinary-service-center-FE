@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
-
+import {logout as logoutAPI} from "../../api/authService"
 interface User {
     roleId: string;
     userId: number;
@@ -69,7 +69,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
 
     // Đăng xuất: xóa token khỏi localStorage và reset trạng thái người dùng
-    const logout = () => {
+    const logout = async () => {
+        const token = localStorage.getItem('token');
+
+        if (token) {
+            try {
+                await logoutAPI(token); // Gọi API logout mới
+            } catch (error) {
+                console.error('Error logging out:', error);
+            }
+        }
+
         localStorage.removeItem('token');
         setIsAuthenticated(false);
         setUser(null);
