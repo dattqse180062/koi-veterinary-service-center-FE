@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import {createAppointment} from "../../api/appointmentApi";
+import {createAppointment} from "../../api/appointmentAPI";
 import {persistor} from "../../store/store";
 
 
