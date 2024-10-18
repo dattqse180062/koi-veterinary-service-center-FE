@@ -196,14 +196,15 @@ const AppointmentDetails: React.FC = () => {
                                 <p><strong>Phone:</strong> {appointment?.phone_number}</p>
                                 <p><strong>Description:</strong> {appointment?.description}</p>
 
-
                                 <h5 className="mt-3" style={{fontWeight: '900'}}>- Service Information</h5>
                                 <p><strong>Service id:</strong> {appointment.service?.service_id}</p>
                                 <p><strong>Service name:</strong> {appointment.service?.service_name}</p>
                                 <p><strong>Service Price:</strong> {appointment.service?.service_price} USD</p>
 
                                 <h5 className="mt-3" style={{fontWeight: '900'}}>- Veterinarian Information</h5>
-                                <p><strong>Name:</strong> {appointment.veterinarian?.first_name} {appointment.veterinarian?.last_name}</p>
+                                <p><strong>Name:</strong> {appointment.veterinarian?.first_name} {appointment.veterinarian?.last_name} 
+                                {/* thêm phần add bác sĩ ở đây */}
+                                </p>
 
                                 <h5 className="mt-3" style={{fontWeight: '900'}}>- Address Information: </h5>
                                 {appointment.address?.home_number || 'Not available'}, {appointment.address?.ward || 'Not available'}, {appointment.address?.district || 'Not available'}, {appointment.address?.city || 'Not available'}
