@@ -1,11 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getAppointmentDetails, updateAppointmentStatus, createMedicalReport, getMedicalReport } from '../../src/api/appointmentApi';
+import {
+    getAppointmentDetails,
+    getMedicalReport,
+    createMedicalReport,
+    getMedicines,
+    createPrescription,
+    fetchPrescriptionDetails
+} from '../../src/api/appointmentApi';
+import "../styles/Appointment.css";
+import {useAuth} from "../hooks/context/AuthContext";
 
-interface AppointmentDetailsProps {}
+interface Medicine {
+    medicine_id: number;
+    medicine_name: string;
+}
 
-interface StatusUpdate {
-    current_status: string;
+interface Prescription {
+    prescription_id: number | null;
+    instruction: string;
+    medicines: { medicine_id: number; quantity: number }[];
 }
 
 interface MedicalReport {
@@ -15,109 +29,206 @@ interface MedicalReport {
     prescription_id: number;
 }
 
-const VetAppointmentDetails: React.FC<AppointmentDetailsProps> = () => {
+const VetAppointmentDetails: React.FC = () => {
+    const { user } = useAuth();
+    const vetId = user?.userId;
+
+
     const { appointmentId } = useParams<{ appointmentId: string }>();
     const [appointment, setAppointment] = useState<any | null>(null);
-    const [newStatus, setNewStatus] = useState<string>('');
-    const [medicalReport, setMedicalReport] = useState<MedicalReport | null>({
+    const [medicalReport, setMedicalReport] = useState<MedicalReport | null>(null);
+    const [isReportVisible, setIsReportVisible] = useState<boolean>(false);
+    const [isCreatingReport, setIsCreatingReport] = useState<boolean>(false);
+    const [medicines, setMedicines] = useState<Medicine[]>([]);
+    const [prescription, setPrescription] = useState<Prescription | null>(null);
+    const [isMedicineValid, setIsMedicineValid] = useState<boolean[]>([]);
+    const [isQuantityValid, setIsQuantityValid] = useState<boolean[]>([]);
+
+    const [newReport, setNewReport] = useState<MedicalReport>({
         veterinarian_id: 0,
         conclusion: '',
         advise: '',
         prescription_id: 0
     });
-    const [loading, setLoading] = useState<boolean>(true);
-    const [isReportVisible, setIsReportVisible] = useState<boolean>(false);
 
     useEffect(() => {
-        const loadAppointment = async () => {
+        const fetchAppointmentDetails = async () => {
             try {
-                if (appointmentId) {
-                    const data = await getAppointmentDetails(Number(appointmentId));
-                    console.log(data);
-                    setAppointment(data);
-                    setNewStatus(data.current_status);
-                    setLoading(false);
-
-                    // Check if a medical report exists
-                    try {
-                        const report = await getMedicalReport(Number(appointmentId));
-                        if (report) {
-                            setMedicalReport({
-                                veterinarian_id: report.veterinarian_id,
-                                conclusion: report.conclusion,
-                                advise: report.advise,
-                                prescription_id: report.prescription_id
-                            });
-                        }
-                    } catch (error) {
-                        console.error('Error fetching medical report:', error);
+                const appointmentData = await getAppointmentDetails(Number(appointmentId));
+                setAppointment(appointmentData);
+                console.log(appointmentData)
+                // Fetch medical report if it exists
+                const report = await getMedicalReport(Number(appointmentId));
+                if (report) {
+                    setMedicalReport(report);
+                    if (report.prescription_id) {
+                        console.log(report.prescription_id)
+                        const prescriptionData = await fetchPrescriptionDetails(report.prescription_id);
+                        setPrescription(prescriptionData);
                     }
                 }
             } catch (error) {
-                console.error('Error fetching appointment:', error);
+                console.error('Error fetching appointment details:', error);
             }
         };
-        loadAppointment();
+
+        const fetchMedicines = async () => {
+            try {
+                const medicineData = await getMedicines();
+                console.log(medicineData)
+                setMedicines(medicineData);
+            } catch (error) {
+                console.error('Error fetching medicines:', error);
+            }
+        };
+
+        fetchAppointmentDetails();
+        fetchMedicines();
     }, [appointmentId]);
 
-    const handleStatusUpdate = async () => {
-        try {
-            if (appointmentId && newStatus) {
-                const statusUpdate: StatusUpdate = { current_status: newStatus };
-                await updateAppointmentStatus(Number(appointmentId), statusUpdate);
-                alert('Appointment status updated successfully!');
-            }
-        } catch (error) {
-            console.error('Error updating status:', error);
+    const toggleReportModal = () => {
+        // Nếu bạn chỉ cần đóng modal mà không cần thay đổi trạng thái khác, có thể đặt giá trị cụ thể
+        if (isCreatingReport) {
+            setIsCreatingReport(false); // Đóng modal tạo báo cáo
         }
+        setIsReportVisible(!isReportVisible); // Đóng modal xem báo cáo
     };
 
-    const handleReportSubmit = async () => {
+    const handleCreateReport = async () => {
         try {
-            if (appointmentId && medicalReport) {
-                const report: MedicalReport = {
-                    veterinarian_id: appointment.veterinarian.user_id,
-                    conclusion: medicalReport.conclusion,
-                    advise: medicalReport.advise,
-                    prescription_id: medicalReport.prescription_id
-                };
+            let valid = true;
 
-                await createMedicalReport(Number(appointmentId), report);
-                alert('Medical report created successfully!');
+            // Check that both the report fields are filled
+            if (!newReport.conclusion.trim() || !newReport.advise.trim()) {
+                alert('Conclusion and advise cannot be empty.');
+                valid = false;
+            }
 
-                const updatedReport = await getMedicalReport(Number(appointmentId));
-                setMedicalReport(updatedReport ? {
-                    veterinarian_id: updatedReport.veterinarian_id,
-                    conclusion: updatedReport.conclusion,
-                    advise: updatedReport.advise,
-                    prescription_id: updatedReport.prescription_id
-                } : null);
+            if (prescription) {
+                const medicineValidation = prescription.medicines.map((med) => {
+                    return med.medicine_id !== 0; // Check if medicine_id is valid
+                });
+                const quantityValidation = prescription.medicines.map((med) => {
+                    return med.quantity > 0; // Check if quantity is greater than 0
+                });
+
+                setIsMedicineValid(medicineValidation);
+                setIsQuantityValid(quantityValidation);
+
+                // Check overall validity
+                valid = medicineValidation.every(Boolean) && quantityValidation.every(Boolean);
+            }
+
+            if (!valid) {
+                console.log(prescription)
+                alert('Please correct the highlighted fields.'); // Optional, can be removed
+                return; // Prevent further execution
+            }
+            if (window.confirm('Are you sure you want to save the report?')) {
+            let prescriptionData;
+            if (prescription) {
+
+                prescriptionData = await createPrescription(prescription);
+                console.log(prescription)
+            } else {
+                prescriptionData = { prescription_id: null }; // Handle this case according to your API's needs
+            }
+
+
+            if (vetId === undefined) {
+                alert('User ID is not available. Cannot create medical report.');
+                return; // Prevent further execution
+            }
+
+            const newMedicalReport = {
+                ...newReport,
+                prescription_id: prescriptionData.prescription_id,
+                veterinarian_id: vetId
+            };
+            await createMedicalReport(Number(appointmentId), newMedicalReport);
+            alert('Report created successfully!');
+
+            setIsCreatingReport(false);
+            toggleReportModal();
+            window.location.reload();
             }
         } catch (error) {
             console.error('Error creating report:', error);
         }
     };
 
-    const toggleReportVisibility = () => {
-        setIsReportVisible(!isReportVisible);
+    const handleAddMedicine = () => {
+        if (!prescription) {
+            setPrescription({
+                prescription_id: null,
+                instruction: '',
+                medicines: [{ medicine_id: 0, quantity: 1 }]
+            });
+        } else {
+            const updatedPrescription = {
+                ...prescription,
+                medicines: [...prescription.medicines, { medicine_id: 0, quantity: 1 }]
+            };
+            setPrescription(updatedPrescription);
+        }
+        // Update validity state
+        setIsMedicineValid([...isMedicineValid, false]); // Default to invalid
+        setIsQuantityValid([...isQuantityValid, true]); // Quantity defaults to 1, which is valid
     };
 
-    if (loading) {
-        return <p>Loading appointment details...</p>;
-    }
+    const handleRemoveMedicine = (index: number) => {
+        if (prescription) {
+            const updatedMedicines = prescription.medicines.filter((_, idx) => idx !== index);
+            setPrescription({ ...prescription, medicines: updatedMedicines });
+            // Remove validation for the removed medicine
+            const updatedMedicineValid = [...isMedicineValid];
+            updatedMedicineValid.splice(index, 1);
+            setIsMedicineValid(updatedMedicineValid);
+            const updatedQuantityValid = [...isQuantityValid];
+            updatedQuantityValid.splice(index, 1);
+            setIsQuantityValid(updatedQuantityValid);
+        }
+    };
 
+    const handleMedicineChange = (index: number, field: string, value: any) => {
+        if (prescription) {
+            const updatedMedicines = prescription.medicines.map((medicine, idx) =>
+                idx === index ? { ...medicine, [field]: value === "" ? 0 : value } : medicine
+            );
+            setPrescription({ ...prescription, medicines: updatedMedicines });
+
+            // Update validity based on the change
+            if (field === 'medicine_id') {
+                const updatedValidity = [...isMedicineValid];
+                updatedValidity[index] = value !== "0"; // Update validity based on selection
+                setIsMedicineValid(updatedValidity);
+            } else if (field === 'quantity') {
+                const updatedValidity = [...isQuantityValid];
+                updatedValidity[index] = Number(value) > 0; // Update validity based on quantity
+                setIsQuantityValid(updatedValidity);
+            }
+        }
+    };
     return (
         <div className="container-fluid vh-100 text-start d-flex align-items-center justify-content-center">
-
             {appointment && (
                 <div className="row " style={{width:"80%"}}>
                     {/* Left Column - Appointment Details */}
-                    <div className="col-md-7">
+                    <div className="col-md-8">
 
                         <div className="appointment-info">
-                            <h2 className="text-start" style={{fontWeight:"bold", color:"#02033B", fontSize:"2rem"}}>Appointment Details</h2>
+                            <h2 className="text-start appointment-title" >Appointment Details</h2>
                             <p><strong>Appointment ID:</strong> {appointment.appointment_id}</p>
-                            <p><strong>Status:</strong> {appointment.current_status}</p>
+                            <p><strong>Status:</strong> <span className={`fw-bold ${
+                                appointment.current_status === 'PENDING' ? 'text-warning' :
+                                    appointment.current_status === 'CONFIRMED' ? 'text-primary' :
+                                        appointment.current_status === 'CHECKED_IN' ? 'text-info' :
+                                            appointment.current_status === 'CANCEL' ? 'text-danger' :
+                                                appointment.current_status === 'ON_GOING' ? 'text-secondary' :
+                                                    appointment.current_status === 'DONE' ? 'text-success' : ''
+                            }`}>
+                               {appointment.current_status}
+                            </span></p>
                             <p><strong>Customer Name:</strong> {appointment.customer_name}</p>
                             <p><strong>Customer Email:</strong> {appointment.email}</p>
                             <p><strong>Customer Phone:</strong> {appointment.phone_number}</p>
@@ -134,11 +245,11 @@ const VetAppointmentDetails: React.FC<AppointmentDetailsProps> = () => {
                     </div>
 
                     {/* Right Column - Fish Information & Medical Report */}
-                    <div className="col-md-5">
+                    <div className="col-md-4">
                         {/* Fish Information */}
                         {appointment.fish && (
                             <div className="fish-info mb-4">
-                                <h3 className="text-start" style={{fontWeight:"bold", color:"#02033B", fontSize:"2rem"}}>Fish Information</h3>
+                                <h3 className="text-start appointment-title" >Fish Information</h3>
 
                                 <p><strong>Species:</strong> {appointment.fish.species}</p>
                                 <p><strong>Gender:</strong> {appointment.fish.gender}</p>
@@ -150,69 +261,185 @@ const VetAppointmentDetails: React.FC<AppointmentDetailsProps> = () => {
                             </div>
                         )}
 
-                        {/* Medical Report Section */}
-                        <div className="medical-report">
-                            <h3>{medicalReport ? 'View Medical Report' : 'Create Medical Report'}</h3>
-                            {medicalReport && medicalReport.conclusion ? (
-                                <div>
-                                    <p><strong>Conclusion:</strong> {medicalReport.conclusion}</p>
-                                    <p><strong>Advise:</strong> {medicalReport.advise}</p>
+                    <div className="col-md-12">
+                        <h3 className="text-start appointment-title" >Medical Report</h3>
 
-                                    <button className="btn btn-secondary mt-2" onClick={toggleReportVisibility}>
-                                        Edit Medical Report
-                                    </button>
-                                </div>
-                            ) : (
-                                <>
-                                    <textarea
-                                        className="form-control"
-                                        rows={2}
-                                        value={medicalReport?.conclusion || ''}
-                                        onChange={(e) => setMedicalReport((prev) => ({
-                                            ...(prev || { veterinarian_id: 0, conclusion: '', advise: '', prescription_id: 0 }),
-                                            conclusion: e.target.value
-                                        }) as MedicalReport)}
-                                        placeholder="Enter conclusion here"
-                                    />
-                                    <button className="btn btn-success mt-2" onClick={handleReportSubmit}>
-                                        Submit Report
-                                    </button>
-                                </>
-                            )}
+                        {!medicalReport && (
+                            <button className="btn btn-primary" onClick={() => setIsCreatingReport(true)}>
+                                Create Report
+                            </button>
+                        )}
 
-                            {isReportVisible && !medicalReport && (
-                                <div>
-                                    <h4>Create medical report</h4>
-                                    <textarea
-                                        className="form-control mt-2"
-                                        rows={3}
-                                        placeholder="Conclusion"
-                                        onChange={(e) => setMedicalReport((prev) => ({
-                                            ...(prev || { veterinarian_id: 0, conclusion: '', advise: '', prescription_id: 0 }),
-                                            conclusion: e.target.value
-                                        }) as MedicalReport)}
-                                    />
-                                    <textarea
-                                        className="form-control mt-2"
-                                        rows={3}
-                                        placeholder="Advise"
-                                        onChange={(e) => setMedicalReport((prev) => ({
-                                            ...(prev || { veterinarian_id: 0, conclusion: '', advise: '', prescription_id: 0 }),
-                                            advise: e.target.value
-                                        }) as MedicalReport)}
-                                    />
-                                    <input
-                                        type="number"
-                                        placeholder="Prescription ID"
-                                        className="form-control mt-2"
-                                        onChange={(e) => setMedicalReport((prev) => ({
-                                            ...(prev || { veterinarian_id: 0, conclusion: '', advise: '', prescription_id: 0 }),
-                                            prescription_id: Number(e.target.value)
-                                        }) as MedicalReport)}
-                                    />
+                        {medicalReport && (
+                            <button className="btn btn-success" onClick={toggleReportModal}>
+                                View Report
+                            </button>
+                        )}
+
+                        {isReportVisible && medicalReport && (
+                            <div className="modal fade show" tabIndex={-1} style={{ display: 'block', background: 'rgba(0, 0, 0, 0.7)' }}>
+                                <div className="modal-dialog modal-dialog-centered">
+                                    <div className="modal-content" >
+                                        <span
+
+                                            className="close-icon"
+                                            onClick={toggleReportModal}
+
+                                        >
+                                            &times; {/* Dấu X */}
+                                        </span>
+                                        <div className="modal-header">
+                                            <h5 className="modal-title appointment-title"
+                                                style={{fontSize: "1.6rem"}}>Medical Report</h5>
+
+                                        </div>
+                                        <div className="modal-body">
+                                            <p><strong>Conclusion:</strong> {medicalReport.conclusion}</p>
+                                            <p><strong>Advise:</strong> {medicalReport.advise}</p>
+                                            {/* Display Prescription Information */}
+
+                                        </div>
+                                        {prescription && (
+                                            <div>
+                                                <div className="modal-header">
+                                                    <h5 className="modal-title appointment-title"
+                                                        style={{fontSize: "1.6rem"}}>Prescription</h5>
+                                                </div>
+                                                <div className="modal-body">
+                                                    <p><strong>Instructions:</strong> {prescription.instruction}</p>
+                                                    <ul>
+                                                        {prescription.medicines.map((med, index) => {
+                                                            const medicineDetail = medicines.find(m => m.medicine_id === med.medicine_id);
+                                                            return (
+                                                                <li key={index}>
+                                                                    {medicineDetail ? medicineDetail.medicine_name : 'Unknown Medicine'} (Quantity: {med.quantity})
+                                                                </li>
+                                                            );
+                                                        })}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
-                            )}
-                        </div>
+                            </div>
+                        )}
+
+                        {isCreatingReport && (
+                            <div className="modal" tabIndex={-1}
+                                 style={{display: 'block', background: 'rgba(0, 0, 0, 0.7)'}}>
+                                <div className="modal-dialog modal-dialog-centered">
+                                    <div className="modal-content">
+                                        <span
+
+                                            className="close-icon"
+                                            onClick={toggleReportModal}
+
+                                        >
+                                            &times; {/* Dấu X */}
+                                        </span>
+                                        <div className="modal-header">
+                                            <h5 className="modal-title appointment-title"
+                                                style={{fontSize: "1.8rem"}}>Create Medical Report</h5>
+                                        </div>
+                                        <div className="modal-body">
+                                            <div className="mb-3">
+                                                <label className="form-label">Conclusion</label>
+                                                <input type="text" className="form-control" value={newReport.conclusion}
+                                                       onChange={(e) => setNewReport({
+                                                           ...newReport,
+                                                           conclusion: e.target.value
+                                                       })}/>
+                                            </div>
+                                            <div className="mb-3">
+                                                <label className="form-label">Advise</label>
+                                                <input type="text" className="form-control" value={newReport.advise}
+                                                       onChange={(e) => setNewReport({
+                                                           ...newReport,
+                                                           advise: e.target.value
+                                                       })}/>
+                                            </div>
+
+
+                                        </div>
+                                        {/* Prescription Section */}
+                                        <div>
+                                            <div className="modal-header" >
+                                                <h5 className="modal-title appointment-title"
+                                                    style={{fontSize: "1.4rem"}}>Prescription</h5>
+                                            </div>
+                                            <div className="modal-body">
+                                                {prescription?.medicines.map((med, index) => (
+                                                    <div key={index} className="d-flex mb-2">
+                                                        <select
+                                                            className={`form-select ${!isMedicineValid[index] ? 'is-invalid' : ''}`}
+                                                            value={med.medicine_id}
+                                                            style={{width: "100%"}}
+                                                            onChange={(e) => {
+                                                                handleMedicineChange(index, 'medicine_id', e.target.value);
+                                                                const updatedValidity = [...isMedicineValid];
+                                                                updatedValidity[index] = e.target.value !== "0"; // Update validity based on selection
+                                                                setIsMedicineValid(updatedValidity);
+                                                            }}
+                                                        >
+                                                            <option value="">Select Medicine</option>
+                                                            {medicines.map((medicine) => (
+                                                                <option key={medicine.medicine_id}
+                                                                        value={medicine.medicine_id}>
+                                                                    {medicine.medicine_name}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                        <input
+                                                            type="number"
+                                                            className={`form-control ms-2 ${!isQuantityValid[index] ? 'is-invalid' : ''}`}
+                                                            style={{width: "25%"}}
+                                                            value={med.quantity}
+                                                            onChange={(e) => {
+                                                                const quantityValue = Number(e.target.value);
+                                                                handleMedicineChange(index, 'quantity', quantityValue);
+                                                                const updatedValidity = [...isQuantityValid];
+                                                                updatedValidity[index] = quantityValue > 0; // Update validity based on quantity
+                                                                setIsQuantityValid(updatedValidity);
+                                                            }}
+                                                        />
+                                                        <button className="btn btn-danger ms-2"
+                                                                onClick={() => handleRemoveMedicine(index)}>Remove
+                                                        </button>
+                                                    </div>
+                                                ))}
+
+                                                <button className="btn btn-secondary mb-2" onClick={handleAddMedicine}>
+                                                    Add Medicine
+                                                </button>
+                                                <div className="mb-3">
+                                                    <label className="form-label">Instructions</label>
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        value={prescription?.instruction || ''} // Use optional chaining and fallback to empty string
+                                                        onChange={(e) => setPrescription(prescription ? {
+                                                            ...prescription,
+                                                            instruction: e.target.value
+                                                        } : null)} // Only update if prescription is not null
+                                                    />
+                                                </div>
+                                                <div className="modal-footer">
+                                                    <button className="btn btn-primary"
+                                                            onClick={handleCreateReport}>Save
+                                                        Report
+                                                    </button>
+                                                    <button className="btn btn-secondary"
+                                                            onClick={toggleReportModal}>Cancel
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                     </div>
                 </div>
             )}

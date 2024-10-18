@@ -1,0 +1,66 @@
+p{
+    margin-bottom: 7px;
+    font-size: 1.3rem;
+}
+
+.modal-content {
+    padding: 30px;
+    border-radius: 25px;
+    position: relative;
+}
+
+
+
+
+.modal-body {
+    padding: 0px 15px;
+    font-size: 1.2rem;
+}
+
+.is-invalid {
+    border-color: red;
+}
+
+.is-invalid:focus {
+    box-shadow: 0 0 5px red;
+}
+
+.appointment-title {
+    font-weight: bold;
+    color: #02033B;
+    font-size: 2.2rem;
+}
+
+.modal-header {
+    display: flex; /* Sử dụng Flexbox */
+    justify-content: space-between; /* Căn chỉnh không gian giữa các phần tử */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    position: relative; /* Đảm bảo rằng các phần tử con được đặt tương đối */
+    padding: 2px;
+    margin-bottom: 10px;
+}
+
+.close-icon {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    background: none;
+    border: none;
+    font-size: 4rem;
+    color: black;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Căn giữa chữ X theo chiều dọc */
+    height: 40px; /* Chiều cao nút để dễ nhấn */
+    width: 40px; /* Chiều rộng nút để dễ nhấn */
+  z-index: 9999;
+    user-select: none;
+}
+
+
+.close-icon:hover {
+    opacity: 0.8; /* Tạo hiệu ứng khi di chuột */
+    color: rgba(255, 0, 0, 0.44);
+}
+

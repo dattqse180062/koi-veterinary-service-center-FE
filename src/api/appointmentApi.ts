@@ -61,6 +61,19 @@ export interface MedicalReport {
 
 }
 
+export interface Medicine {
+    medicine_id: number;
+    medicine_name: string;
+    quantity: number;
+}
+
+export interface Prescription {
+    prescription_id: number;
+    instruction: string;
+    medicines: Medicine[];
+}
+
+
 // API to fetch appointment details by ID
 export const getAppointmentDetails = async (appointmentId: number): Promise<AppointmentDetails> => {
     const response = await axios.get(`${API_BASE_URL}/${appointmentId}/veterinarian`);
@@ -108,3 +121,26 @@ export const getAppointmentsForCustomer = async (customerId: number) => {
     const response = await axios.get(`${API_BASE_URL}/customer/${customerId}`);
     return response.data;
 };
+
+const API_PRESCRIPTION_URL = 'http://localhost:8080/api/v1/prescriptions';
+
+export const getMedicines = async () => {
+    const response = await axios.get(`${API_PRESCRIPTION_URL}/medicines`);
+    return response.data;
+};
+
+export const createPrescription = async (prescriptionData: any) => {
+    const response = await axios.post(`${API_PRESCRIPTION_URL}`, prescriptionData);
+    return response.data;
+};
+
+export const fetchPrescriptionDetails = async (prescriptionId: number): Promise<Prescription> => {
+    try {
+        const response = await axios.get(`${API_PRESCRIPTION_URL}/${prescriptionId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching prescription by ID:', error);
+        throw error;
+    }
+}
+
