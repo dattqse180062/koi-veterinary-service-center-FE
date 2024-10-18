@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import TableComponent from '../components/table/TableComponent';
 import { useNavigate } from 'react-router-dom';
-import { fetchAppointment } from '../api/appointmentAPI';
+import { fetchAppointmentForCus } from '../api/appointmentAPI';
 
 interface Appointment {
     appointment_id: number;
@@ -52,7 +52,7 @@ const CustomerAppointment: React.FC = () => {
     useEffect(() => {
         const getAppointment = async () => {
             try {
-                const data = await fetchAppointment();
+                const data = await fetchAppointmentForCus();
                 const filteredData = data.map((appointment: any) => {
                     const {created_date,  ...rest } = appointment; // Exclude password
                     return {
