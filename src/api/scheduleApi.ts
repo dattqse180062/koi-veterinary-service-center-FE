@@ -1,16 +1,14 @@
-// src/api/serviceApi.ts
+import axios from "axios";
 
-import axios from 'axios';
+const API_BASE_URL = "http://localhost:8080/api/v1";
 
-const API_URL = 'https://66e10816c831c8811b538fae.mockapi.io/api/service';
 
-export const fetchServices = async () => {
-    const response = await axios.get(API_URL);
-    return response.data;
-};
-
-export const updateServicePrice = async (serviceId: string, newPrice: number) => {
-    await axios.put(`${API_URL}/${serviceId}`, {
-        service_price: newPrice,
-    });
+export const fetchVetSlots = async (vetId: string) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/slots/${vetId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching vet slots:", error);
+        throw error;
+    }
 };

@@ -1,7 +1,7 @@
 // src/api/transportApi.ts
 import axios from 'axios';
 
-const TRANSPORT_API_URL = 'https://66fa1da4afc569e13a9a726b.mockapi.io/api/transport';
+const TRANSPORT_API_URL = 'http://localhost:8080/api/v1/surcharges';
 
 export const fetchTransportationPrices = async () => {
     try {
@@ -13,11 +13,10 @@ export const fetchTransportationPrices = async () => {
     }
 };
 
-export const updateTransportationPrice = async (district_name: string, newPrice: number) => {
+export const updateTransportationPrice = async (district_id: number, updatedSurcharges: any) => {
     try {
-        await axios.put(`${TRANSPORT_API_URL}/${district_name}`, {
-            price: newPrice,
-        });
+        await axios.put(`${TRANSPORT_API_URL}/${district_id}`, updatedSurcharges);
+
     } catch (error) {
         console.error('Error updating transportation price:', error);
         throw error; // Rethrow the error for handling in the component

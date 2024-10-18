@@ -1,7 +1,7 @@
 // src/api/serviceApi.ts
 import axios from 'axios';
 
-const API_URL = 'https://66e10816c831c8811b538fae.mockapi.io/api/service';
+const API_URL = 'http://localhost:8080/api/v1/services';
 
 export const fetchServices = async () => {
     try {
@@ -13,11 +13,10 @@ export const fetchServices = async () => {
     }
 };
 
-export const updateServicePrice = async (serviceId: string, newPrice: number) => {
+export const updateServicePrice = async (serviceId: number, updatedService: any) => {
     try {
-        await axios.put(`${API_URL}/${serviceId}`, {
-            service_price: newPrice,
-        });
+        console.log('Updating service with ID:', serviceId, 'and new data:', updatedService);
+        await axios.put(`${API_URL}/${serviceId}`, updatedService);
     } catch (error) {
         console.error('Error updating price:', error);
         throw error; // Rethrow the error for handling in the component

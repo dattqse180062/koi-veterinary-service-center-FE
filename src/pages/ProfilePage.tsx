@@ -3,16 +3,19 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../components/layout/Sidebar";
 import { useAuth } from "../hooks/context/AuthContext";
 import {getUserInfo, updateUserAddressAPI, updateUserInfoAPI} from "../api/authService"; // Import authService functions
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import '../styles/Profile.css'
 
 // Define interfaces for user data
+
 interface UserAddress {
+    address_id:number;
     district: string;
     city: string;
     ward: string;
     home_number: string;
 }
+
 
 interface UserData {
     username: string;
@@ -20,7 +23,7 @@ interface UserData {
     first_name: string;
     last_name: string;
     phone_number: string;
-    address: UserAddress;
+    // address: UserAddress;
 }
 
 const Profile: React.FC = () => {
@@ -30,13 +33,14 @@ const Profile: React.FC = () => {
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
     const [phone, setPhone] = useState("");
-    const [state, setState] = useState("");
-    const [city, setCity] = useState("");
-    const [ward, setWard] = useState("");
-    const [homeNumber, setHomeNumber] = useState("");
+    // const [state, setState] = useState("");
+    // const [city, setCity] = useState("");
+    // const [ward, setWard] = useState("");
+    // const [homeNumber, setHomeNumber] = useState("");
     const [errorPhone, setErrorPhone] = useState("");
     const [errorAddress, setErrorAddress] = useState("");
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const navigate = useNavigate();
 
     // Fetch user data from API on component mount
     useEffect(() => {
@@ -49,10 +53,10 @@ const Profile: React.FC = () => {
                     setFirstname(user.first_name || '');
                     setLastname(user.last_name || '');
                     setPhone(user.phone_number || '');
-                    setState(user.address?.district || '');
-                    setCity(user.address?.city || '');
-                    setWard(user.address?.ward || '');
-                    setHomeNumber(user.address?.home_number || '');
+                    // setState(user.address?.district || '');
+                    // setCity(user.address?.city || '');
+                    // setWard(user.address?.ward || '');
+                    // setHomeNumber(user.address?.home_number || '');
                 }
             } catch (error) {
                 console.error('Failed to fetch user data:', error);
@@ -85,44 +89,44 @@ const Profile: React.FC = () => {
     };
 
     // Validate address fields
-    const validateAddress = () => {
-        const addressFieldsFilled = [state, city, ward, homeNumber].some(field => field.trim() !== "");
-        const allAddressFieldsFilled = [state, city, ward, homeNumber].every(field => field.trim() !== "");
-
-        if (addressFieldsFilled && !allAddressFieldsFilled) {
-            setErrorAddress("Please fill all address fields if you enter one.");
-            return false;
-        } else {
-            setErrorAddress("");
-            return true;
-        }
-    };
+    // const validateAddress = () => {
+    //     const addressFieldsFilled = [state, city, ward, homeNumber].some(field => field.trim() !== "");
+    //     const allAddressFieldsFilled = [state, city, ward, homeNumber].every(field => field.trim() !== "");
+    //
+    //     if (addressFieldsFilled && !allAddressFieldsFilled) {
+    //         setErrorAddress("Please fill all address fields if you enter one.");
+    //         return false;
+    //     } else {
+    //         setErrorAddress("");
+    //         return true;
+    //     }
+    // };
 
     // Handle saving updated user info
     const handleSave = async () => {
-        const isAddressValid = validateAddress();
-        if (!isAddressValid || errorPhone) return;
-
+        // const isAddressValid = validateAddress();
+        // if (!isAddressValid || errorPhone) return;
+        if (errorPhone) return;
         try {
             const updatedData = {
                 firstname,
                 lastname,
                 phone,
-                address: {
-                    state,
-                    city,
-                    ward,
-                    homeNumber,
-                },
+                // address: {
+                //     state,
+                //     city,
+                //     ward,
+                //     homeNumber,
+                // },
             };
 
 
             if (userId) {
                 await updateUserInfoAPI(userId, updatedData); // Use authService function
                 console.log("User profile updated successfully!");
-                const addressData = { state, city, ward, homeNumber };
-                console.log("Updating user address with data:", addressData);
-                await updateUserAddressAPI(userId, { state, city, ward, homeNumber });
+                // const addressData = { state, city, ward, homeNumber };
+                // console.log("Updating user address with data:", addressData);
+                // await updateUserAddressAPI(userId, { state, city, ward, homeNumber });
                 alert('User data updated successfully!');
             }
         } catch (error) {
@@ -136,12 +140,14 @@ const Profile: React.FC = () => {
             setFirstname(userData.first_name || '');
             setLastname(userData.last_name || '');
             setPhone(userData.phone_number || '');
-            setState(userData.address?.district || '');
-            setCity(userData.address?.city || '');
-            setWard(userData.address?.ward || '');
-            setHomeNumber(userData.address?.home_number || '');
+            // setState(userData.address?.district || '');
+            // setCity(userData.address?.city || '');
+            // setWard(userData.address?.ward || '');
+            // setHomeNumber(userData.address?.home_number || '');
         }
     };
+
+
 
 
     return (
@@ -201,30 +207,47 @@ const Profile: React.FC = () => {
                                 <input type="text" className="form-control input-field" value={phone} onChange={e => setPhone(e.target.value)} onBlur={validatePhone} />
                                 {errorPhone && <div className="error-register">{errorPhone}</div>}
                             </div>
-                            <div className="address-row">
-                                <div className="form-group">
-                                    <label className="fw-bold">State</label>
-                                    <input type="text" className="form-control input-field" value={state} onChange={e => setState(e.target.value)} />
-                                </div>
-                                <div className="form-group">
-                                    <label className="fw-bold">City</label>
-                                    <input type="text" className="form-control input-field" value={city} onChange={e => setCity(e.target.value)} />
-                                </div>
+                            <div>
+
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={() => navigate(`/addresses`)}
+                                >
+                                    Address Management
+                                </button>
                             </div>
-                            <div className="address-row">
-                                <div className="form-group">
-                                    <label className="fw-bold">Ward</label>
-                                    <input type="text" className="form-control input-field" value={ward} onChange={e => setWard(e.target.value)} />
-                                </div>
-                                <div className="form-group">
-                                    <label className="fw-bold">Home Number</label>
-                                    <input type="text" className="form-control input-field" value={homeNumber} onChange={e => setHomeNumber(e.target.value)} />
-                                </div>
-                            </div>
-                            {errorAddress && <div className="error-register">{errorAddress}</div>}
+
+                            {/*<div className="address-row">*/}
+                            {/*    <div className="form-group">*/}
+                            {/*        <label className="fw-bold">State</label>*/}
+                            {/*        <input type="text" className="form-control input-field" value={state} onChange={e => setState(e.target.value)} />*/}
+                            {/*    </div>*/}
+                            {/*    <div className="form-group">*/}
+                            {/*        <label className="fw-bold">City</label>*/}
+                            {/*        <input type="text" className="form-control input-field" value={city} onChange={e => setCity(e.target.value)} />*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
+                            {/*<div className="address-row">*/}
+                            {/*    <div className="form-group">*/}
+                            {/*        <label className="fw-bold">Ward</label>*/}
+                            {/*        <input type="text" className="form-control input-field" value={ward} onChange={e => setWard(e.target.value)} />*/}
+                            {/*    </div>*/}
+                            {/*    <div className="form-group">*/}
+                            {/*        <label className="fw-bold">Home Number</label>*/}
+                            {/*        <input type="text" className="form-control input-field" value={homeNumber} onChange={e => setHomeNumber(e.target.value)} />*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
+                            {/*{errorAddress && <div className="error-register">{errorAddress}</div>}*/}
                             <div className="button-group">
                                 <div className="left-buttons">
-                                    <Link to="/password-change" className="change-password-btn">Change Password</Link>
+
+                                    <button
+                                        className="btn btn-secondary"
+                                        onClick={() => navigate(`/password-change`)}
+                                    >
+                                        Change Password
+                                    </button>
+
                                 </div>
                                 <div className="right-buttons">
                                     <button type="button" className="cancel-btn" onClick={handleCancel}>Cancel</button>

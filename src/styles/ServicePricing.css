@@ -22,6 +22,7 @@
 
 .table-small th, .table-small td {
     padding: 0.3rem; /* Adjust padding for smaller table */
+
 }
 
 /* Add a border to the table cells for better visibility */
@@ -30,8 +31,7 @@
 }
 
 .table-small td {
-    padding: 0.3rem; /* Adjust padding for smaller table */
-    vertical-align: top; /* Align text to the top */
+
 }
 
 .table-small td p {

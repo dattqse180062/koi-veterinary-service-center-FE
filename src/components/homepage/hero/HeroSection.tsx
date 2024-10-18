@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import backgroundImage from '../../../assets/images/homepage.jpg'; // Adjust the path as needed
 import koiImage from '../../../assets/images/homepage2.jpg'; // Adjust the path as needed
-
+import { Link } from 'react-router-dom';
 const HeroSection = () => {
     const [isHovered, setIsHovered] = useState(false);
 
@@ -23,6 +23,7 @@ const HeroSection = () => {
                         <div className="col-md-6 d-flex flex-column align-items-start ps-5">
                             {/* Request Appointment Button */}
                             <div className="mb-4" style={{ marginLeft: "5px" }}>
+                                <Link to="/appointment/service-selection" style={{ textDecoration: 'none' }}>
                                 <button
                                     className="btn d-flex align-items-center btn-custom btn-shadow"
                                     style={{
@@ -42,6 +43,7 @@ const HeroSection = () => {
                                     <i className="fas fa-arrow-right text-white ms-3 mt-1"
                                        style={{fontSize: "1.3rem"}}/>
                                 </button>
+                                </Link>
                             </div>
 
                             {/* Description */}

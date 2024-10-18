@@ -11,6 +11,7 @@ interface TableComponentProps {
     data: any[];
     actions?: { label: string; icon: string; onClick: (id: number, fullName?: string) => void }[]; // Actions prop
     isKoiFishPage?: boolean; // Thêm prop
+
     isAppointmentPage?: boolean; // Thêm prop
     isAddressPage?: boolean; // Thêm prop
     isFeedbackPage?: boolean; // Thêm prop
@@ -46,7 +47,9 @@ const TableComponent: React.FC<TableComponentProps> = ({ columns, columnHeaders,
 
     return (
         <div className="table-responsive">
-            <table className="table-bordered table-small table-striped">
+
+            <table className="table table-bordered table-small table-small-auto table-striped">
+
                 <thead className="table-light">
                     <tr>
                         {columnHeaders.map((header, index) => (
@@ -56,6 +59,7 @@ const TableComponent: React.FC<TableComponentProps> = ({ columns, columnHeaders,
                     </tr>
                 </thead>
                 <tbody>
+
                     {paginatedData.map((item) => (
                         <TableRow
                             key={item[columns[0]]} // Assuming first column is ID
@@ -71,6 +75,7 @@ const TableComponent: React.FC<TableComponentProps> = ({ columns, columnHeaders,
                             isFeedbackPage={isFeedbackPage} // Truyền prop vào đây
                         />
                     ))}
+
                 </tbody>
             </table>
 

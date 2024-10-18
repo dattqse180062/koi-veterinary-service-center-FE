@@ -34,6 +34,7 @@ const formatDateTime = (dateString: string) => {
 };
 
 const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isKoiFishPage, isAddressPage, isAppointmentPage, isFeedbackPage }) => {
+
     const fullName = `${rowData.first_name || rowData.name} ${rowData.last_name || ''}`.trim(); // Tạo fullName
 
     return (
@@ -52,23 +53,25 @@ const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isK
                     ) : column === 'datetime' ? (
                         formatDateTime(rowData.datetime) // Format datetime column
                     ) : (
-                            !rowData[column] ? 'N/A' : rowData[column]
-                        )}
+                        !rowData[column] ? 'N/A' : rowData[column]
+                    )}
                 </td>
             ))}
             <td>
                 {actions.length > 0 ? (
                     <div className="dropdown ms-auto">
                         <i className="fas fa-ellipsis-vertical" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                        <ul className="dropdown-menu dropdown-menu-end">
+                        <ul className="dropdown-menu dropdown-menu-end" >
                             {actions.map((action, index) => (
                                 <li key={index}>
                                     <span className="dropdown-item" onClick={() => {
-                                        const id = isKoiFishPage ? rowData.fish_id : isAddressPage ? rowData.address_id : isAppointmentPage ? rowData.appointment_id : isFeedbackPage ? rowData.feedback_id : rowData.user_id ; // Lấy id tương ứng
+
+                                        const id = isKoiFishPage ? rowData.fish_id : isAddressPage ? rowData.address_id : isAppointmentPage ? rowData.appointment_id : isFeedbackPage ? rowData.feedback_id : rowData.user_id; // Lấy id tương ứng
                                         action.onClick(id, fullName); // Pass fullName as an argument
                                     }
 
                                     }>
+
                                         {action.icon && <i className={`${action.icon} mx-2`}></i>}
                                         {action.label}
                                     </span>

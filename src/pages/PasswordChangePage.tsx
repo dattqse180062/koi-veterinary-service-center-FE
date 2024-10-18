@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import Sidebar from '../components/layout/Sidebar';
 import '../styles/Profile.css';
 import { changePassword } from '../api/authService';
+import {useAuth} from "../hooks/context/AuthContext";
 
 const PasswordChangePage: React.FC = () => {
+    const { user  } = useAuth(); // Use Auth context to get userId
+    const userId = user?.userId;
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -34,7 +37,7 @@ const PasswordChangePage: React.FC = () => {
     // Handle password change request
     const handlePasswordChange = async () => {
         if (validatePasswords()) {
-            const userId = Number(sessionStorage.getItem('userId'));
+
 
             if (!userId) {
                 setError('User ID not found. Please log in again.');
