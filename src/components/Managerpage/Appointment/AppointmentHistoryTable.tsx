@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import TableComponent from '../../table/TableComponent';
+import Sidebar from '../../layout/Sidebar';
 
 // Định nghĩa interface cho Order
 interface Order {
@@ -16,6 +18,8 @@ interface Order {
 const AppointmentHistoryTable: React.FC = () => {
   // State để lưu trữ dữ liệu đơn hàng
   const [orderData, setOrderData] = useState<Order[]>([]); // fixed, replace initialOrderData // Dữ liệu đơn hàng
+  const columns = ['appointmentID', 'created', 'customer', 'totalPrice', 'description', 'status']; // Các cột trong bảng
+  const columnHeaders = ['Appointment ID', 'Created Date', 'Customer Name', 'Total Price', 'Description', 'Status']; // Tiêu đề cột
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null); // Đơn hàng đã chọn
   const [currentPage, setCurrentPage] = useState<number>(1); // Trang hiện tại
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false); // Trạng thái modal xóa
@@ -28,7 +32,11 @@ const AppointmentHistoryTable: React.FC = () => {
     const fetchAppointmentData = async () => {
       try {
         const response = await axios.get('https://66f4e0b477b5e889709aba92.mockapi.io/api/Appointment');
-        setOrderData(response.data); // Lưu dữ liệu vào state
+        const formattedData = response.data.map((order: Order) => ({
+          ...order,
+          created: new Date(order.created).toLocaleString('vi-VN'), // Format the date here
+        }));
+        setOrderData(formattedData);
       } catch (error) {
         console.error('Error fetching data:', error); // Gọi hàm fetch khi component mount
       }
@@ -36,10 +44,10 @@ const AppointmentHistoryTable: React.FC = () => {
     fetchAppointmentData();
   }, []);
 
-  const handleViewDetail = (appointmentID: string) => {
+  const handleViewDetail = (appointmentID: number) => {
     // setSelectedOrder(order);
     // setShowDetailModal(true); // Mở modal thông qua state
-    navigate(`/appointment-details`, {state: {appointmentID}}); // Điều hướng tới trang chi tiết
+    navigate(`/appointment-details`, { state: { appointmentID } }); // Điều hướng tới trang chi tiết
   };
 
   const handleOpenDeleteModal = (order: Order) => {
@@ -65,71 +73,41 @@ const AppointmentHistoryTable: React.FC = () => {
     setCurrentPage(page); // Cập nhật trang hiện tại
   };
 
+  const actions = [
+    {
+        label: 'View details',
+        icon: 'fas fa-calendar-alt',
+        onClick: handleViewDetail, // This is now compatible
+    },
+    {
+        label: 'Delete',
+        icon: 'fas fa-info-circle',
+        onClick: handleDelete,
+    },
+];
+
   return (
-    <div style={{width: '80%'}}>
-      <h5 style={{ paddingTop: '65px' }}>Appointment History Management</h5>
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <div className="d-flex">
-          <div className="input-group me-3" style={{ width: '300px' }}>
-            <input type="text" className="form-control" placeholder="Type here..." aria-label="Search" />
-            <span className="input-group-text">
-              <i className="bi bi-search"></i>
-            </span>
+    <div className="d-flex flex-grow-1">
+      <Sidebar />
+      <div className='container' style={{ marginTop: "6rem" }}>
+        <div className='card' style={{ width: '100%' }}>
+          {/* Header of content */}
+          <div className='card-header'>
+            <h5 className='text-start' style={{ fontWeight: "bold", color: "#02033B", fontSize: "2rem", padding: "1.2rem" }}>Customer Management</h5>
+          </div>
+          <div className='card-body'>
+            <TableComponent
+              columns={columns}
+              columnHeaders={columnHeaders}
+              data={orderData}
+              actions={actions} // Pass actions prop
+              isKoiFishPage={false}
+            />
           </div>
         </div>
       </div>
 
-      <table className="table table-hover bg-white">
-        <thead>
-          <tr>
-            <th>Appointment ID</th>
-            <th>Created Date</th>
-            <th>Customer Name</th>
-            <th>Total Price</th>
-            <th>Description</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentOrders.map((order) => (
-            <tr key={order.appointmentID}>
-              <td className="fw-bold">{order.appointmentID}</td>
-              <td>{new Date(order.created).toLocaleString('en-gb')}</td>
-              <td>{order.customer}</td>
-              <td>${order.totalPrice.toFixed(2)}</td>
-              <td>{order.description}</td>
-              <td>
-                <div className="dropdown">
-                  <button className="btn btn-light btn-sm dropdown-toggle" type="button" id="dropdown-basic" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i className="bi bi-three-dots-vertical"></i>
-                  </button>
-                  <ul className="dropdown-menu" aria-labelledby="dropdown-basic">
-                    <li><a className="dropdown-item" href="#" onClick={() => handleViewDetail(order.appointmentID)}>View Detail</a></li>
-                    <li><a className="dropdown-item" href="#" onClick={() => handleOpenDeleteModal(order)}>Delete</a></li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* Pagination */}
-      <nav aria-label="Page navigation">
-        <ul className="pagination justify-content-center">
-          <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-            <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>Previous</button>
-          </li>
-          {[...Array(totalPages)].map((_, index) => (
-            <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
-              <button className="page-link" onClick={() => handlePageChange(index + 1)}>{index + 1}</button>
-            </li>
-          ))}
-          <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-            <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}>Next</button>
-          </li>
-        </ul>
-      </nav>
+      
 
       {/* Modal for View Details */}
       {selectedOrder && (
