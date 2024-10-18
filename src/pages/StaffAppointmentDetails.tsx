@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getAppointmentDetails, updateAppointment } from '../api/appointmentAPI';
 import { fetchPayment, updatePayment } from '../api/paymentApi';
-// import { fetchVetBySlotId } from '../api/vetApi';
 import { fetchAppointmentAndVeterinarians } from '../api/appointmentAPI';
 
 interface AppointmentDetailsProps {
@@ -206,8 +205,6 @@ const AppointmentDetails: React.FC = () => {
         setIsVetSelected(vetId !== 0); // Đặt trạng thái isVetSelected thành true nếu có bác sĩ được chọn
     };
 
-    // console.log(paymentDetails);
-
     if (!appointment) {
         return <div>Loading...</div>;
     }
@@ -277,6 +274,7 @@ const AppointmentDetails: React.FC = () => {
                                     className="btn btn-primary mt-3"
                                     disabled={!selectedVetId || isVetSelected} // Vô hiệu hóa nếu chưa chọn hoặc đã chọn bác sĩ
                                     onClick={handleSubmitOrder}
+                                    style={{  backgroundColor:'red' }}
                                 >
                                     Submit Order
                                 </button>
@@ -332,32 +330,45 @@ const AppointmentDetails: React.FC = () => {
                         <p><strong>Payment method: </strong>{paymentDetails.payment_method}</p>
                         <p><strong>Payment amount:</strong> {paymentDetails.payment_amount} USD</p>
                         <p><strong>Status:</strong> {paymentDetails.status || 'Unknown'}</p>
-                        <p><strong>Description: <input type="text" /> </strong></p>
-                        {/* Edit payment method */}
+
+                        {/* Edit Payment Method */}
                         {isEditingPaymentMethod ? (
                             <select
                                 className="form-select"
-                                value={selectedPaymentMethod}
-                                onChange={handlePaymentMethodChange}
+                                value="PAID" // Only allow updating to PAID
+                                onChange={() => { }} // Disable change, fixed to PAID
                                 style={{ marginLeft: '10px', width: '150px' }}
+                                disabled
                             >
                                 <option value="PAID">PAID</option>
-                                <option value="NOT_PAID">NOT PAID</option>  {/* khong can, loi logic */}
-
                             </select>
-                        )
-                            : null
-                        }
+                        ) : null}
 
                         {/* Button to toggle edit/save */}
                         {isEditingPaymentMethod ? (
-                            <button
-                                style={{ marginTop: '5px' }}
-                                className="btn btn-success ms-3" onClick={handleUpdatePaymentMethod}>
-                                Save
-                            </button>
+                            <>
+                                <button
+                                    style={{ marginTop: '5px' }}
+                                    className="btn btn-success ms-3"
+                                    onClick={handleUpdatePaymentMethod}
+                                >
+                                    Save
+                                </button>
+                                <button
+                                    style={{ marginTop: '5px' }}
+                                    className="btn btn-secondary ms-3"
+                                    onClick={() => setIsEditingPaymentMethod(false)} // Cancel editing
+                                >
+                                    Cancel
+                                </button>
+                            </>
                         ) : (
-                            <button className="btn btn-secondary ms-3" onClick={handleEditPaymentMethod}>
+                            <button
+                                className="btn btn-secondary ms-3"
+                                onClick={handleEditPaymentMethod}
+                                disabled={paymentDetails.status === payment_status.PAID} // Disable if already PAID
+                                style={{  backgroundColor:'red' }}
+                            >
                                 Update Payment Status
                             </button>
                         )}
