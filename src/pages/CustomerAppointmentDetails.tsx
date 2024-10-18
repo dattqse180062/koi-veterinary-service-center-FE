@@ -208,6 +208,15 @@ const CustomerAppointmentDetails: React.FC = () => {
                     </div>
                 </div>
             )}
+
+
+            {/* ASSIGN BÁC SĨ */}
+
+            
+            
+            {/* CONFIRM */}
+        
+        
         </div>
     );
 };
