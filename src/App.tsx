@@ -25,7 +25,7 @@ import AddressManagementPage from "./pages/AddressManagementPage";
 import AddressDetails from "./pages/AddressDetails";
 import AddAddressPage from "./pages/AddAddressPage";
 import VetSchedulePage from "./pages/VetSchedulePage";
-import AppointmentDetails from "./pages/AppointmentDetails";
+import VetAppointmentDetails from "./pages/VetAppointmentDetails";
 
 
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
@@ -181,7 +181,7 @@ function App() {
                             path="/appointment-details/:appointmentId/veterinarian"
                             element={
                                 <RoleBasedGuard allowedRoles={['VET']}>
-                                    <AppointmentDetails />
+                                    <VetAppointmentDetails />
                                 </RoleBasedGuard>
                             }
                         />

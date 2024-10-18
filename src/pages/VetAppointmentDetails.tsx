@@ -15,7 +15,7 @@ interface MedicalReport {
     prescription_id: number;
 }
 
-const AppointmentDetails: React.FC<AppointmentDetailsProps> = () => {
+const VetAppointmentDetails: React.FC<AppointmentDetailsProps> = () => {
     const { appointmentId } = useParams<{ appointmentId: string }>();
     const [appointment, setAppointment] = useState<any | null>(null);
     const [newStatus, setNewStatus] = useState<string>('');
@@ -220,4 +220,4 @@ const AppointmentDetails: React.FC<AppointmentDetailsProps> = () => {
     );
 };
 
-export default AppointmentDetails;
+export default VetAppointmentDetails;
