@@ -4,6 +4,7 @@ import TableComponent from '../components/table/TableComponent';
 import { useNavigate } from 'react-router-dom';
 import { fetchAppointment } from '../api/appointmentAPI';
 
+
 interface Appointment {
     appointment_id: number;
     created_date: string;
