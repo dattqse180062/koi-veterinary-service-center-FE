@@ -15,6 +15,7 @@ export const fetchPayment = async (appointment_id: number) => {
   }
 };
 
+
 // Function to update payment information
 export const updatePayment = async (appointmentId: number, paymentData: any): Promise<any> => {
   try {
@@ -27,3 +28,15 @@ export const updatePayment = async (appointmentId: number, paymentData: any): Pr
     throw error;
   }
 };
+
+export const createPayment = async (appointmentId: number): Promise<any> => {
+  try {
+      const response = await axios.get('http://localhost:8080/api/v1/payments/vnpay-link', {
+          params: { appointmentId },
+      });
+      return response.data;
+  } catch (error) {
+      console.error('Error creating payment:', error);
+      throw error;
+  }
+}
