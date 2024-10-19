@@ -56,9 +56,7 @@ export const getAppointmentDetails = async (appointment_id: number) => {
     }
 }
 
-
 // Gọi hàm lấy chi tiết cuộc hẹn và danh sách bác sĩ
-
 export const fetchAppointmentAndVeterinarians = async (appointment_id: number) => {
     try {
         const appointmentDetails = await getAppointmentDetails(appointment_id); // Gọi API để lấy chi tiết cuộc hẹn
@@ -80,13 +78,35 @@ export const fetchAppointmentAndVeterinarians = async (appointment_id: number) =
     }
 }
 
-
+// update appointment : update veterinarian_id
 export const updateAppointment = async (appointment_id: number, veterinarian_id: number) => {
     try {
         const response = await axios.put(`http://localhost:8080/api/v1/appointments/${appointment_id}/veterinarian/${veterinarian_id}`);
         return response.data; // trả về dữ liệu từ API
     } catch (error) {
         console.error('Error updating appointment:', error);
+        throw error; // ném lỗi để xử lý ở nơi gọi
+    }
+}
+
+//View medical report of an appointment
+export const fetchMedicalReport = async (appointment_id: number) => {
+    try {
+        const response = await axios.get(`http://localhost:8080/api/v1/appointments/${appointment_id}/report`);
+        return response.data; // trả về dữ liệu từ API
+    } catch (error) {
+        console.error('Error fetching medical report:', error);
+        throw error; // ném lỗi để xử lý ở nơi gọi
+    }
+}
+
+//Manager get the logs of an appointment
+export const fetchLogs = async (appointment_id: number) => {
+    try {
+        const response = await axios.get(`http://localhost:8080/api/v1/appointments/${appointment_id}/logs`);
+        return response.data; // trả về dữ liệu từ API
+    } catch (error) {
+        console.error('Error fetching logs:', error);
         throw error; // ném lỗi để xử lý ở nơi gọi
     }
 }
