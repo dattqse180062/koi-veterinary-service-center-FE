@@ -35,9 +35,9 @@ export const fetchAppointment = async () => {
     }
 }
 
-export const fetchAppointmentForCus = async (appointment_id: number) => {
+export const fetchAppointmentForCus = async () => {
     try {
-        const response = await axios.get(`http://localhost:8080/api/v1/appointments/${appointment_id}/customer`);
+        const response = await axios.get(`http://localhost:8080/api/v1/appointments/customer`);
         return response.data; // trả về dữ liệu từ API
     } catch (error) {
         console.error('Error fetching appointment:', error);
