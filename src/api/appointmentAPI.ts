@@ -35,9 +35,9 @@ export const fetchAppointment = async () => {
     }
 }
 
-export const fetchAppointmentForCus = async () => {
+export const fetchAppointmentForCus = async (appointment_id: number) => {
     try {
-        const response = await axios.get(`http://localhost:8080/api/v1/appointments/customer`);
+        const response = await axios.get(`http://localhost:8080/api/v1/appointments/${appointment_id}/customer`);
         return response.data; // trả về dữ liệu từ API
     } catch (error) {
         console.error('Error fetching appointment:', error);
@@ -58,21 +58,6 @@ export const getAppointmentDetails = async (appointment_id: number) => {
 
 
 // Gọi hàm lấy chi tiết cuộc hẹn và danh sách bác sĩ
-// export const fetchAppointmentAndVeterinarians = async (appointment_id: number) => {
-//     try {
-//         const appointmentDetails = await getAppointmentDetails(appointment_id); // Gọi API để lấy chi tiết cuộc hẹn
-//         if (appointmentDetails.slot_id) {
-//             // Nếu có slot_id, gọi API lấy danh sách bác sĩ
-//             const veterinarians = await axios.get(`http://localhost:8080/api/v1/users/veterinarian/${appointmentDetails.slot_id}`);
-//             console.log('Danh sách bác sĩ từ slot id đó:', veterinarians.data);
-//             return { appointmentDetails, veterinarians: veterinarians.data }; // trả về dữ liệu từ API
-//         } else {
-//             console.error('Không tìm thấy slot_id trong chi tiết cuộc hẹn');
-//         } 
-//     } catch (error) {
-//         console.error('Lỗi khi lấy thông tin chi tiết cuộc hẹn hoặc danh sách bác sĩ:', error);
-//     }
-// }
 
 export const fetchAppointmentAndVeterinarians = async (appointment_id: number) => {
     try {
