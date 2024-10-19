@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getAppointmentDetails, updateAppointment } from '../api/appointmentAPI';
-import { fetchPayment, updatePayment } from '../api/paymentApi';
-import { fetchAppointmentAndVeterinarians } from '../api/appointmentAPI';
+import { fetchMedicalReport, fetchLogs } from '../api/appointmentAPI';
+import { fetchPrescription } from '../api/prescriptionApi';
+import '../styles/ManagerAppointmentDetails.css';
 
 interface AppointmentDetailsProps {
     appointment_id: number;
@@ -60,12 +61,31 @@ interface Fish {
     enable: boolean;
 };
 
-interface PaymentDetails {
-    payment_id: number;
-    payment_method: payment_method;
-    payment_amount: number;
-    description: string;
-    status: payment_status;
+interface AppointmentReport {
+    report_id: number,
+    veterinarian_id: number,
+    conclusion: string,
+    advise: string,
+    prescription_id: number
+}
+
+interface Log {
+    status_id: number
+    status: string
+    time: string,
+    note: string
+}
+
+interface Prescription {
+    prescription_id: number,
+    medicines: Medicines[],
+    instruction: string
+}
+
+interface Medicines {
+    medicine_id: number,
+    medicine_name: string,
+    quantity: number
 }
 
 enum payment_method {
@@ -83,14 +103,20 @@ const ManagerAppointmentDetails: React.FC = () => {
     const location = useLocation(); // Get the location object
     const appointment_id: number = location.state?.appointment_id; // Get the appointment_id from the location state
     const [appointment, setAppointment] = useState<AppointmentDetailsProps | null>(null); // Assuming your data structure
+    const [report, setReport] = useState<AppointmentReport | null>(null); // Assuming your data structure
+    const [logs, setLogs] = useState<Log[]>([]); // Chuyển logs sang mảng
+    const [prescription, setPrescription] = useState<Prescription | null>(null); // Assuming your data structure
+    const [showLogsModal, setShowLogsModal] = useState(false); // State để hiển thị modal logs
+    const [showPrescriptionModal, setShowPrescriptionModal] = useState(false); // State để hiển thị modal prescription
     const navigate = useNavigate();
 
-
+    
     // Fetch appointment details by ID
     useEffect(() => {
         const fetchDetails = async () => {
             if (appointment_id) {
                 try {
+                    console.log('appointment id:', appointment_id);
                     const appointmentData = await getAppointmentDetails(Number(appointment_id)); // Fetch details by ID
                     setAppointment(appointmentData); // Set the appointment details                    
                 } catch (error) {
@@ -101,6 +127,62 @@ const ManagerAppointmentDetails: React.FC = () => {
 
         fetchDetails();
     }, [appointment_id]);
+
+
+    // Fetch report details by ID
+    useEffect(() => {
+        const fetchDetails = async () => {
+            if (appointment_id) {
+                try {
+                    const reportData = await fetchMedicalReport(Number(appointment_id)); // Fetch details by ID
+                    setReport(reportData); // Set the appointment details                    
+                } catch (error) {
+                    console.error('Error fetching report details:', error);
+                }
+            }
+        };
+
+        fetchDetails();
+    }, [appointment_id]);
+    
+
+    // Fetch logs details by ID
+    useEffect(() => {
+        const fetchDetails = async () => {
+            if (appointment_id) {
+                try {
+                    const logsData = await fetchLogs(Number(appointment_id)); // Fetch details by ID
+                    setLogs(logsData); // Set the appointment details                    
+                } catch (error) {
+                    console.error('Error fetching logs details:', error);
+                }
+            }
+        };
+
+        fetchDetails();
+    }, [appointment_id]);
+
+    // Fetch prescription details by prescription_id
+    const prevPrescription = useRef<Prescription | null>(null); // Lưu trữ prescription trước đó
+
+    useEffect(() => {
+        const fetchDetails = async () => {
+            if (report?.prescription_id) {
+                try {
+                    const prescriptionData = await fetchPrescription(Number(report?.prescription_id));
+                    // So sánh prescription mới với prescription hiện tại
+                    if (prevPrescription.current?.prescription_id !== prescriptionData.prescription_id) {
+                        prevPrescription.current = prescriptionData;
+                        setPrescription(prescriptionData); // Cập nhật prescription khi khác nhau
+                    }
+                } catch (error) {
+                    console.error('Error fetching prescription details:', error);
+                }
+            }
+        };
+
+        fetchDetails();
+    }, [report?.prescription_id]);
 
 
     if (!appointment) {
@@ -119,7 +201,28 @@ const ManagerAppointmentDetails: React.FC = () => {
         return new Date(dateString).toLocaleString('vi-VN', options);
     };
 
-    const formattedDate = formatDateTime(appointment.created_date);
+    const formattedCreatedDate = formatDateTime(appointment.created_date);
+    // const formatLogsTime = formatDateTime(logs.time || '');
+
+    const handleViewLogs = () => {
+        setShowLogsModal(true);
+    };
+
+    const handleCloseLogsModal = () => {
+        setShowLogsModal(false);
+    };
+
+    const handleViewPrescription = () => {
+        setShowPrescriptionModal(true);
+    };
+
+    const handleClosePrescriptionModal = () => {
+        setShowPrescriptionModal(false);
+    };
+
+
+
+    // console.log('prescription:', prescription);
 
     return (
         <div className="container" style={{ marginTop: '2rem', textAlign: 'left' }}>
@@ -132,18 +235,16 @@ const ManagerAppointmentDetails: React.FC = () => {
 
                         <div className="row">
                             <div className="col-md-6">
-                                <p><strong>Date:</strong> {formattedDate}</p>
+                                <p><strong>Date:</strong> {formattedCreatedDate}</p>
                                 <p><strong>Status:</strong> {appointment?.current_status}</p>
 
                                 <h5 className="mt-3" style={{ fontWeight: '900' }}>- Customer Information</h5>
                                 <p><strong>Name:</strong> {appointment?.customer_name}</p>
-                                <p><strong>Slot ID:</strong> {appointment?.slot_id}</p>
                                 <p><strong>Email:</strong> {appointment?.email}</p>
                                 <p><strong>Phone:</strong> {appointment?.phone_number}</p>
                                 <p><strong>Description:</strong> {appointment?.description || 'Nothing'}</p>
 
                                 <h5 className="mt-3" style={{ fontWeight: '900' }}>- Service Information</h5>
-                                <p><strong>Service id:</strong> {appointment.service?.service_id}</p>
                                 <p><strong>Service name:</strong> {appointment.service?.service_name}</p>
                                 <p><strong>Service Price:</strong> {appointment.service?.service_price} USD</p>
 
@@ -183,32 +284,98 @@ const ManagerAppointmentDetails: React.FC = () => {
 
                                 <h5 className="mt-3" style={{ fontWeight: '900' }}>- Total Price</h5>
                                 <p><strong>Total:</strong> {appointment?.total_price || ''} USD</p>
-                                
-                            </div>
 
+                                <h5 className="mt-3" style={{ fontWeight: '900' }}>- Report Information</h5>
+                                <p><strong>Report ID:</strong> {report?.report_id || 'No id'}</p>
+                                <p><strong>Veterinarian ID:</strong> {report?.veterinarian_id || 'No veterinarain'}</p>
+                                <p><strong>Conclusion:</strong> {report?.conclusion || 'No conclusion'}</p>
+                                <p><strong>Advise:</strong> {report?.advise || 'No advise'}</p>
+
+                                <h5 className="mt-3" style={{ fontWeight: '900' }}>- Logs of appointment information</h5>
+                                <button className="btn btn-primary" onClick={handleViewLogs}>
+                                    View Log Details
+                                </button>
+
+                                <h5 className="mt-3" style={{ fontWeight: '900' }}>- Prescription</h5>
+                                <button className="btn btn-primary" onClick={handleViewPrescription}>
+                                    View prescription details
+                                </button>
+                            </div>
                         </div>
+
+                        {/* Modal để hiển thị logs */}
+                        <div className={`modal ${showLogsModal ? 'open' : ''}`} style={{ display: showLogsModal ? 'block' : 'none' }}>
+                            <div className="modal-content">
+                                <h2>Logs Details</h2>
+                                {logs.length > 0 ? (
+                                    <ul
+                                        style={{ textAlign: 'left', listStyleType: 'none' }}
+                                    >
+                                        {logs.map((log) => (
+                                            <li key={log.status_id} style={{ paddingTop: '16px' }}>
+                                                <strong>Log ID: {log.status_id}</strong> <br />
+                                                <strong>Status:</strong> {log.status} <br />
+                                                <strong>Time:</strong> {formatDateTime(log.time)} <br />
+                                                <strong>Note:</strong> {log.note || 'No note'}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <p>No logs available</p>
+                                )}
+                                <button className="btn btn-secondary" onClick={handleCloseLogsModal}>Close</button>
+                            </div>
+                        </div>
+
+                        {/* Modal để hiển thị prescription */}
+                        <div className={`modal ${showPrescriptionModal ? 'open' : ''}`} style={{ display: showPrescriptionModal ? 'block' : 'none' }}>
+                            <div className="modal-content">
+                                <h2>Prescription Details</h2>
+                                {prescription ? ( // Kiểm tra nếu có prescription
+                                    <>
+                                        <p><strong>Prescription ID:</strong> {prescription.prescription_id || 'No id'}</p>                                        
+                                        {prescription.medicines.length > 0 ? (
+                                            <ul style={{ textAlign: 'left', listStyleType: 'none' }}>
+                                                {prescription.medicines.map((medicine) => (
+                                                    <li key={medicine.medicine_id} style={{ paddingTop: '16px' }}>
+                                                        <strong>Medicine ID: {medicine.medicine_id}</strong> <br />
+                                                        <strong>Medicine Name:</strong> {medicine.medicine_name} <br />
+                                                        <strong>Quantity:</strong> {medicine.quantity}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        
+                                        ) : (
+                                            <p>No medicines available</p>
+                                        )}
+                                        <p><strong>Instruction:</strong> {prescription.instruction || 'No instruction'}</p>
+                                    </>
+                                ) : (
+                                    <p>No prescription available</p>
+                                )}
+
+                                <button className="btn btn-secondary" onClick={handleClosePrescriptionModal}>Close</button>
+                            </div>
+                        </div>
+
+
+
                     </div>
                 </div>
             </div>
 
-            <div
-                style={{ marginTop: '2rem', marginBottom: '2rem' }}
-            >
-                {/* Back Button */}
+
+
+            {/* Back Button */}
+            <div style={{ marginTop: '2rem', marginBottom: '2rem' }}>
                 <button className="btn btn-secondary mt-3" onClick={() => navigate(-1)}>Back</button>
-
-
-
             </div>
-
-
-
-
 
         </div>
 
     );
 };
+
 
 export default ManagerAppointmentDetails;
 
