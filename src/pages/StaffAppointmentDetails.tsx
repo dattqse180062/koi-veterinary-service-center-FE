@@ -183,27 +183,78 @@ const AppointmentDetails: React.FC = () => {
     }, [appointment_id]);
 
 
+    // const handleSubmitOrder = async () => {
+    //     if (selectedVetId && appointment) {
+    //         try {
+    //             const updatedAppointment = {
+    //                 ...appointment,
+    //                 veterinarian: { veterinarian_id: selectedVetId }, // Update with selected vet ID
+    //             };
+    //             await updateAppointment(appointment_id, updatedAppointment.veterinarian.veterinarian_id); // Save changes
+    //             console.log('Updated appointment:', updatedAppointment);
+    //             // navigate('/my-appointment-details'); // Redirect after saving
+    //         } catch (error) {
+    //             console.error('Error updating appointment:', error);
+    //         }
+    //     }
+    // };
+
+    // const handleSubmitOrder = async () => {
+    //     if (selectedVetId && appointment) {
+    //         try {
+    //             await updateAppointment(appointment_id, selectedVetId); // Gửi selectedVetId trực tiếp
+    //             console.log('Updated appointment with selected veterinarian ID:', selectedVetId);
+    //             setIsVetSelected(true); // Đặt trạng thái đã lưu thông tin bác sĩ
+    //         } catch (error) {
+    //             console.error('Error updating appointment:', error);
+    //         }
+    //     }
+    // };
+
+
     const handleSubmitOrder = async () => {
         if (selectedVetId && appointment) {
             try {
-                const updatedAppointment = {
-                    ...appointment,
-                    veterinarian: { veterinarian_id: selectedVetId }, // Update with selected vet ID
-                };
-                await updateAppointment(appointment_id, updatedAppointment.veterinarian.veterinarian_id); // Save changes
-                console.log('Updated appointment:', updatedAppointment);
-                // navigate('/my-appointment-details'); // Redirect after saving
+                await updateAppointment(appointment_id, selectedVetId); // Gửi selectedVetId trực tiếp
+
+                // Cập nhật lại thông tin bác sĩ trong appointment
+                setAppointment(prevAppointment => {
+                    if (!prevAppointment) return null; // Kiểm tra nếu prevAppointment là null
+
+                    return {
+                        ...prevAppointment, // Giữ nguyên tất cả các trường hiện có
+                        veterinarian: {
+                            ...prevAppointment.veterinarian, // Giữ nguyên các trường trong veterinarian nếu có
+                            user_id: selectedVetId, // Cập nhật ID của bác sĩ mới
+                            ...vetList?.find(vet => vet.user_id === selectedVetId), // Gán lại thông tin bác sĩ từ danh sách bác sĩ
+                        }
+                    };
+                });
+
+                console.log('Updated appointment with selected veterinarian ID:', selectedVetId);
+                setIsVetSelected(true); // Đặt trạng thái đã lưu thông tin bác sĩ
             } catch (error) {
                 console.error('Error updating appointment:', error);
             }
         }
     };
 
+
+
     const handleVetSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const vetId = Number(e.target.value);
         setSelectedVetId(vetId);
-        setIsVetSelected(vetId !== 0); // Đặt trạng thái isVetSelected thành true nếu có bác sĩ được chọn
+        setIsVetSelected(vetId !== 0); // Đặt trạng thái khi bác sĩ được chọn
+        console.log("Selected Vet ID:", vetId);
     };
+
+
+
+    // const handleVetSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    //     const vetId = Number(e.target.value);
+    //     setSelectedVetId(vetId);
+    //     // setIsVetSelected(vetId !== 0); // Đặt trạng thái isVetSelected thành true nếu có bác sĩ được chọn
+    // };
 
     if (!appointment) {
         return <div>Loading...</div>;
@@ -259,7 +310,7 @@ const AppointmentDetails: React.FC = () => {
                                         <div>
                                             <p>No veterinarian assigned.</p>
                                             <label htmlFor="vet-select"><strong>Select Veterinarian:</strong></label>
-                                            <select id="vet-select" onChange={handleVetSelection} className="form-select" disabled={isVetSelected}>
+                                            <select id="vet-select" onChange={handleVetSelection} className="form-select">
                                                 <option value="">-- Select a veterinarian --</option>
                                                 {vetList && vetList.map(vet => (
                                                     <option key={vet.user_id} value={vet.user_id}>
@@ -270,14 +321,25 @@ const AppointmentDetails: React.FC = () => {
                                         </div>
                                     )
                                 }
+
+                                {/* <button
+                                    className="btn btn-primary mt-3"
+                                    // disabled={isVetSelected} // Vô hiệu hóa nếu chưa chọn hoặc đã chọn bác sĩ
+                                    onClick={handleSubmitOrder}
+                                    style={{ backgroundColor: 'red' }}
+                                >
+                                    Submit Order
+                                </button> */}
+
                                 <button
                                     className="btn btn-primary mt-3"
-                                    disabled={!selectedVetId || isVetSelected} // Vô hiệu hóa nếu chưa chọn hoặc đã chọn bác sĩ
+                                    disabled={!selectedVetId } // Vô hiệu hóa nếu chưa chọn hoặc đã lưu bác sĩ
                                     onClick={handleSubmitOrder}
-                                    style={{  backgroundColor:'red' }}
+                                    style={{ backgroundColor: 'red' }}
                                 >
                                     Submit Order
                                 </button>
+
 
                                 <h5 className="mt-3" style={{ fontWeight: '900' }}>- Address Information: </h5>
                                 {appointment.address?.home_number || 'Not available'}, {appointment.address?.ward || 'Not available'}, {appointment.address?.district || 'Not available'}, {appointment.address?.city || 'Not available'}
@@ -318,7 +380,7 @@ const AppointmentDetails: React.FC = () => {
 
             </div>
 
-
+            
             {/* Conditionally render payment details */}
             {isPaymentVisible && paymentDetails && (
                 <div className="card mt-4"
@@ -367,7 +429,7 @@ const AppointmentDetails: React.FC = () => {
                                 className="btn btn-secondary ms-3"
                                 onClick={handleEditPaymentMethod}
                                 disabled={paymentDetails.status === payment_status.PAID} // Disable if already PAID
-                                style={{  backgroundColor:'red' }}
+                                style={{ backgroundColor: 'red' }}
                             >
                                 Update Payment Status
                             </button>
