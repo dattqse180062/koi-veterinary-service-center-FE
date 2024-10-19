@@ -44,14 +44,17 @@ const CustomerManagementPage = lazy(() => import("./pages/CustomerManagementPage
 const CustomerDetailPage = lazy(() => import("./pages/CustomerDetails"))
 const FeedbackManagementPage = lazy(() => import("./pages/FeedbackManagementPage"))
 const FeedbackDetail = lazy(() => import("./pages/FeedbackDetails"))
-const StaffAppointment = lazy(() => import("./pages/StaffAppointment"))
 const StaffAppointmentDetails = lazy(() => import("./pages/StaffAppointmentDetails"))
 const ManagerAppointment = lazy(() => import("./pages/ManagerAppointment"))
+const ManagerAppointmentDetails = lazy(() => import("./pages/ManagerAppointmentDetails"))
+// const CustomerAppointment = lazy(() => import("./pages/CustomerAppointment"))
+// const StaffAppointment = lazy(() => import("./pages/StaffAppointment"))
 
+const DispatchAppointment = lazy(() => import("./pages/DispatchAppointment")) // NEW
 // NEW
 // const ManagerAppointment = lazy(() => import("./pages/ManagerAppointment"))
-// const ManagerAppointmentDetails = lazy(() => import("./pages/ManagerAppointmentDetails"))
 
+const CustomerAppointmentDetails = lazy(() => import("./pages/CustomerAppointmentDetails"))
 
 // Define a higher-order component with authentication
 const withAuth = (Component: React.ComponentType) => (
@@ -78,6 +81,10 @@ function App() {
                     <Navbar />
                     <Suspense fallback={<div>Loading...</div>}>
                         <Routes>
+
+                            {/* Shared appointment route for different roles: STA, CUS */}
+                            <Route path="/my-appointment" element={withAuth(DispatchAppointment)} />
+
                             {/* Public routes */}
                             <Route path="/login" element={<DangNhapNguoiDung />} />
                             <Route path="/register" element={<RegisterPage />} />
@@ -92,6 +99,8 @@ function App() {
                             <Route path="/koi" element={withRole(KoiFishPage, ['CUS'])} />
                             <Route path="/add-koifish" element={withRole(AddKoiFishPage, ['CUS'])} />
                             <Route path="/koi-details" element={withRole(KoiDetails, ['CUS'])} />
+                            {/* <Route path="/my-appointment" element={withRole(CustomerAppointment, ['CUS'])} /> */}
+                            <Route path="/my-appointment-details-customer" element={withRole(CustomerAppointmentDetails, ['CUS'])} />
 
                             {/* Make appointment  */}
                             <Route path="/appointment/service-selection" element={withRole(ServiceSelectionPage, ['CUS'])} />
@@ -109,12 +118,12 @@ function App() {
                             <Route path="/customer" element={withRole(CustomerManagementPage, ['MAN'])} />
                             <Route path="/customer-details" element={withRole(CustomerDetailPage, ['MAN'])} />
                             <Route path="/feedback" element={withRole(FeedbackManagementPage, ['MAN'])} />
-                            <Route path="/feedback-details" element={withRole(FeedbackDetail, ['MAN'])} />                            
+                            <Route path="/feedback-details" element={withRole(FeedbackDetail, ['MAN'])} />
                             <Route path="/appointment" element={withRole(ManagerAppointment, ['MAN'])} />
-                            <Route path="/appointment-details" element={withRole(AppointmentHistoryDetailsPage, ['MAN'])} />
+                            <Route path="/appointment-details" element={withRole(ManagerAppointmentDetails, ['MAN'])} />
 
                             {/* Staff routes */}
-                            <Route path="/my-appointment" element={withRole(StaffAppointment, ['STA'])} />
+                            {/* <Route path="/my-appointment" element={withRole(StaffAppointment, ['STA'])} /> */}
                             <Route path="/my-appointment-details" element={withRole(StaffAppointmentDetails, ['STA'])} />
 
                             {/* Role: Veterinarian */}
