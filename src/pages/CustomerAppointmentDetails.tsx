@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { getAppointmentDetails } from '../api/appointmentAPI';
-import { fetchPayment } from '../api/paymentApi';
+import { createPayment, fetchPayment } from '../api/paymentApi';
 
 interface AppointmentDetailsProps {
     appointment_id: number;
@@ -17,6 +17,7 @@ interface AppointmentDetailsProps {
     address: Address;
     veterinarian: Veterinarian;
     fish: Fish;
+    payment: PaymentDetails;
 }
 
 interface Service {
@@ -80,8 +81,8 @@ const CustomerAppointmentDetails: React.FC = () => {
     const location = useLocation();
     const appointment_id: number = location.state?.appointment_id;
     const [appointment, setAppointment] = useState<AppointmentDetailsProps | null>(null);
-    const [paymentDetails, setPaymentDetails] = useState<PaymentDetails | null>(null);
-    const [isPaymentVisible, setIsPaymentVisible] = useState(false);
+    const [PaymentDetails, setPaymentDetails] = useState<PaymentDetails | null>(null);
+    // const [isPaymentVisible, setIsPaymentVisible] = useState(false);
     const paymentRef = useRef<HTMLDivElement>(null);
 
     const navigate = useNavigate();
@@ -102,23 +103,6 @@ const CustomerAppointmentDetails: React.FC = () => {
         fetchDetails();
     }, [appointment_id]);
 
-    // Function to handle view payment details
-    const handleViewPaymentDetails = async () => {
-        if (!isPaymentVisible) {
-            try {
-                const paymentData = await fetchPayment(appointment_id);
-                setPaymentDetails(paymentData);
-
-                if (paymentRef.current) {
-                    paymentRef.current.scrollIntoView({ behavior: 'smooth' });
-                }
-            } catch (error) {
-                console.error('Error fetching payment details:', error);
-            }
-        }
-        setIsPaymentVisible(!isPaymentVisible);
-    };
-
     if (!appointment) {
         return <div>Loading...</div>;
     }
@@ -135,6 +119,29 @@ const CustomerAppointmentDetails: React.FC = () => {
     };
 
     const formattedDate = formatDateTime(appointment.created_date);
+
+    // Kiểm tra điều kiện để hiển thị nút thanh toán
+    // const isPaymentEnabled =  payment_method.VN_PAY && payment_status.NOT_PAID;
+
+    const handleViewPaymentDetails = async () => {
+        try {
+            const paymentData = await fetchPayment(appointment_id);
+            setPaymentDetails(paymentData);
+            console.log(paymentData);
+        } catch (error) {
+            console.error('Error fetching payment details:', error);
+        }
+    };
+    const handlePayment = async () => {
+        try {
+            const paymentUrl = await createPayment(appointment_id);
+            window.open(paymentUrl, '_blank'); // Open payment URL in a new tab
+        } catch (error) {
+            console.error('Error initiating payment:', error);
+        }
+    };
+
+
 
     return (
         <div className="container" style={{ marginTop: '2rem', textAlign: 'left' }}>
@@ -158,31 +165,37 @@ const CustomerAppointmentDetails: React.FC = () => {
                             <p><strong>Description:</strong> {appointment?.description}</p>
 
                             <h5 className="mt-3" style={{ fontWeight: '900' }}>- Service Information</h5>
-                            <p><strong>Service id:</strong> {appointment.service?.service_id}</p>
                             <p><strong>Service name:</strong> {appointment.service?.service_name}</p>
-                            <p><strong>Service Price:</strong> {appointment.service?.service_price} USD</p>
+                            <p><strong>Service Price:</strong> {appointment.service?.service_price} VND</p>
 
                             <h5 className="mt-3" style={{ fontWeight: '900' }}>- Veterinarian Information</h5>
                             <p><strong>Name:</strong> {appointment.veterinarian?.first_name} {appointment.veterinarian?.last_name}</p>
 
                             <h5 className="mt-3" style={{ fontWeight: '900' }}>- Address Information</h5>
-                            {appointment.address?.home_number || 'Not available'}, {appointment.address?.ward || 'Not available'}, {appointment.address?.district || 'Not available'}, {appointment.address?.city || 'Not available'}
-                        </div>
-
-                        <div className="col-md-6">
+                            {appointment.address?.home_number }, {appointment.address?.ward }, {appointment.address?.district }, {appointment.address?.city }
                             <h5 className="mt-3" style={{ fontWeight: '900' }}>- Fish Information</h5>
-                            <p><strong>Species:</strong> {appointment.fish?.species}</p>
-                            <p><strong>Gender:</strong> {appointment.fish?.gender}</p>
-                            <p><strong>Size:</strong> {appointment.fish?.size} cm</p>
-                            <p><strong>Weight:</strong> {appointment.fish?.weight} kg</p>
-                            <p><strong>Origin:</strong> {appointment.fish?.origin}</p>
+                            <p><strong>Species:</strong> {appointment.fish?.species || 'NA'}</p>
+                            <p><strong>Gender:</strong> {appointment.fish?.gender || 'NA'}</p>
+                            <p><strong>Size:</strong> {appointment.fish?.size || 'NA'} cm </p>
+                            <p><strong>Weight:</strong> {appointment.fish?.weight || 'NA'} kg</p>
+                            <p><strong>Origin:</strong> {appointment.fish?.origin || 'NA'}</p>
 
                             <h5 className="mt-3" style={{ fontWeight: '900' }}>- Moving Surcharge</h5>
-                            <p><strong>District:</strong> {appointment.moving_surcharge?.district || 'Not available'}</p>
-                            <p><strong>Price:</strong> {appointment.moving_surcharge?.price || '0'} USD</p>
+                            <p><strong>District:</strong> {appointment.moving_surcharge?.district || 'Not available' }</p>
+                            <p><strong>Price:</strong> {appointment.moving_surcharge?.price || '0'} VND</p>
 
                             <h5 className="mt-3" style={{ fontWeight: '900' }}>- Total Price</h5>
-                            <p><strong>Total:</strong> {appointment?.total_price || ''} USD</p>
+                            <p><strong>Total:</strong> {appointment?.total_price || ''} VND</p>
+
+                            <div ref={paymentRef} className="mt-3">
+                                <h5 className="mt-3" style={{ fontWeight: '900' }}>- Payment Information</h5>
+                                {/* test line 193: */}
+                                <p><strong>Payment Method:</strong> {PaymentDetails?.payment_method || 'N/A'}</p>                     
+                                <p><strong>Payment Amount:</strong> {appointment?.payment?.payment_amount || 'N/A'} VND</p>
+                                <p><strong>Description:</strong> {appointment?.payment?.description || 'N/A'}</p>
+                                <p><strong>Status:</strong> {appointment?.payment?.status || 'N/A'}</p>
+                                <button className="btn btn-primary mt-3" onClick={handlePayment}>Pay</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -190,33 +203,10 @@ const CustomerAppointmentDetails: React.FC = () => {
 
             <div style={{ marginTop: '2rem', marginBottom: '2rem' }}>
                 <button className="btn btn-secondary mt-3" onClick={() => navigate(-1)}>Back</button>
-
-                <button className="btn btn-primary mt-3" style={{ marginLeft: '10px' }} onClick={handleViewPaymentDetails}>
-                    View Payment Details
-                </button>
             </div>
 
-            {isPaymentVisible && paymentDetails && (
-                <div className="card mt-4" ref={paymentRef}>
-                    <div className="card-body">
-                        <h5 className="card-title">Payment Details</h5>
-                        <p><strong>Payment ID:</strong> {paymentDetails.payment_id}</p>
-                        <p><strong>Payment method:</strong> {paymentDetails.payment_method}</p>
-                        <p><strong>Payment amount:</strong> {paymentDetails.payment_amount} USD</p>
-                        <p><strong>Status:</strong> {paymentDetails.status || 'Unknown'}</p>
-                        <p><strong>Description:</strong> {paymentDetails.description || 'N/A'}</p>
-                    </div>
-                </div>
-            )}
 
 
-            {/* ASSIGN BÁC SĨ */}
-
-            
-            
-            {/* CONFIRM */}
-        
-        
         </div>
     );
 };
