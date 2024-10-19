@@ -35,9 +35,7 @@ const VetShiftSchePage = lazy(() => import("./pages/VetShiftSchePage"));
 const ViewScheduleOfVetPage = lazy(() => import("./pages/ViewScheduleOfVetPage"));
 const ServicePricingPage = lazy(() => import("./pages/ServicePricingPage"));
 const TransportationPricingPage = lazy(() => import("./pages/TransportationPricingPage"));
-const SecretPage = lazy(() => import("./pages/SecretPage"));
-const ManagerPage = lazy(() => import("./pages/ManagerPage"));
-const VeterinarianPage = lazy(() => import("./pages/VeterinarianPage"));
+
 const VetDetails = lazy(() => import("./pages/VetDetails"));
 
 
@@ -49,6 +47,10 @@ const FeedbackDetail = lazy(() => import("./pages/FeedbackDetails"))
 const StaffAppointment = lazy(() => import("./pages/StaffAppointment"))
 const StaffAppointmentDetails = lazy(() => import("./pages/StaffAppointmentDetails"))
 const ManagerAppointment = lazy(() => import("./pages/ManagerAppointment"))
+
+// NEW
+// const ManagerAppointment = lazy(() => import("./pages/ManagerAppointment"))
+// const ManagerAppointmentDetails = lazy(() => import("./pages/ManagerAppointmentDetails"))
 
 
 // Define a higher-order component with authentication
@@ -107,9 +109,8 @@ function App() {
                             <Route path="/customer" element={withRole(CustomerManagementPage, ['MAN'])} />
                             <Route path="/customer-details" element={withRole(CustomerDetailPage, ['MAN'])} />
                             <Route path="/feedback" element={withRole(FeedbackManagementPage, ['MAN'])} />
-                            <Route path="/feedback-details" element={withRole(FeedbackDetail, ['MAN'])} />
-                            <Route path="/history" element={withRole(ManagerAppointment, ['MAN'])} />
-                            <Route path="/appointment" element={withRole(AppointmentHistoryTable, ['MAN'])} />
+                            <Route path="/feedback-details" element={withRole(FeedbackDetail, ['MAN'])} />                            
+                            <Route path="/appointment" element={withRole(ManagerAppointment, ['MAN'])} />
                             <Route path="/appointment-details" element={withRole(AppointmentHistoryDetailsPage, ['MAN'])} />
 
                             {/* Staff routes */}
