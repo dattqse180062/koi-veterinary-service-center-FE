@@ -69,13 +69,14 @@ const CustomerAppointment: React.FC = () => {
         };
 
         getAppointment();
+        
     }, []);
     // chuyển tới path my-appointment/appointment_id với state là appointment_id not path /số ra page khác 
     // dấu / là trang khác còn : là trang cùng 1 trang
     // dấu / chuyển theo path vd: appointment?appointment_id=1 ---> chuyền qua url parameters
     const handleAppointmentDetails = (appointment_id: number) => {
         console.log(appointment_id); // check xem có ra id không
-        navigate('/my-appointment-details', { state: { appointment_id } });
+        navigate('/my-appointment-details-customer', { state: { appointment_id } });
     };
 
     const actions = [
