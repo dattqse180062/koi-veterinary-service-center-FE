@@ -4,13 +4,15 @@ p{
 }
 
 .modal-content {
-    padding: 30px;
+    padding: 40px;
     border-radius: 25px;
     position: relative;
 }
 
 
-
+.modal-footer {
+    padding: 12px 12px 0px 12px;
+}
 
 .modal-body {
     padding: 0px 15px;

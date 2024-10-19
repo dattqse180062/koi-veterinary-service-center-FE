@@ -144,3 +144,11 @@ export const fetchPrescriptionDetails = async (prescriptionId: number): Promise<
     }
 }
 
+export const updateDoneStatus = async (appointmentId: number,status: string ) => {
+    const response = await axios.put(`${API_BASE_URL}/${appointmentId}/status`, {
+        status
+    });
+    return response.data;
+};
+
+
