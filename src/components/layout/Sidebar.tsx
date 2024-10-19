@@ -69,10 +69,10 @@ const Sidebar: React.FC = () => {
                     </div>
                 )}
 
-                <Link to="/history" className="nav-link text-secondary">
+                <Link to="/appointment" className="nav-link text-secondary">
                     <div className="d-flex align-items-center">
                         <div className="icon-placeholder"></div>
-                        <span className="fw-bold ms-2">History</span>
+                        <span className="fw-bold ms-2">Appointment List</span>
                     </div>
                 </Link>
 
