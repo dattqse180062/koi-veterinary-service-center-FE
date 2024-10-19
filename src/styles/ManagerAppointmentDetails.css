@@ -1,0 +1,74 @@
+/* Modal container */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Modal content */
+  .modal-content {
+    background-color: #fff;
+    margin: 10% auto; /* Đẩy modal lên gần giữa màn hình hơn */
+    height: fit-content; /* Độ cao của modal sẽ tự động thay đổi theo nội dung */
+    width: fit-content; /* Độ rộng của modal sẽ tự động thay đổi theo nội dung */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Đổ bóng để modal nổi bật */
+    font-family: 'Arial', sans-serif; /* Đặt font đơn giản, dễ đọc */
+  }
+  
+  /* Close button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  /* Styling for logs */
+  .logs-details ul {
+    list-style-type: none; /* Loại bỏ ký hiệu mặc định của danh sách */
+    padding: 0;
+  }
+  
+  .logs-details li {
+    margin-bottom: 15px; /* Tăng khoảng cách giữa các logs */
+    border-bottom: 1px solid #ddd; /* Đường kẻ chia cách các logs */
+    padding-bottom: 10px;
+  }
+  
+  .logs-details strong {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .logs-details p {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .logs-details li:last-child {
+    border-bottom: none; /* Xóa đường kẻ cuối cùng */
+  }
+  
+  .logs-details h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center; /* Canh giữa tiêu đề */
+  }
+  
