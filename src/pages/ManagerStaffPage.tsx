@@ -7,15 +7,6 @@ import { fetchStaff } from '../api/staffApi';
 
 interface Staff {
     staff_id: number;
-    // "enabled": false,
-    //     "user_id": 17,
-    //     "first_name": "Lucas",
-    //     "last_name": "King",
-    //     "username": "staff_lucas",
-    //     "password": "$2a$10$jzWS9elMaPD8/3XUkYKr8ugRezayr.CRdOjR3zYSdw7uPv874u2CW",
-    //     "phone_number": "0978901234",
-    //     "enable": false
-
 }
 
 
@@ -25,15 +16,15 @@ const ManagerStaffPage: React.FC = () => {
     const columnHeaders = ['User ID', 'First name', 'Last name', 'User name', 'Phone'];
     // tạm thời chưa có customer name!
     const navigate = useNavigate();
-
+    
     useEffect(() => {
         const getStaff = async () => {
             try {
                 const data = await fetchStaff();
                 const filteredData = data.map((staff: any) => {
-                    const {  ...rest } = staff; 
+                    const { ...rest } = staff;
                     return {
-                        ...rest,                    
+                        ...rest,
                     };
                 });
                 const sortedData = filteredData.sort((a: Staff, b: Staff) => b.staff_id - a.staff_id);
@@ -45,7 +36,7 @@ const ManagerStaffPage: React.FC = () => {
 
         getStaff();
     }, []);
-    
+
     const handleAppointmentDetails = (staff_id: number) => {
         console.log(staff_id); // check xem có ra id không
         navigate('/staff-details', { state: { staff_id } });
@@ -64,11 +55,19 @@ const ManagerStaffPage: React.FC = () => {
             <Sidebar />
             <div className="container" style={{ marginTop: "6rem" }}>
                 <div className="card" style={{ width: '100%' }}>
-                    <div className="card-header">
+                    <div className="card-header d-flex justify-content-between align-items-center">
                         <h5 className="text-start" style={{ fontWeight: "bold", color: "#02033B", fontSize: "2rem", padding: "1.2rem" }}>
                             Staff lists
                         </h5>
+                        <button
+                            className="btn btn-primary"
+                            onClick={() => navigate('/add-staff')}
+                            style={{ padding: '0.5rem 1rem' }}
+                        >
+                            Add Staff
+                        </button>
                     </div>
+
                     <div className="card-body">
                         <TableComponent
                             columns={columns}
