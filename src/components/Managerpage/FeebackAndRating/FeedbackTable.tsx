@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import '../../../styles/FeedbackAndRatingTable.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Sidebar from '../../layout/Sidebar';
+import TableComponent from '../../table/TableComponent';
 
 // Định nghĩa dữ liệu cho Feedback và Appointment
 interface Feedback {
@@ -37,6 +39,8 @@ const FeedbackTable: React.FC = () => {
 
     // const [feedbackData, setFeedbackData] = useState<Feedback[]>([]); // State để lưu trữ danh sách feedback
     const [selectedFeedback, setSelectedFeedback] = useState<Feedback | null>(null);  // State để lưu trữ feedback đã chọn cho việc hiển thị chi tiết
+    const columns = ['feedback_id', 'rating', 'comment', 'date_time'];
+    const columnHeaders = ['Feedback ID', 'Rating', 'Comment', 'Date & Time'];
     const [showDetailModal, setShowDetailModal] = useState<boolean>(false); // State để kiểm soát việc hiển thị modal chi tiết feedback
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false); // State để kiểm soát việc hiển thị modal xác nhận xóa feedback
     const [currentPage, setCurrentPage] = useState<number>(1); // State để theo dõi trang hiện tại trong phân trang
@@ -59,10 +63,10 @@ const FeedbackTable: React.FC = () => {
         fetchFeedbackData();
     }, []);
 
-    const handleViewDetail = (feedbackId: string) => {
+    const handleViewDetail = (feedbackId: number) => {
         // setSelectedFeedback(feedback);
         // setShowDetailModal(true); // Hiển thị modal
-        navigate(`/feedback-details/`, {state: {feedbackId}}); // Điều hướng đến trang chi tiết
+        navigate(`/feedback-details/`, { state: { feedbackId } }); // Điều hướng đến trang chi tiết
         // navigate(`/feedback-details`); // Điều hướng đến trang chi tiết
     };
 
@@ -87,41 +91,39 @@ const FeedbackTable: React.FC = () => {
         setCurrentPage(page);
     };
 
+    const actions = [
+        {
+            label: 'View details',
+            icon: 'fas fa-calendar-alt',
+            onClick: handleViewDetail, // This is now compatible
+        },
+        {
+            label: 'Delete',
+            icon: 'fas fa-info-circle',
+            onClick: handleDelete,
+        },
+    ];
+
     return (
-        <div style={{ width: '80%' }}>
-            <h5 style={{ paddingTop: '65px' }}>Feedback and Rating Management</h5>
-            <table className="table table-hover bg-white">
-                <thead>
-                    <tr>
-                        <th>Feedback ID</th>
-                        <th>Rating</th>
-                        <th>Comment</th>
-                        <th>Date & Time</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {currentOrders.map((feedback) => (
-                        <tr key={feedback.feedback_id}>
-                            <td className="fw-bold">{feedback.feedback_id}</td>
-                            <td>{feedback.rating}</td>
-                            <td>{feedback.comment}</td>
-                            <td>{new Date(feedback.date_time).toLocaleDateString('en-GB')}</td>
-                            <td>
-                                <div className="dropdown">
-                                    <button className="btn btn-light btn-sm dropdown-toggle" type="button" id="dropdown-basic" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i className="bi bi-three-dots-vertical"></i>
-                                    </button>
-                                    <ul className="dropdown-menu" aria-labelledby="dropdown-basic">
-                                        <li><a className="dropdown-item" href="#" onClick={() => handleViewDetail(feedback.feedback_id)}>View Detail</a></li>
-                                        <li><a className="dropdown-item" href="#" onClick={() => handleOpenDeleteModal(feedback)}>Delete</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+        <div className="d-flex flex-grow-1">
+            <Sidebar />
+            <div className='container' style={{ marginTop: "6rem" }}>
+                <div className='card' style={{ width: '100%' }}>
+                    {/* Header of content */}
+                    <div className='card-header'>
+                        <h5 className='text-start' style={{ fontWeight: "bold", color: "#02033B", fontSize: "2rem", padding: "1.2rem" }}>Customer Management</h5>
+                    </div>
+                    <div className='card-body'>
+                        <TableComponent
+                            columns={columns}
+                            columnHeaders={columnHeaders}
+                            data={orderData}
+                            actions={actions} // Pass actions prop
+                            isKoiFishPage={false}
+                        />
+                    </div>
+                </div>
+            </div>
 
             {/* Modal hiển thị chi tiết Feedback và Appointment */}
             {selectedFeedback && showDetailModal && (
@@ -180,7 +182,7 @@ const FeedbackTable: React.FC = () => {
             )}
 
             {/* Pagination */}
-            <nav aria-label="Page navigation">
+            {/* <nav aria-label="Page navigation">
                 <ul className="pagination justify-content-center">
                     <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
                         <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>Previous</button>
@@ -194,7 +196,7 @@ const FeedbackTable: React.FC = () => {
                         <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}>Next</button>
                     </li>
                 </ul>
-            </nav>
+            </nav> */}
 
             {/* Modal for Confirm Deletion */}
             {showDeleteModal && (

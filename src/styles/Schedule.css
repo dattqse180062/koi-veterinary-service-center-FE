@@ -2,6 +2,7 @@
 .table-small {
     font-size: 0.9rem;
     border-collapse: separate;
+
     border-spacing: 0;
     border-radius: 10px;
     overflow: hidden;
@@ -11,14 +12,37 @@
     padding: 0.3rem;
     text-align: center;
     vertical-align: middle;
+    height: 74px;
+    border: 1px solid #c2c5cd;
+
 }
 
 
 .table-small th, .table-small td {
-    border: 1px solid #c2c5cd;
+
+/*=======*/
+/*    border-spacing: 0; !* Make sure the cells aren't overlapping the border *!*/
+/*    border-radius: 10px; !* Add border radius *!*/
+/*    overflow: hidden; !* Ensure the rounded corners apply *!*/
+/*    box-shadow:6px 6px 8px rgba(0, 0, 0, 0.20);*/
+/*    border: 1px solid rgba(13, 72, 159, 0.37);*/
+
+/*}*/
+
+/*.table-small th, .table-small td {*/
+/*    padding: 0.3rem; !* Adjust padding for smaller table *!*/
+
+/*   */
+/*    border: 1px solid #dee2e6;*/
+/*}*/
+
+/*.table-small-auto th, .table-small-auto td {*/
+/*    height: auto; !* Override height for this specific table *!*/
+
+/*>>>>>>> dev*/
 }
 
-.table-small td {
+.table-small tr {
 
 
 }
@@ -27,12 +51,14 @@
     margin: 0; /* Remove default margin */
     margin-bottom: 0.2rem; /* Add some bottom margin for spacing */
     margin-top: 0.2rem;
+    font-size: 1.1rem;
 }
 
 /* Styling the table header */
 .table-small thead th {
     background-color: #002d72;
     color: white;
+
     padding: 0.5rem;
     border: none;
     font-size: 1.05rem;
@@ -90,4 +116,37 @@
     font-weight: bold;
 }
 
+table td.inactive {
+    background-color: rgba(119, 119, 119, 0.18); /* Light red background */
+    cursor: default;
+}
+table td.selected,
+table td.notSelected{
+    cursor: pointer; /* Chuyển đổi con trỏ chuột thành bàn tay */
+}
 
+/* Schedule.css */
+table td.selected {
+    background-color: #d1e7dd; /* Light green background */
+    border: 1px solid #198754; /* Dark green border */
+    border-radius: 10px;
+}
+
+table td.past-date {
+    background-color: rgba(119, 119, 119, 0.18);
+    cursor: default; /* Giữ con trỏ chuột là mặc định cho các ô BOOKED */
+}
+
+table td.booked {
+    cursor: default; /* Giữ con trỏ chuột là mặc định cho các ô BOOKED */
+}
+
+table td.unavailable {
+    background-color: rgba(119, 119, 119, 0.18);
+    cursor: default;
+}
+
+table td.available {
+
+    cursor: pointer;
+}

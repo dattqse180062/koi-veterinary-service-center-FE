@@ -8,8 +8,8 @@ export default function RegisterPage(){
     const[password, setPassword] = useState("");
     const[confirmPassword, setConfirmPassword] = useState("");
     const[email, setEmail] = useState("");
-    const [firstname, setFirstname] = useState("");
-    const [lastname, setLastname] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
 
     //cac bien bao loi
     const[errorTenDangNhap, setErrorTenDangNhap] = useState("");
@@ -31,71 +31,92 @@ export default function RegisterPage(){
         //Avoid spam click
         e.preventDefault();
         //Avoid null
-        const isFirstnameValid = firstname.trim() !== "";
-        const isLastnameValid = lastname.trim() !== "";
+        const isFirstnameValid = firstName.trim() !== "";
+        const isLastnameValid = lastName.trim() !== "";
         const isUsernameValid = username.trim() !== "" && !username.includes(" ");
         const isEmailValid = validateEmail(email);
 
         if (!isUsernameValid) setErrorTenDangNhap("Username is required and cannot contain spaces!");
         if (!isFirstnameValid) setErrorFirstname("First name is required!");
         if (!isLastnameValid) setErrorLastname("Last name is required!");
-        if (!isEmailValid) setErrorEmail("Invalid format and cannot contain spaces!");
+        if (!isEmailValid) setErrorEmail("Invalid format or contain spaces!");
         //Kiem tra cac dieu kien va gan ket qua vao bien
-        const isTenDangNhapValid = !await kiemTraTenDangNhapDaTonTai(username);
-        const isEmailAvailable = !await kiemTraEmailDaTonTai(email);
+        // const isTenDangNhapValid = !await kiemTraTenDangNhapDaTonTai(username);
+        // const isEmailAvailable = !await kiemTraEmailDaTonTai(email);
         const isPasswordValid = !kiemMatKhau(password);
         const isConfirmPasswordValid = !kiemMatKhauNhapLai(confirmPassword);
 
-        if (isFirstnameValid && isLastnameValid &&isTenDangNhapValid && isEmailAvailable&& isEmailValid && isPasswordValid && isConfirmPasswordValid ) {
+        if (isFirstnameValid && isLastnameValid && isEmailValid &&isUsernameValid && isPasswordValid && isConfirmPasswordValid ) {
             try {
-                // Gọi hàm đăng ký và nhận kết quả
-                const result = await register(username, email, password);
+                // Call the register API with the form data
+                await register(
+                    username,
+                    email,
+                    password,
+                    firstName,
+                    lastName
+                );
 
-                // Thông báo thành công
-                alert("Đăng ký thành công!");
+                // Success message
+                alert("Sign up successful!");
 
-                // Xóa các trường nhập liệu
-                setFirstname("");
-                setLastname("");
+                // Clear form fields
+                setFirstName("");
+                setLastName("");
                 setUsername("");
                 setEmail("");
                 setPassword("");
                 setConfirmPassword("");
-            } catch (error) {
-                // Kiểm tra xem lỗi có phải từ API không và hiển thị thông báo phù hợp
-                const errorMessage = error instanceof Error ? error.message : 'Đăng ký thất bại. Vui lòng thử lại.';
-                alert(`Đăng ký thất bại: ${errorMessage}`);
+            } catch (error: any) { // Use any type for the error
+                if (error instanceof Error) {
+                    const errorMessage = error.message;
+
+                    // Set specific error messages based on the API response
+                    if (errorMessage.includes("Username is existed")) {
+                        setErrorTenDangNhap("Username already exists!");
+                    } else if (errorMessage.includes("Email is already")) {
+                        setErrorEmail("Email already exists!");
+                    } else {
+                        alert(`Đăng ký thất bại: ${errorMessage}`);
+                    }
+                } else {
+                    alert('Đăng ký thất bại. Vui lòng thử lại.');
+                }
             }
         }
 
     }
-//Kiem Tra Ten Dang Nhap///////////////////////////////////////////////////////////////////////////////////////////
-    const kiemTraTenDangNhapDaTonTai = async (username: string) =>{
-        const url = 'https://66e10816c831c8811b538fae.mockapi.io/api/login';
-        console.log(url);
-
-        try {
-            const response = await fetch(url);
-            const data = await response.json();  // Parse response as JSON
-
-            // Check if any user in the data array has the same username
-            const userExists = data.some((user: any) => user.username === username);
-
-            if (userExists) {
-                setErrorTenDangNhap("Username already exists!");
-                return true;
-            }
-            return false;
-        } catch (error) {
-            console.error("Loi khi kiem tra ten dang nhap:", error);
-            return false;
-        }
-    }
+// //Kiem Tra Ten Dang Nhap///////////////////////////////////////////////////////////////////////////////////////////
+//     const kiemTraTenDangNhapDaTonTai = async (username: string) =>{
+//         const url = 'https://66e10816c831c8811b538fae.mockapi.io/api/login';
+//         console.log(url);
+//
+//         try {
+//             const response = await fetch(url);
+//             const data = await response.json();  // Parse response as JSON
+//
+//             // Check if any user in the data array has the same username
+//             const userExists = data.some((user: any) => user.username === username);
+//
+//             if (userExists) {
+//                 setErrorTenDangNhap("Username already exists!");
+//                 return true;
+//             }
+//             return false;
+//         } catch (error) {
+//             console.error("Loi khi kiem tra ten dang nhap:", error);
+//             return false;
+//         }
+//     }
 
 
     const validateUsername = (username: string) => {
         const usernameRegex = /^[A-Za-z0-9]+$/; // Only allows English alphabet characters
-        return usernameRegex.test(username);
+        if (!usernameRegex.test(username)){
+            return false;
+        }
+        return true;
+
     }
 
     const handleTenDangNhapChange = (e: React.ChangeEvent<HTMLInputElement>) =>{
@@ -112,7 +133,7 @@ export default function RegisterPage(){
             setErrorTenDangNhap("Username must be only English alphabet characters!");
         } else {
             setErrorTenDangNhap("");
-            return kiemTraTenDangNhapDaTonTai(value);
+            // return kiemTraTenDangNhapDaTonTai(value);
         }
     }
     //Kiem Tra Format Email//////////////////////////////////////////////////////////////////////////////////////////
@@ -125,35 +146,35 @@ export default function RegisterPage(){
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //Kiem Tra Email Ton tai//////////////////////////////////////////////////////////////////////////////////////////
-    const kiemTraEmailDaTonTai = async (email: string) =>{
-        // endpoint
-        const url = 'https://66e10816c831c8811b538fae.mockapi.io/api/login';
-        console.log(url);
-
-        try {
-            const response = await fetch(url);
-            const data = await response.json();  // Parse response as JSON
-
-            // Check if any user in the data array has the same username
-            const emailExists = data.some((user: any) => user.email === email);
-
-            if (emailExists) {
-                setErrorEmail("Email already exists!");
-                return true;
-            }
-            return false;
-        } catch (error) {
-            console.error("Loi khi kiem tra Email:", error);
-            return false;
-        }
-    }
+    // //Kiem Tra Email Ton tai//////////////////////////////////////////////////////////////////////////////////////////
+    // const kiemTraEmailDaTonTai = async (email: string) =>{
+    //     // endpoint
+    //     const url = 'https://66e10816c831c8811b538fae.mockapi.io/api/login';
+    //     console.log(url);
+    //
+    //     try {
+    //         const response = await fetch(url);
+    //         const data = await response.json();  // Parse response as JSON
+    //
+    //         // Check if any user in the data array has the same username
+    //         const emailExists = data.some((user: any) => user.email === email);
+    //
+    //         if (emailExists) {
+    //             setErrorEmail("Email already exists!");
+    //             return true;
+    //         }
+    //         return false;
+    //     } catch (error) {
+    //         console.error("Loi khi kiem tra Email:", error);
+    //         return false;
+    //     }
+    // }
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) =>{
         //Thay doi gia tri
         setEmail(e.target.value);
         setErrorEmail("");
-        return kiemTraEmailDaTonTai(e.target.value);
+        // return kiemTraEmailDaTonTai(e.target.value);
     }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -276,9 +297,9 @@ export default function RegisterPage(){
                                     type="text"
                                     id="firstname"
                                     className="form-control custom-placeholder"
-                                    value={firstname}
+                                    value={firstName}
                                     placeholder="Enter your first name"
-                                    onChange={(e) => setFirstname(e.target.value)}
+                                    onChange={(e) => setFirstName(e.target.value)}
                                 />
                                 {errorFirstname && (
                                     <div className="error-register">{errorFirstname}</div>
@@ -293,9 +314,9 @@ export default function RegisterPage(){
                                     type="text"
                                     id="lastname"
                                     className="form-control custom-placeholder"
-                                    value={lastname}
+                                    value={lastName}
                                     placeholder="Enter your last name"
-                                    onChange={(e) => setLastname(e.target.value)}
+                                    onChange={(e) => setLastName(e.target.value)}
                                 />
                                 {errorLastname && (
                                     <div className="error-register">{errorLastname}</div>

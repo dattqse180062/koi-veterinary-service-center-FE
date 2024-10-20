@@ -11,10 +11,30 @@ interface TableRowProps {
     rowData: any;
     actions?: Action[]; // Hành động
     isKoiFishPage?: boolean; // Thêm prop để xác định trang
-    isAddressPage?: boolean;
+    isAddressPage?: boolean; // Thêm prop để xác định trang
+    isAppointmentPage?: boolean; // Thêm prop để xác định trang
+    isFeedbackPage?: boolean; // Thêm prop để xác định trang
 }
 
-const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isKoiFishPage, isAddressPage  }) => {
+// Function to format DateTime
+const formatDateTime = (dateString: string) => {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+        return 'Invalid date';
+    }
+    const options: Intl.DateTimeFormatOptions = {
+        day: '2-digit',
+        month: '2-digit',
+        year: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+    };
+    return date.toLocaleString('en-GB', options);
+};
+
+const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isKoiFishPage, isAddressPage, isAppointmentPage, isFeedbackPage }) => {
+
     const fullName = `${rowData.first_name || rowData.name} ${rowData.last_name || ''}`.trim(); // Tạo fullName
 
     return (
@@ -30,6 +50,8 @@ const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isK
                             />
                             {fullName}
                         </div>
+                    ) : column === 'datetime' ? (
+                        formatDateTime(rowData.datetime) // Format datetime column
                     ) : (
                         !rowData[column] ? 'N/A' : rowData[column]
                     )}
@@ -43,9 +65,13 @@ const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isK
                             {actions.map((action, index) => (
                                 <li key={index}>
                                     <span className="dropdown-item" onClick={() => {
-                                        const id = isKoiFishPage ? rowData.fish_id : isAddressPage ? rowData.address_id : rowData.user_id;
-                                        action.onClick(id, fullName);
-                                    }}>
+
+                                        const id = isKoiFishPage ? rowData.fish_id : isAddressPage ? rowData.address_id : isAppointmentPage ? rowData.appointment_id : isFeedbackPage ? rowData.feedback_id : rowData.user_id; // Lấy id tương ứng
+                                        action.onClick(id, fullName); // Pass fullName as an argument
+                                    }
+
+                                    }>
+
                                         {action.icon && <i className={`${action.icon} mx-2`}></i>}
                                         {action.label}
                                     </span>

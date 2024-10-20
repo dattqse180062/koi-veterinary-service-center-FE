@@ -1,3 +1,4 @@
+
 p{
     margin-bottom: 7px;
     font-size: 1.3rem;
@@ -65,4 +66,101 @@ p{
     opacity: 0.8; /* Tạo hiệu ứng khi di chuột */
     color: rgba(255, 0, 0, 0.44);
 }
+
+
+.service-card {
+    transition: transform 0.2s ease, opacity 0.2s ease; /* Smooth transition for scaling and opacity */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transform: scale(0.8); /* Default scale down */
+    opacity: 0.8; /* Default opacity */
+}
+
+.service-card:hover {
+    transform: scale(0.9); /* Scale up the card on hover */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Add a subtle shadow effect */
+    opacity: 1; /* Full opacity on hover */
+}
+
+.service-section {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    min-height: 100vh; /* Full viewport height */
+    background-color: #f8f9fa; /* Background color */
+}
+
+.vet-card{
+    transition: transform 0.2s ease, opacity 0.2s ease; /* Smooth transition for scaling and opacity */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transform: scale(0.95); /* Default scale down */
+    opacity: 0.8; /* Default opacity */
+}
+
+.vet-card:hover {
+    transform: scale(1.05); /* Scale up the card on hover */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Add a subtle shadow effect */
+    opacity: 1.05; /* Full opacity on hover */
+}
+
+.prev-next-button {
+    background-color: #02033B; /* Bootstrap primary color */
+    color: white;
+    border: none;
+    border-radius: 20px; /* Rounded corners */
+    padding: 7px 16px; /* Padding for button */
+    font-size: 16px; /* Font size */
+    transition: background-color 0.3s; /* Smooth transition */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+    display: flex; /* Flexbox for alignment */
+    align-items: center; /* Center icon and text vertically */
+}
+
+.prev-next-button:hover {
+    background-color: #070870; /* Darker shade on hover */
+}
+
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.54);
+    backdrop-filter: blur(5px); /* Add blur effect to the overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+
+}
+
+.modal-content {
+    position: relative; /* Make modal content relative to position absolute elements within it */
+    background-color: white;
+    border-radius: 30px;
+    width: 40%; /* Set the width to 40% of the viewport */
+    height: 45%; /* Set the height to 40% of the viewport */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+}
+
+.close-button {
+    position: absolute;
+    top: -0.5rem; /* Position the close button */
+    right: 1.3rem; /* Position the close button */
+    background: none;
+    border: none;
+    font-size: 4rem; /* Size of the close button */
+    color: #333; /* Color of the close icon */
+    cursor: pointer;
+    padding: 0;
+}
+
+.close-button:hover {
+    color: red; /* Change color on hover */
+}
+
 

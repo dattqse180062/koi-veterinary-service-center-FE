@@ -15,6 +15,7 @@ export interface UserData {
 }
 
 
+
 export interface Medicine {
     medicine_id: number;
     medicine_name: string;
@@ -32,3 +33,4 @@ export interface MedicalReport {
     advise: string;
     prescription_id: number;
 }
+

@@ -7,12 +7,15 @@ import { Link,useNavigate } from "react-router-dom";
 import '../styles/Profile.css'
 
 // Define interfaces for user data
-// interface UserAddress {
-//     district: string;
-//     city: string;
-//     ward: string;
-//     home_number: string;
-// }
+
+interface UserAddress {
+    address_id:number;
+    district: string;
+    city: string;
+    ward: string;
+    home_number: string;
+}
+
 
 interface UserData {
     username: string;

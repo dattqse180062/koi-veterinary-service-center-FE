@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dfa0a0f8-c0d0-4cf7-b8ea-c32e2affc709" name="Changes" comment="">
+<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/src/components/vetAppointmentDetails/CreateFollowUpModal.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/components/vetAppointmentDetails/CreateMedicalReport.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/components/vetAppointmentDetails/Report.tsx" afterDir="false" />
@@ -14,6 +15,15 @@
       <change beforePath="$PROJECT_DIR$/src/pages/VetAppointmentDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/VetAppointmentDetails.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/VetSchedulePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/VetSchedulePage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types.ts" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Appointment/OrderConfirmPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Appointment/OrderConfirmPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/CustomerAppointment.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/CustomerAppointment.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/CustomerAppointmentDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/CustomerAppointmentDetails.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/ManagerAppointment.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ManagerAppointment.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/StaffAppointment.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/StaffAppointment.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/StaffAppointmentDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/StaffAppointmentDetails.tsx" afterDir="false" />
+>>>>>>> dev
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +58,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< HEAD
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -60,8 +71,22 @@
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Admin\\Desktop\\reactjs\\test-fe\\node_modules\\typescript\\lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+=======
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "dev",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "C:\\Users\\Admin\\Desktop\\reactjs\\test-fe\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
+>>>>>>> dev
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Admin\Desktop\reactjs\test-fe\src\pages" />
