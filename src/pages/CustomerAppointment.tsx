@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import TableComponent from '../components/table/TableComponent';
 import { useNavigate } from 'react-router-dom';
-import { fetchAppointmentForCus } from '../api/appointmentAPI';
+import { fetchAppointmentForCus } from '../api/appointmentApi';
 
 interface Appointment {
     appointment_id: number;

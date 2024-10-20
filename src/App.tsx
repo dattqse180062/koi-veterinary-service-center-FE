@@ -21,6 +21,8 @@ import FeedbackDetailPageForManager from './components/Managerpage/FeebackAndRat
 import AddressManagementPage from "./pages/AddressManagementPage";
 import AddressDetails from "./pages/AddressDetails";
 import AddAddressPage from "./pages/AddAddressPage";
+import VetSchedulePage from "./pages/VetSchedulePage";
+import VetAppointmentDetails from "./pages/VetAppointmentDetails";
 
 
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
@@ -115,8 +117,10 @@ function App() {
                             {/* Staff routes */}
                             <Route path="/my-appointment" element={withRole(StaffAppointment, ['STA'])} />
                             <Route path="/my-appointment-details" element={withRole(StaffAppointmentDetails, ['STA'])} />
+                            <Route path="/veterinarian-schedule" element={withRole(StaffAppointmentDetails, ['VET'])} />
 
                             {/* Role: Veterinarian */}
+
 
                         </Routes>
 

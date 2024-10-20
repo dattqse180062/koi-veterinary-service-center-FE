@@ -5,44 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dfa0a0f8-c0d0-4cf7-b8ea-c32e2affc709" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/@types/react-rating.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/appointmentApi.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/ServiceCardComponent.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/schedule/AvailableSlots.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/schedule/SlotDateSelection.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/Appointment/InformationPage.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/Appointment/OrderConfirmPage.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/Appointment/ServiceSelectionPage.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/Appointment/SlotDateSelectionPage.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/Appointment/VeterinarianSelectionPage.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/store/actions.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/store/reducers.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/store/store.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/Appointment.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/modal.css" afterDir="false" />
+<<<<<<< HEAD
+      <change afterPath="$PROJECT_DIR$/src/components/vetAppointmentDetails/CreateFollowUpModal.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/vetAppointmentDetails/CreateMedicalReport.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/vetAppointmentDetails/Report.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/addressApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/addressApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/authService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/authService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/koiApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/koiApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/homepage/hero/HeroSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/homepage/hero/HeroSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/table/TableComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/table/TableComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/guards/AuthGuard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/guards/AuthGuard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/context/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/context/AuthContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/AddressManagementPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/AddressManagementPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/KoiFishDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/KoiFishDetails.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/KoiFishPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/KoiFishPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/LoginPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ProfilePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/RegisterPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/RegisterPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/Profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/Profile.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/Schedule.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/Schedule.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/appointmentApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/appointmentApi.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/scheduleApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/scheduleApi.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/VetAppointmentDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/VetAppointmentDetails.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/VetSchedulePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/VetSchedulePage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Appointment/OrderConfirmPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Appointment/OrderConfirmPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/CustomerAppointment.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/CustomerAppointment.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/CustomerAppointmentDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/CustomerAppointmentDetails.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/ManagerAppointment.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ManagerAppointment.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/StaffAppointment.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/StaffAppointment.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/StaffAppointmentDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/StaffAppointmentDetails.tsx" afterDir="false" />
+>>>>>>> dev
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +33,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="feature/kvfs-97-login-change-api" />
+        <entry key="$PROJECT_DIR$" value="modify-feature/manager-add-get-certificate-for-vet" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -77,10 +58,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< HEAD
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/kvfs-156-vet-view-shift-schedule&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Admin\\Desktop\\reactjs\\test-fe\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+=======
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Merging dev",
+    "git-widget-placeholder": "dev",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -89,6 +84,7 @@
     "nodejs_package_manager_path": "npm",
     "ts.external.directory.path": "C:\\Users\\Admin\\Desktop\\reactjs\\test-fe\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
+>>>>>>> dev
   }
 }]]></component>
   <component name="RecentsManager">
@@ -132,6 +128,15 @@
       <workItem from="1728444258887" duration="1906000" />
       <workItem from="1728475660518" duration="300000" />
       <workItem from="1728624215836" duration="13212000" />
+      <workItem from="1729047383851" duration="5453000" />
+      <workItem from="1729084672240" duration="1042000" />
+      <workItem from="1729257949376" duration="7784000" />
+      <workItem from="1729267287675" duration="13229000" />
+      <workItem from="1729298424369" duration="4985000" />
+      <workItem from="1729305987897" duration="138000" />
+      <workItem from="1729306469095" duration="227000" />
+      <workItem from="1729307523503" duration="2009000" />
+      <workItem from="1729408668182" duration="6497000" />
     </task>
     <servers />
   </component>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { getAppointmentDetails } from '../api/appointmentAPI';
+import { getAppointmentDetails } from '../api/appointmentApi';
 import { fetchPayment } from '../api/paymentApi';
 
 interface AppointmentDetailsProps {

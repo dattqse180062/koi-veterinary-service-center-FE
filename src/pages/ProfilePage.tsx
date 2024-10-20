@@ -28,7 +28,9 @@ interface UserData {
 
 const Profile: React.FC = () => {
     const { user  } = useAuth(); // Use Auth context to get userId
-    const userId = user?.userId; // Access userId safely
+    const userId = user?.userId;
+    const roleId = user?.roleId;
+
     const [userData, setUserData] = useState<UserData | null>(null);
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
@@ -148,7 +150,7 @@ const Profile: React.FC = () => {
     };
 
 
-
+    const canEditProfile = roleId === 'CUS' || roleId === 'MAN';
 
     return (
         <div className="d-flex profile-page">
@@ -184,38 +186,65 @@ const Profile: React.FC = () => {
                             <div className="form-group">
                                 <label className="fw-bold">Username</label>
 
-                                <input type="text" className="form-control input-field" value={userData?.username || 'Loading...'} readOnly />
+                                <input type="text" className="form-control input-field" value={userData?.username} readOnly />
                             </div>
                             <div className="form-group">
                                 <label className="fw-bold">Email</label>
-                                <input type="email" className="form-control input-field" value={userData?.email || 'Loading...'} readOnly />
+                                <input type="email" className="form-control input-field" value={userData?.email} readOnly />
 
                             </div>
                             <div className="name-row">
                                 <div className="form-group">
                                     <label className="fw-bold">First Name</label>
 
-                                    <input type="text" className="form-control input-field" value={firstname} onChange={e => setFirstname(e.target.value)} />
+                                    <input type="text" className="form-control input-field" value={firstname} onChange={e => setFirstname(e.target.value)} readOnly={!canEditProfile}/>
                                 </div>
                                 <div className="form-group">
                                     <label className="fw-bold">Last Name</label>
-                                    <input type="text" className="form-control input-field" value={lastname} onChange={e => setLastname(e.target.value)} />
+                                    <input type="text" className="form-control input-field" value={lastname} onChange={e => setLastname(e.target.value)} readOnly={!canEditProfile}/>
                                 </div>
                             </div>
                             <div className="form-group">
                                 <label className="fw-bold">Contact Number</label>
-                                <input type="text" className="form-control input-field" value={phone} onChange={e => setPhone(e.target.value)} onBlur={validatePhone} />
+                                <input type="text" className="form-control input-field" value={phone} onChange={e => setPhone(e.target.value)} onBlur={validatePhone} readOnly={!canEditProfile} />
                                 {errorPhone && <div className="error-register">{errorPhone}</div>}
                             </div>
-                            <div>
 
-                                <button
-                                    className="btn btn-primary"
-                                    onClick={() => navigate(`/addresses`)}
-                                >
-                                    Address Management
-                                </button>
-                            </div>
+                            {/* Conditionally render address management or address form based on role */}
+                            {roleId === 'CUS' || roleId === 'MAN' ? (
+                                <div>
+                                    <button
+                                        className="btn btn-primary"
+                                        onClick={() => navigate(`/addresses`)}
+                                    >
+                                        Address Management
+                                    </button>
+                                </div>
+                            ) : (
+                                <>
+                                    <div className="address-row">
+                                        <div className="form-group">
+                                            <label className="fw-bold">District</label>
+                                            <input type="text" className="form-control input-field"  readOnly/>
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="fw-bold">City</label>
+                                            <input type="text" className="form-control input-field" readOnly/>
+                                        </div>
+                                    </div>
+                                    <div className="address-row">
+                                        <div className="form-group">
+                                            <label className="fw-bold">Ward</label>
+                                            <input type="text" className="form-control input-field" readOnly />
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="fw-bold">Home Number</label>
+                                            <input type="text" className="form-control input-field"  readOnly/>
+                                        </div>
+                                    </div>
+
+                                </>
+                            )}
 
                             {/*<div className="address-row">*/}
                             {/*    <div className="form-group">*/}
