@@ -3,8 +3,9 @@ import Sidebar from "../components/layout/Sidebar";
 import { useLocation } from "react-router-dom";
 import {getUserProfile, updateUserProfile, updateUserAddress, getCertificates, uploadCertificate} from "../api/vetApi"; // Import the API functions
 import '../styles/Profile.css';
-import axios from "axios"; // Create a new CSS file for specific styles
-
+import axios from "axios";
+import {updateUserAvatarAPI} from "../api/authService"; // Create a new CSS file for specific styles
+import defaultImage from "../../src/assets/images/defaultImage.jpg"
 // Define interfaces for veterinarian data
 interface VetAddress {
     district: string;
@@ -64,7 +65,9 @@ const VetDetails: React.FC = () => {
                 setCity(vet.address?.city || '');
                 setWard(vet.address?.ward || '');
                 setHomeNumber(vet.address?.home_number || '');
-                setSelectedImage(vet.avatar || null);
+                if (vet.avatar) {
+                    setSelectedImage(vet.avatar);
+                }
             } catch (error) {
                 console.error('Failed to fetch veterinarian data:', error);
             }
@@ -139,11 +142,21 @@ const VetDetails: React.FC = () => {
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setSelectedImage(reader.result as string);
-            };
-            reader.readAsDataURL(file);
+            setSelectedImage(URL.createObjectURL(file)); // Để hiển thị hình ảnh ngay lập tức
+            updateAvatar(file); // Gọi hàm cập nhật avatar
+        }
+    };
+console.log("avatar",selectedImage)
+    const updateAvatar = async (image: File) => {
+        if (vetId) {
+            try {
+                await updateUserAvatarAPI(vetId, image); // Gọi hàm API cập nhật avatar
+                alert("Avatar updated successfully!");
+                // Có thể gọi lại API để lấy lại thông tin người dùng mới nếu cần
+            } catch (error) {
+                console.error('Failed to update avatar:', error);
+                alert("Failed to update avatar.");
+            }
         }
     };
 
@@ -235,11 +248,11 @@ const VetDetails: React.FC = () => {
 
                     <div className="image-section">
                         <div className="image-background">
-                            {selectedImage ? (
-                                <img src={selectedImage} alt="Uploaded" className="uploaded-image"/>
-                            ) : (
-                                <div className="image-placeholder">No Image Selected</div>
-                            )}
+                            <img
+                                src={selectedImage || defaultImage}
+                                alt="User Avatar"
+                                className="uploaded-image"
+                            />
                         </div>
                         <label className="upload-btn">
                             {selectedImage ? "Change Image" : "Choose Image"}

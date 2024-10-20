@@ -5,18 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dfa0a0f8-c0d0-4cf7-b8ea-c32e2affc709" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/assets/images/defaultImage.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/logo192.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/logo512.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/robots.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/robots.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/robots.txt" beforeDir="false" afterPath="$PROJECT_DIR$/public/robots.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/authService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/authService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/vetApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/vetApi.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/table/TableRow.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/table/TableRow.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hooks/context/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/context/AuthContext.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ProfilePage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/VetDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/VetDetails.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/VetShiftSchePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/VetShiftSchePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/Profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/Profile.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,6 +63,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Admin\Desktop\reactjs\test-fe\src\assets\images" />
       <recent name="C:\Users\Admin\Desktop\reactjs\test-fe\src\pages" />
     </key>
   </component>

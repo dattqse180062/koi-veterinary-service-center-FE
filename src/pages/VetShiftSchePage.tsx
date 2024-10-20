@@ -11,6 +11,7 @@ interface Vet {
     email: string;
     phone_number: string;
     address: string;
+    avatar?: string;
     // Include other fields as needed
 }
 const VetShiftSchePage: React.FC = () => {
@@ -26,7 +27,7 @@ const VetShiftSchePage: React.FC = () => {
             try {
                 const data = await fetchVets();
                 const filteredData = data.map((vet: any) => {
-                    const { password, ...rest } = vet; // Exclude password
+                    const { password, ...rest } = vet;
                     return rest;
                 });
                 const sortedData = filteredData.sort((a: Vet, b: Vet) => a.user_id - b.user_id);

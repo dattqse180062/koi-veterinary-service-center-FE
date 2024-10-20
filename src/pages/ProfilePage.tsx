@@ -1,4 +1,4 @@
-
+import defaultImage from "../../src/assets/images/defaultImage.jpg"
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/layout/Sidebar";
 import { useAuth } from "../hooks/context/AuthContext";
@@ -32,10 +32,7 @@ const Profile: React.FC = () => {
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
     const [phone, setPhone] = useState("");
-    // const [state, setState] = useState("");
-    // const [city, setCity] = useState("");
-    // const [ward, setWard] = useState("");
-    // const [homeNumber, setHomeNumber] = useState("");
+
     const [errorPhone, setErrorPhone] = useState("");
     const [errorAddress, setErrorAddress] = useState("");
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -51,15 +48,12 @@ const Profile: React.FC = () => {
             try {
 
                 if (userId) {
-                    const user = await getUserInfo(userId); // Call authService function
+                    const user = await getUserInfo(userId);
                     setUserData(user);
                     setFirstname(user.first_name || '');
                     setLastname(user.last_name || '');
                     setPhone(user.phone_number || '');
-                    // setState(user.address?.district || '');
-                    // setCity(user.address?.city || '');
-                    // setWard(user.address?.ward || '');
-                    // setHomeNumber(user.address?.home_number || '');
+
                     if (user.avatar) {
                         setSelectedImage(user.avatar);
                     }
@@ -172,13 +166,13 @@ const Profile: React.FC = () => {
                 <div className="profile-container">
                     <div className="image-section">
                         <div className="image-background">
-                            {selectedImage ? (
-                                <img src={selectedImage} alt="Uploaded" className="uploaded-image" />
-                            ) : (
-                                <div className="image-placeholder">No Image Selected</div>
-                            )}
+                            <img
+                                src={selectedImage || defaultImage}
+                                alt="User Avatar"
+                                className="uploaded-image"
+                            />
                         </div>
-                        <label className="upload-btn">
+                        <label className="upload-btn btn-shadow">
                             {selectedImage ? "Change Image" : "Choose Image"}
                             <input
                                 type="file"
