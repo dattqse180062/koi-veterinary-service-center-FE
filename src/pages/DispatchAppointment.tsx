@@ -1,7 +1,7 @@
 import { useAuth } from '../hooks/context/AuthContext';
 import StaffAppointment from './StaffAppointment';
 import CustomerAppointment from './CustomerAppointment';
-
+import UnauthorizedPage from './UnauthorizedPage';
 interface User {
     roleId: string;
     userId: number;
@@ -17,7 +17,7 @@ const DispatchAppointment = () => {
         return <CustomerAppointment />;
         
     } else {
-        return <div>Bạn không có quyền truy cập trang này.</div>;
+        return <UnauthorizedPage />;
     }
 };
 
