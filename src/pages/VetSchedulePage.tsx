@@ -7,6 +7,10 @@ import { useDispatch } from 'react-redux';
 import {useAuth} from "../hooks/context/AuthContext";
 // import { setAppointmentDetails } from '../../redux/actions/appointmentActions'; // Redux action to set appointment details
 
+interface DoctorScheduleProps {
+    appointments?: any[]; // Nhận appointments từ props
+}
+
 // Map slot_order to time ranges
 const slotOrderToTime = {
     1: '7:30 - 9:30',
@@ -55,7 +59,7 @@ const generateWeeksOfYear = (selectedYear: number) => {
     return { weeks, currentWeek };
 };
 
-const DoctorSchedule: React.FC = () => {
+const VetSchedule: React.FC = () => {
     const location = useLocation();
     const { user } = useAuth();
     const vetId = user?.userId;
@@ -209,4 +213,4 @@ const DoctorSchedule: React.FC = () => {
     );
 };
 
-export default DoctorSchedule;
+export default VetSchedule;

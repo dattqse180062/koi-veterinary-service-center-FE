@@ -5,12 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dfa0a0f8-c0d0-4cf7-b8ea-c32e2affc709" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/vetAppointmentDetails/CreateFollowUpModal.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/vetAppointmentDetails/CreateMedicalReport.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/vetAppointmentDetails/Report.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/appointmentApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/appointmentApi.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/scheduleApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/scheduleApi.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/VetAppointmentDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/VetAppointmentDetails.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/Appointment.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/Appointment.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/Schedule.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/Schedule.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/ServicePricing.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/ServicePricing.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/VetSchedulePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/VetSchedulePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,7 +23,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="feature/kvfs-97-login-change-api" />
+        <entry key="$PROJECT_DIR$" value="modify-feature/manager-add-get-certificate-for-vet" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -108,6 +111,7 @@
       <workItem from="1729305987897" duration="138000" />
       <workItem from="1729306469095" duration="227000" />
       <workItem from="1729307523503" duration="2009000" />
+      <workItem from="1729408668182" duration="6497000" />
     </task>
     <servers />
   </component>

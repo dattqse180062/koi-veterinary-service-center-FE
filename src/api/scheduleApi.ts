@@ -12,3 +12,13 @@ export const fetchVetSlots = async (vetId: number) => {
         throw error;
     }
 };
+
+export const fetchVetSlotsAvailable = async (vetId: number) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/slots/${vetId}/available`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching vet slots:", error);
+        throw error;
+    }
+};

@@ -54,10 +54,10 @@ export interface StatusUpdate {
 
 export interface MedicalReport {
 
-    veterinarian_id: number;    // Changed from veterinarianId to match your report structure
-    prescription_id: number;   // ID of the prescription
-    conclusion: string;        // Conclusion from the report
-    advise: string;            // Advice based on the report
+    veterinarian_id: number;
+    prescription_id: number;
+    conclusion: string;
+    advise: string;
 
 }
 

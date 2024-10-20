@@ -10,30 +10,14 @@ import {
 } from '../../src/api/appointmentApi';
 import "../styles/Appointment.css";
 import {useAuth} from "../hooks/context/AuthContext";
-
-interface Medicine {
-    medicine_id: number;
-    medicine_name: string;
-}
-
-interface Prescription {
-    prescription_id: number | null;
-    instruction: string;
-    medicines: { medicine_id: number; quantity: number }[];
-}
-
-interface MedicalReport {
-    veterinarian_id: number;
-    conclusion: string;
-    advise: string;
-    prescription_id: number;
-}
+import {MedicalReportComponent } from "../components/vetAppointmentDetails/Report"
+import CreateMedicalReport from "../components/vetAppointmentDetails/CreateMedicalReport"
+import {MedicalReport, Medicine,Prescription} from "../../src/types";
 
 const VetAppointmentDetails: React.FC = () => {
     const { user } = useAuth();
     const vetId = user?.userId;
     const navigate = useNavigate();
-
     const { appointmentId } = useParams<{ appointmentId: string }>();
     const [appointment, setAppointment] = useState<any | null>(null);
     const [medicalReport, setMedicalReport] = useState<MedicalReport | null>(null);
@@ -87,18 +71,16 @@ const VetAppointmentDetails: React.FC = () => {
     }, [appointmentId]);
 
     const toggleReportModal = () => {
-        // Nếu bạn chỉ cần đóng modal mà không cần thay đổi trạng thái khác, có thể đặt giá trị cụ thể
         if (isCreatingReport) {
-            setIsCreatingReport(false); // Đóng modal tạo báo cáo
+            setIsCreatingReport(false); // Đóng modal
         }
-        setIsReportVisible(!isReportVisible); // Đóng modal xem báo cáo
+        setIsReportVisible(!isReportVisible); // Đóng modal
     };
 
     const handleCreateReport = async () => {
         try {
             let valid = true;
 
-            // Check that both the report fields are filled
             if (!newReport.conclusion.trim() || !newReport.advise.trim()) {
                 alert('Conclusion and advise cannot be empty.');
                 valid = false;
@@ -121,8 +103,8 @@ const VetAppointmentDetails: React.FC = () => {
 
             if (!valid) {
 
-                alert('Please correct the highlighted fields.'); // Optional, can be removed
-                return; // Prevent further execution
+                alert('Please correct the highlighted fields.');
+                return;
             }
             if (window.confirm('Are you sure you want to save the report?')) {
             let prescriptionData;
@@ -131,13 +113,13 @@ const VetAppointmentDetails: React.FC = () => {
                 prescriptionData = await createPrescription(prescription);
 
             } else {
-                prescriptionData = { prescription_id: null }; // Handle this case according to your API's needs
+                prescriptionData = { prescription_id: null };
             }
 
 
             if (vetId === undefined) {
                 alert('User ID is not available. Cannot create medical report.');
-                return; // Prevent further execution
+                return;
             }
 
             const newMedicalReport = {
@@ -162,12 +144,12 @@ const VetAppointmentDetails: React.FC = () => {
             setPrescription({
                 prescription_id: null,
                 instruction: '',
-                medicines: [{ medicine_id: 0, quantity: 1 }]
+                medicines: [{ medicine_id: 0,medicine_name:'', quantity: 1 }]
             });
         } else {
             const updatedPrescription = {
                 ...prescription,
-                medicines: [...prescription.medicines, { medicine_id: 0, quantity: 1 }]
+                medicines: [...prescription.medicines, { medicine_id: 0,medicine_name:'', quantity: 1 }]
             };
             setPrescription(updatedPrescription);
         }
@@ -309,171 +291,30 @@ const VetAppointmentDetails: React.FC = () => {
 
 
                             {isReportVisible && medicalReport && (
-                                <div className="modal fade show" tabIndex={-1}
-                                     style={{display: 'block', background: 'rgba(0, 0, 0, 0.7)'}}>
-                                    <div className="modal-dialog modal-dialog-centered">
-                                        <div className="modal-content">
-                                        <span
-
-                                            className="close-icon"
-                                            onClick={toggleReportModal}
-
-                                        >
-                                            &times; {/* Dấu X */}
-                                        </span>
-                                            <div className="modal-header">
-                                                <h5 className="modal-title appointment-title"
-                                                    style={{fontSize: "1.6rem"}}>Medical Report</h5>
-
-                                            </div>
-                                            <div className="modal-body">
-                                                <p><strong>Conclusion:</strong> {medicalReport.conclusion}</p>
-                                                <p><strong>Advise:</strong> {medicalReport.advise}</p>
-                                                {/* Display Prescription Information */}
-
-                                            </div>
-                                            {prescription && (
-                                                <div>
-                                                    <div className="modal-header">
-                                                        <h5 className="modal-title appointment-title"
-                                                            style={{fontSize: "1.6rem"}}>Prescription</h5>
-                                                    </div>
-                                                    <div className="modal-body">
-                                                        <p><strong>Instructions:</strong> {prescription.instruction}</p>
-                                                        <ul>
-                                                            {prescription.medicines.map((med, index) => {
-                                                                const medicineDetail = medicines.find(m => m.medicine_id === med.medicine_id);
-                                                                return (
-                                                                    <li key={index}>
-                                                                        {medicineDetail ? medicineDetail.medicine_name : 'Unknown Medicine'} (Quantity: {med.quantity})
-                                                                    </li>
-                                                                );
-                                                            })}
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
+                                <MedicalReportComponent
+                                    medicalReport={medicalReport}
+                                    prescription={prescription}
+                                    toggleReportModal={toggleReportModal}
+                                />
                             )}
 
-                            {isCreatingReport && (
-                                <div className="modal" tabIndex={-1}
-                                     style={{display: 'block', background: 'rgba(0, 0, 0, 0.7)'}}>
-                                    <div className="modal-dialog modal-dialog-centered">
-                                        <div className="modal-content">
-                                        <span
-
-                                            className="close-icon"
-                                            onClick={toggleReportModal}
-
-                                        >
-                                            &times; {/* Dấu X */}
-                                        </span>
-                                            <div className="modal-header">
-                                                <h5 className="modal-title appointment-title"
-                                                    style={{fontSize: "1.9rem"}}>Create Medical Report</h5>
-                                            </div>
-                                            <div className="modal-body">
-                                                <div className="mb-3">
-                                                    <label className="form-label">Conclusion</label>
-                                                    <input type="text" className="form-control"
-                                                           value={newReport.conclusion}
-                                                           onChange={(e) => setNewReport({
-                                                               ...newReport,
-                                                               conclusion: e.target.value
-                                                           })}/>
-                                                </div>
-                                                <div className="mb-3">
-                                                    <label className="form-label">Advise</label>
-                                                    <input type="text" className="form-control" value={newReport.advise}
-                                                           onChange={(e) => setNewReport({
-                                                               ...newReport,
-                                                               advise: e.target.value
-                                                           })}/>
-                                                </div>
-
-
-                                            </div>
-                                            {/* Prescription Section */}
-                                            <div>
-                                                <div className="modal-header">
-                                                    <h5 className="modal-title appointment-title"
-                                                        style={{fontSize: "1.4rem"}}>Prescription</h5>
-                                                </div>
-                                                <div className="modal-body">
-                                                    {prescription?.medicines.map((med, index) => (
-                                                        <div key={index} className="d-flex mb-2">
-                                                            <select
-                                                                className={`form-select ${!isMedicineValid[index] ? 'is-invalid' : ''}`}
-                                                                value={med.medicine_id}
-                                                                style={{width: "100%"}}
-                                                                onChange={(e) => {
-                                                                    handleMedicineChange(index, 'medicine_id', e.target.value);
-                                                                    const updatedValidity = [...isMedicineValid];
-                                                                    updatedValidity[index] = e.target.value !== "0"; // Update validity based on selection
-                                                                    setIsMedicineValid(updatedValidity);
-                                                                }}
-                                                            >
-                                                                <option value="">Select Medicine</option>
-                                                                {medicines.map((medicine) => (
-                                                                    <option key={medicine.medicine_id}
-                                                                            value={medicine.medicine_id}>
-                                                                        {medicine.medicine_name}
-                                                                    </option>
-                                                                ))}
-                                                            </select>
-                                                            <input
-                                                                type="number"
-                                                                className={`form-control ms-2 ${!isQuantityValid[index] ? 'is-invalid' : ''}`}
-                                                                style={{width: "25%"}}
-                                                                value={med.quantity}
-                                                                onChange={(e) => {
-                                                                    const quantityValue = Number(e.target.value);
-                                                                    handleMedicineChange(index, 'quantity', quantityValue);
-                                                                    const updatedValidity = [...isQuantityValid];
-                                                                    updatedValidity[index] = quantityValue > 0; // Update validity based on quantity
-                                                                    setIsQuantityValid(updatedValidity);
-                                                                }}
-                                                            />
-                                                            <button className="btn btn-danger ms-2"
-                                                                    onClick={() => handleRemoveMedicine(index)}>Remove
-                                                            </button>
-                                                        </div>
-                                                    ))}
-
-                                                    <button className="btn btn-secondary mb-2"
-                                                            onClick={handleAddMedicine}>
-                                                        Add Medicine
-                                                    </button>
-                                                    <div className="mb-3">
-                                                        <label className="form-label">Instructions</label>
-                                                        <input
-                                                            type="text"
-                                                            className="form-control"
-                                                            value={prescription?.instruction || ''} // Use optional chaining and fallback to empty string
-                                                            onChange={(e) => setPrescription(prescription ? {
-                                                                ...prescription,
-                                                                instruction: e.target.value
-                                                            } : null)} // Only update if prescription is not null
-                                                        />
-                                                    </div>
-                                                    <div className="modal-footer">
-                                                        <button className="btn btn-primary"
-                                                                onClick={handleCreateReport}>Save
-                                                            Report
-                                                        </button>
-                                                        <button className="btn btn-secondary"
-                                                                onClick={toggleReportModal}>Cancel
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
+                            <CreateMedicalReport
+                                isCreatingReport={isCreatingReport}
+                                toggleReportModal={toggleReportModal}
+                                newReport={newReport}
+                                setNewReport={setNewReport}
+                                prescription={prescription}
+                                setPrescription={setPrescription}
+                                medicines={medicines}
+                                handleMedicineChange={handleMedicineChange}
+                                handleAddMedicine={handleAddMedicine}
+                                handleRemoveMedicine={handleRemoveMedicine}
+                                isMedicineValid={isMedicineValid}
+                                setIsMedicineValid={setIsMedicineValid}
+                                isQuantityValid={isQuantityValid}
+                                setIsQuantityValid={setIsQuantityValid}
+                                handleCreateReport={handleCreateReport}
+                            />
                         </div>
                     </div>
                 </div>
