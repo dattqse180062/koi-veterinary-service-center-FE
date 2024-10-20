@@ -38,15 +38,17 @@ const FeedbackDetail = lazy(() => import("./pages/FeedbackDetailsManagerPage"))
 const StaffAppointmentDetails = lazy(() => import("./pages/StaffAppointmentDetails"))
 const ManagerAppointment = lazy(() => import("./pages/ManagerAppointment"))
 const ManagerAppointmentDetails = lazy(() => import("./pages/ManagerAppointmentDetails"))
+const CustomerAppointmentDetails = lazy(() => import("./pages/CustomerAppointmentDetails"))
+const ManagerStaffPage = lazy(() => import("./pages/ManagerStaffPage"))
+
+// Define a higher-order component with authentication
 // const CustomerAppointment = lazy(() => import("./pages/CustomerAppointment"))
 // const StaffAppointment = lazy(() => import("./pages/StaffAppointment"))
 
 const DispatchAppointment = lazy(() => import("./pages/DispatchAppointment")) // NEW
-const DispatchFeedback = lazy(() => import("./pages/DispatchFeedback"))
-// NEW
-// const ManagerAppointment = lazy(() => import("./pages/ManagerAppointment"))
+const DispatchFeedback = lazy(() => import("./pages/DispatchFeedback")) // NEW
 
-const CustomerAppointmentDetails = lazy(() => import("./pages/CustomerAppointmentDetails"))
+
 
 //NEW: FOR VETERINARIAN
 const VeterinarianFeedbackDetailsPage = lazy(() => import("./pages/VeterinarianFeedbackDetailsPage"))
@@ -119,6 +121,9 @@ function App() {
                             <Route path="/feedback-details" element={withRole(FeedbackDetail, ['MAN'])} />
                             <Route path="/appointment" element={withRole(ManagerAppointment, ['MAN'])} />
                             <Route path="/appointment-details" element={withRole(ManagerAppointmentDetails, ['MAN'])} />
+                            <Route path="/staff" element={withRole(ManagerStaffPage, ['MAN'])} />
+                            
+
 
                             {/* Staff routes */}
                             <Route path="/my-appointment-details" element={withRole(StaffAppointmentDetails, ['STA'])} />
