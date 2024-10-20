@@ -127,25 +127,25 @@ p{
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.54);
-    backdrop-filter: blur(5px); /* Add blur effect to the overlay */
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 999;
-
+    z-index: 9999;
 }
+
 
 .modal-content {
-    position: relative; /* Make modal content relative to position absolute elements within it */
     background-color: white;
-    border-radius: 30px;
-    width: 40%; /* Set the width to 40% of the viewport */
-    height: 45%; /* Set the height to 40% of the viewport */
+    border-radius: 25px;
+    padding: 40px;
+    width: 100%; /* Adjust width as necessary */
+    max-width: 1200px; /* Set a maximum width */
     display: flex;
-    flex-direction: column;
-    justify-content: center; /* Center content vertically */
-    align-items: center; /* Center content horizontally */
+    max-height: 80vh;
+    flex-direction: column; /* Align children vertically */
+    overflow-y: auto;
 }
+
 
 .close-button {
     position: absolute;
@@ -162,5 +162,9 @@ p{
 .close-button:hover {
     color: red; /* Change color on hover */
 }
-
+.modal-header, .modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 

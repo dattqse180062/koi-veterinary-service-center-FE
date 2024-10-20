@@ -94,7 +94,8 @@
 }
 
 .back-button {
-    position: fixed;
+
+    position: relative;
     top: 10%;
     left: 1%;
     z-index: 1000;
