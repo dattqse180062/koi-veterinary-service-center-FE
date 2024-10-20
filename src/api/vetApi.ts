@@ -1,20 +1,20 @@
 // src/api/vetApi.ts
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api/v1/users/veterinarians';
+// Base URL for API
 const API_BASE_URL = 'http://localhost:8080/api/v1/users';
 const API_CERTIFICATE = 'http://localhost:8080/api/v1/certificates';
+
 // Function to fetch veterinarians
 export const fetchVets = async () => {
     try {
-        const response = await axios.get(API_URL);
+        const response = await axios.get(`${API_BASE_URL}/veterinarians`);
         return response.data; // Return the data from the response
     } catch (error) {
         console.error('Error fetching veterinarians:', error);
         throw error; // Rethrow error to be handled in the component
     }
 };
-
 
 // Function to get veterinarian profile information
 export const getUserProfile = async (userId: number): Promise<any> => {
@@ -55,23 +55,31 @@ export const updateUserAddress = async (userId: number, addressData: any): Promi
     }
 };
 
-// Function to upload a certificate
-export const uploadCertificate = async (veterinarianId: number, certificateName: string, file: File) => {
+// Function to get certificates for a veterinarian
+export const getCertificates = async (vetId: number) => {
+    try {
+        const response = await axios.get(`${API_CERTIFICATE}/veterinarians/${vetId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching certificates:', error);
+        throw error;
+    }
+};
+
+// Function to upload a certificate for a veterinarian
+export const uploadCertificate = async (vetId: number, certificateName: string, file: File) => {
     const formData = new FormData();
     formData.append('certificateName', certificateName);
     formData.append('file', file);
 
-    const response = await axios.post(`${API_CERTIFICATE}/veterinarians/${veterinarianId}`, formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    });
-
-    return response.data; // Returns the path or response from the server
-};
-
-// Function to get certificates
-export const getCertificates = async (veterinarianId: number) => {
-    const response = await axios.get(`${API_CERTIFICATE}/veterinarians/${veterinarianId}`);
-    return response.data; // Returns the list of certificates
+    try {
+        await axios.post(`${API_CERTIFICATE}/veterinarians/${vetId}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+    } catch (error) {
+        console.error('Error uploading certificate:', error);
+        throw error;
+    }
 };

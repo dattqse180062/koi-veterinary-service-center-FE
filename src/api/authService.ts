@@ -58,3 +58,18 @@ export const login = async (username: string, password: string) => {
     }
 };
 
+
+
+export const updateUserAvatarAPI = async (userId: number, image: File) => {
+    const formData = new FormData();
+    formData.append("user_id", userId.toString());
+    formData.append("image", image);
+
+    const response = await axios.put('http://localhost:8080/api/v1/users/avatar', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+
+    return response.data;
+};

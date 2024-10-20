@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/layout/Sidebar";
 import { useAuth } from "../hooks/context/AuthContext";
-import {getUserInfo, updateUserAddressAPI, updateUserInfoAPI} from "../api/authService"; // Import authService functions
+import {getUserInfo, updateUserAddressAPI, updateUserInfoAPI, updateUserAvatarAPI} from "../api/authService"; // Import authService functions
 import { Link,useNavigate } from "react-router-dom";
 import '../styles/Profile.css'
+import axios from "axios";
 
 // Define interfaces for user data
 // interface UserAddress {
@@ -20,6 +21,7 @@ interface UserData {
     first_name: string;
     last_name: string;
     phone_number: string;
+    avatar?: string;
     // address: UserAddress;
 }
 
@@ -37,7 +39,11 @@ const Profile: React.FC = () => {
     const [errorPhone, setErrorPhone] = useState("");
     const [errorAddress, setErrorAddress] = useState("");
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
     const navigate = useNavigate();
+
+    const [userProfiles, setUserProfiles] = useState<UserData | null>(null);
+
 
     // Fetch user data from API on component mount
     useEffect(() => {
@@ -54,6 +60,9 @@ const Profile: React.FC = () => {
                     // setCity(user.address?.city || '');
                     // setWard(user.address?.ward || '');
                     // setHomeNumber(user.address?.home_number || '');
+                    if (user.avatar) {
+                        setSelectedImage(user.avatar);
+                    }
                 }
             } catch (error) {
                 console.error('Failed to fetch user data:', error);
@@ -61,17 +70,27 @@ const Profile: React.FC = () => {
         };
 
         fetchUserData();
-    }, []);
+    }, [userId]);
 
     // Handle image upload
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setSelectedImage(reader.result as string);
-            };
-            reader.readAsDataURL(file);
+            setSelectedImage(URL.createObjectURL(file)); // Để hiển thị hình ảnh ngay lập tức
+            updateAvatar(file); // Gọi hàm cập nhật avatar
+        }
+    };
+
+    const updateAvatar = async (image: File) => {
+        if (userId) {
+            try {
+                await updateUserAvatarAPI(userId, image); // Gọi hàm API cập nhật avatar
+                alert("Avatar updated successfully!");
+                // Có thể gọi lại API để lấy lại thông tin người dùng mới nếu cần
+            } catch (error) {
+                console.error('Failed to update avatar:', error);
+                alert("Failed to update avatar.");
+            }
         }
     };
 
@@ -144,9 +163,6 @@ const Profile: React.FC = () => {
         }
     };
 
-
-
-
     return (
         <div className="d-flex profile-page">
             <Sidebar />
@@ -157,7 +173,6 @@ const Profile: React.FC = () => {
                     <div className="image-section">
                         <div className="image-background">
                             {selectedImage ? (
-
                                 <img src={selectedImage} alt="Uploaded" className="uploaded-image" />
                             ) : (
                                 <div className="image-placeholder">No Image Selected</div>
@@ -165,12 +180,10 @@ const Profile: React.FC = () => {
                         </div>
                         <label className="upload-btn">
                             {selectedImage ? "Change Image" : "Choose Image"}
-
                             <input
                                 type="file"
                                 accept="image/*"
                                 onChange={handleImageChange}
-
                                 style={{ display: 'none' }}
                             />
                         </label>

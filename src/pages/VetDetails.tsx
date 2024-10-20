@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../components/layout/Sidebar";
 import { useLocation } from "react-router-dom";
 import {getUserProfile, updateUserProfile, updateUserAddress, getCertificates, uploadCertificate} from "../api/vetApi"; // Import the API functions
-import '../styles/Profile.css'; // Create a new CSS file for specific styles
+import '../styles/Profile.css';
+import axios from "axios"; // Create a new CSS file for specific styles
 
 // Define interfaces for veterinarian data
 interface VetAddress {
@@ -19,7 +20,7 @@ interface VetData {
     last_name: string;
     phone_number: string;
     address: VetAddress;
-    image?: string; // Optional field for the veterinarian's image
+    avatar?: string;
 }
 
 interface Certificate {
@@ -49,6 +50,7 @@ const VetDetails: React.FC = () => {
     const [certificateName, setCertificateName] = useState("");
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [showCertificateDiv, setShowCertificateDiv] = useState(false);
+
     // Fetch veterinarian data from API on component mount
     useEffect(() => {
         const fetchVetData = async () => {
@@ -62,7 +64,7 @@ const VetDetails: React.FC = () => {
                 setCity(vet.address?.city || '');
                 setWard(vet.address?.ward || '');
                 setHomeNumber(vet.address?.home_number || '');
-                setSelectedImage(vet.image || null);
+                setSelectedImage(vet.avatar || null);
             } catch (error) {
                 console.error('Failed to fetch veterinarian data:', error);
             }
@@ -71,41 +73,66 @@ const VetDetails: React.FC = () => {
         fetchVetData();
     }, [vetId]);
 
-    // Fetch certificates from the API
+    // Fetch certificates from API
     const fetchCertificates = async () => {
         try {
-            const certs = await getCertificates(vetId);
-            setCertificates(certs);
+            const fetchedCertificates = await getCertificates(vetId);
+            setCertificates(fetchedCertificates);
         } catch (error) {
             console.error('Failed to fetch certificates:', error);
         }
     };
 
-    // Handle file selection for certificate upload
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            setSelectedFile(file);
-        }
-    };
-
-    // Handle uploading a certificate
-    const handleUploadCertificate = async () => {
+    // Handle file upload
+    const handleFileUpload = async () => {
         if (!selectedFile || !certificateName) {
-            alert("Please enter a certificate name and select a file.");
+            alert('Please select a file and enter a certificate name.');
             return;
         }
 
         try {
             await uploadCertificate(vetId, certificateName, selectedFile);
             alert('Certificate uploaded successfully!');
-            setCertificateName(""); // Clear the input
-            setSelectedFile(null); // Clear file selection
-            await fetchCertificates(); // Refresh the list of certificates
+            setSelectedFile(null); // Reset file đã chọn
+            setCertificateName(''); // Reset tên chứng chỉ
+            // Fetch the updated list of certificates
+            fetchCertificates();
+            window.location.reload();
         } catch (error) {
             console.error('Failed to upload certificate:', error);
         }
     };
+
+
+
+
+    // Handle file download
+    const token = localStorage.getItem("token")
+    const handleDownload = async (filePath: string) => {
+        console.log(filePath)
+        try {
+            const response = await axios.get(filePath, {
+                responseType: 'blob',
+                withCredentials: true,
+                headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            });
+
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', filePath.split('/').pop() || 'certificate'); // Filename
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error: any) {
+            console.error('Failed to download the file:', error.response ? error.response.data : error.message);
+            alert('You need to log in to download this file.');
+        }
+    };
+
 
 
     // Handle image upload
@@ -157,7 +184,7 @@ const VetDetails: React.FC = () => {
                 lastname,
                 phone,
                 email,
-                image: selectedImage,
+                avatar: selectedImage,
             };
 
             await updateUserProfile(vetId, updatedProfileData);
@@ -186,7 +213,7 @@ const VetDetails: React.FC = () => {
             setCity(vetData.address?.city || '');
             setWard(vetData.address?.ward || '');
             setHomeNumber(vetData.address?.home_number || '');
-            setSelectedImage(vetData.image || null);
+            setSelectedImage(vetData.avatar || null);
         }
     };
     // Show/hide certificate input div
@@ -197,6 +224,8 @@ const VetDetails: React.FC = () => {
             fetchCertificates(); // Fetch certificates when opening the modal
         }
     };
+
+
 
     return (
         <div className="d-flex profile-page">
@@ -306,33 +335,40 @@ const VetDetails: React.FC = () => {
                         <div className="certificate-modal">
                             <div className="modal-backdrop" onClick={toggleCertificateDiv}></div>
                             <div className="modal-content">
-                                <h2>Add Certificate</h2>
-                                <form>
-                                    <div className="form-group">
-                                        <label>Certificate Name</label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            value={certificateName}
-                                            onChange={(e) => setCertificateName(e.target.value)}
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Upload File</label>
-                                        <input type="file" accept="application/pdf" onChange={handleFileChange} />
-                                    </div>
-                                    <button type="button" className="btn btn-primary" onClick={handleUploadCertificate}>
-                                        Upload
+                                <div className="certificate-upload">
+                                    <h3>Upload Certificate</h3>
+                                    <input
+                                        type="text"
+                                        value={certificateName}
+                                        onChange={(e) => setCertificateName(e.target.value)}
+                                        placeholder="Certificate Name"
+                                    />
+                                    <input
+                                        type="file" accept="image/*,application/pdf"
+                                        onChange={(e) => setSelectedFile(e.target.files ? e.target.files[0] : null)}
+                                    />
+                                    <button className="btn btn-primary" onClick={handleFileUpload}>
+                                        Upload Certificate
                                     </button>
-                                </form>
+                                </div>
                                 <h3>Existing Certificates:</h3>
-                                <ul className="certificate-list">
-                                    {certificates.map(cert => (
-                                        <li key={cert.certificate_id}>
-                                            <a href={cert.file_path} target="_blank" rel="noopener noreferrer">{cert.certificate_name}</a>
-                                        </li>
-                                    ))}
+                                <ul className="text-start">
+                                    {Array.isArray(certificates) && certificates.length > 0 ? (
+                                        certificates.map((cert) => (
+                                              <li key={cert.certificate_id}>
+                                                <span>
+                                                    <button className="btn btn-success btn-sm mb-1" onClick={() => handleDownload(cert.file_path)}>
+                                                        Download
+                                                    </button> {cert.certificate_name}
+
+                                                </span>
+                                            </li>
+                                        ))
+                                    ) : (
+                                        <a className="text-danger fw-bold">No certificates found.</a>
+                                    )}
                                 </ul>
+
                             </div>
                         </div>
                     )}

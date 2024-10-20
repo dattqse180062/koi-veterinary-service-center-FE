@@ -6,17 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="dfa0a0f8-c0d0-4cf7-b8ea-c32e2affc709" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/addressApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/addressApi.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/logo192.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/logo512.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/robots.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/robots.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/robots.txt" beforeDir="false" afterPath="$PROJECT_DIR$/public/robots.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/authService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/authService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/vetApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/vetApi.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hooks/context/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/context/AuthContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/AddAddressPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/AddAddressPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/AddressDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/AddressDetails.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/AddressManagementPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/AddressManagementPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/LoginPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ProfilePage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/VetDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/VetDetails.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/AddKoiFish.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/AddKoiFish.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/Profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/Profile.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,20 +51,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "modify-feature/manager-add-get-certificate-for-vet",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "C:\\Users\\Admin\\Desktop\\reactjs\\test-fe\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;modify-feature/manager-add-get-certificate-for-vet&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Admin\\Desktop\\reactjs\\test-fe\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Admin\Desktop\reactjs\test-fe\src\pages" />
@@ -106,6 +106,9 @@
       <workItem from="1728444258887" duration="1906000" />
       <workItem from="1728475660518" duration="300000" />
       <workItem from="1728624215836" duration="13212000" />
+      <workItem from="1729346280180" duration="14448000" />
+      <workItem from="1729391180387" duration="1805000" />
+      <workItem from="1729398046547" duration="3872000" />
     </task>
     <servers />
   </component>
