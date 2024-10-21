@@ -35,12 +35,11 @@ const formatDateTime = (dateString: string) => {
     return date.toLocaleString('en-GB', options);
 };
 
-    const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isKoiFishPage, isAddressPage, isAppointmentPage, isFeedbackPage }) => {
+    const TableRowForVet: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isKoiFishPage, isAddressPage, isAppointmentPage, isFeedbackPage }) => {
         // console.log("date", formatDateTime(rowData.created_date));
         // console.log(rowData);
     const fullName = `${rowData.first_name || rowData.name} ${rowData.last_name || ''}`.trim(); // Tạo fullName
-    const dayOfSlot = `${rowData.time_slot.day}/${rowData.time_slot.month}/${rowData.time_slot.year}`.trim(); // Tạo dayOfSlot
-    // console.log("day", dayOfSlot);
+    
     return (
         <tr>
             {columns.map((column) => (
@@ -54,9 +53,7 @@ const formatDateTime = (dateString: string) => {
                             />
                             {fullName}
                         </div>
-                    )  : column === 'dayOfSlot' ? (
-                        <div>{dayOfSlot}</div> // Format datetime column
-                    )  : column === 'datetime' ? (
+                    )   : column === 'datetime' ? (
                         <div>{rowData.created_date}</div> // Format datetime column
                     ) : (
                         !rowData[column] ? 'N/A' : rowData[column]
@@ -99,4 +96,4 @@ const formatDateTime = (dateString: string) => {
     );
 };
 
-export default TableRow;
+export default TableRowForVet;
