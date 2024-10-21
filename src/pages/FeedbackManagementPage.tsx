@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/layout/Sidebar';
-import TableComponent from '../components/table/TableComponent';
+import TableComponent from '../components/table/TableComponentForManager';
 import { useNavigate } from 'react-router-dom';
 import { fecthFeedbacks } from '../api/feedbackApi'
 
