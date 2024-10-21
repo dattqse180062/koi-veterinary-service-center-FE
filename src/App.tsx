@@ -117,10 +117,11 @@ function App() {
                             {/* Staff routes */}
                             <Route path="/my-appointment" element={withRole(StaffAppointment, ['STA'])} />
                             <Route path="/my-appointment-details" element={withRole(StaffAppointmentDetails, ['STA'])} />
-                            <Route path="/veterinarian-schedule" element={withRole(StaffAppointmentDetails, ['VET'])} />
+
 
                             {/* Role: Veterinarian */}
-
+                            <Route path="/veterinarian-schedule" element={withRole(VetSchedulePage, ['VET'])} />
+                            <Route path="/appointment-details/:appointmentId/veterinarian" element={withRole(VetAppointmentDetails, ['VET'])} />
 
                         </Routes>
 
