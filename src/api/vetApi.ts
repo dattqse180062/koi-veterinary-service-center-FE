@@ -14,7 +14,9 @@ export const fetchVets = async () => {
     }
 };
 
+// FOR: STAFF TO FETCH VETERINARIANS
 // Function to fetch veterinarian based on Slot ID
+// Slot id lấy = cách nào ???
 export const fetchVetBySlotId = async (slotId: number) => {
     try {
         const response = await axios.get(`http://localhost:8080/api/v1/users/veterinarian/${slotId}`);

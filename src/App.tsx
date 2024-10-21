@@ -27,6 +27,7 @@ const ViewScheduleOfVetPage = lazy(() => import("./pages/ViewScheduleOfVetPage")
 const ServicePricingPage = lazy(() => import("./pages/ServicePricingPage"));
 const TransportationPricingPage = lazy(() => import("./pages/TransportationPricingPage"));
 
+
 const VetDetails = lazy(() => import("./pages/VetDetails"));
 
 
@@ -48,6 +49,8 @@ const AddStaffPage = lazy(() => import("./pages/AddStaffPage"))
 const DispatchAppointment = lazy(() => import("./pages/DispatchAppointment")) // NEW
 const DispatchFeedback = lazy(() => import("./pages/DispatchFeedback")) // NEW
 
+// For customer
+// const MakeFeedback = lazy(() => import("./pages/MakeFeedback")) // NEW
 
 
 //NEW: FOR VETERINARIAN

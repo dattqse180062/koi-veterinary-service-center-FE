@@ -41,8 +41,9 @@ const TableComponent: React.FC<TableComponentProps> = ({ columns, columnHeaders,
                         {columnHeaders.map((header, index) => (
                             <th key={index}>{header}</th>
                         ))}
-                        <th></th>
-                    </tr>
+                        {/* <th></th> */}
+                        <th>Actions</th> {/* Actions column with padding and custom width */}
+                    </tr>                    
                 </thead>
                 <tbody>
 
@@ -55,6 +56,7 @@ const TableComponent: React.FC<TableComponentProps> = ({ columns, columnHeaders,
                                 // datetime: formatDateTime(item.date_time) // Format DateTime column
                             }}
                             actions={
+                                
                                 actions?.map((action) => ({
                                     ...action,
                                     onClick: () => action.onClick(item[columns[0]], item.full_name, item.slot_id) // Assuming first column is ID

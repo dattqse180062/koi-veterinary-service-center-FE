@@ -54,3 +54,25 @@ export const fetchVetFeedbackDetails = async (feedback_id: number): Promise<any>
     throw error;
   }
 };
+
+
+// For customer: create feedback
+export const createFeedback = async (appointmentId: number, feedbackDto: any) => {
+  try {
+      const response = await axios.post(`http://localhost:8080/api/v1/feedbacks`, feedbackDto, {
+          params: { appointmentId },  
+      });
+
+      const result = await response.data;
+
+      if (response) {
+          console.log('Feedback created successfully:', result);
+          return result;  // You can handle success here, like showing a message
+      } else {
+          console.error('Failed to create feedback:', result);
+      }
+  } catch (error) {
+      alert('Error creating feedback: You have feedback already');
+      console.error('Error creating feedback:', error);
+  }
+};
