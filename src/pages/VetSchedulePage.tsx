@@ -78,6 +78,7 @@ const VetSchedule: React.FC = () => {
 
     useEffect(() => {
         const loadVetSlots = async () => {
+            console.log(vetId)
             if (vetId) {
             try {
                 const slots = await fetchVetSlots(vetId);
@@ -126,11 +127,11 @@ const VetSchedule: React.FC = () => {
             <Sidebar />
             <div className="container" style={{ marginTop: "6rem" }}>
                 <div className="d-flex justify-content-between align-items-center mb-3">
-                    <h3 className="text-start" style={{ fontWeight: "bold", color: "#02033B", fontSize: "2rem" }}>
+                    <h3 className="text-start" style={{ fontWeight: "bold", color: "#02033B", fontSize: "2.5rem" }}>
                         Doctor Schedule
                     </h3>
                     <h3 className="text-end fst-italic">
-                        {`(ID: ${vetId})`}
+                        {`(Your ID: ${vetId})`}
                     </h3>
                 </div>
                 <div className="d-flex justify-content-between align-items-center mb-3">
@@ -199,7 +200,7 @@ const VetSchedule: React.FC = () => {
                                                 <p>{slotOrderToTime[slotId as keyof typeof slotOrderToTime]}</p>
                                             </>
                                         ) : (
-                                            <p className="text-muted">-</p>
+                                            <p className="text-muted fw-bold">-</p>
                                         )}
                                     </td>
                                 );

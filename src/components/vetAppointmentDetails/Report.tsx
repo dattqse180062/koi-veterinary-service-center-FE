@@ -16,7 +16,7 @@ const MedicalReportComponent: React.FC<MedicalReportProps> = ({ medicalReport, p
                         &times;
                     </span>
                     <div className="modal-header">
-                        <h5 className="modal-title appointment-title" style={{ fontSize: "1.6rem" }}>Medical Report</h5>
+                        <h5 className="modal-title appointment-title" style={{ fontSize: "1.8rem" }}>Medical Report</h5>
                     </div>
                     <div className="modal-body">
                         <p><strong>Conclusion:</strong> {medicalReport.conclusion}</p>

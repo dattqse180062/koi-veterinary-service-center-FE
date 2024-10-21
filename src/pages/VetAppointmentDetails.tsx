@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
+import AvailableSlot from "../components/schedule/SlotDateSelection"
 import {
-    getAppointmentDetails,
+
     getMedicalReport,
     createMedicalReport,
     getMedicines,
     createPrescription,
-    fetchPrescriptionDetails, updateAppointmentStatus, updateDoneStatus
-} from '../../src/api/appointmentApi';
+    fetchPrescriptionDetails, updateAppointmentStatus, updateDoneStatus, getAppointmentDetailsVet
+
+} from '../api/appointmentApi';
 import "../styles/Appointment.css";
 import {useAuth} from "../hooks/context/AuthContext";
 import {MedicalReportComponent } from "../components/vetAppointmentDetails/Report"
@@ -27,7 +29,8 @@ const VetAppointmentDetails: React.FC = () => {
     const [prescription, setPrescription] = useState<Prescription | null>(null);
     const [isMedicineValid, setIsMedicineValid] = useState<boolean[]>([]);
     const [isQuantityValid, setIsQuantityValid] = useState<boolean[]>([]);
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [description, setDescription] = useState<string>('');
     const [newReport, setNewReport] = useState<MedicalReport>({
         veterinarian_id: 0,
         conclusion: '',
@@ -38,7 +41,7 @@ const VetAppointmentDetails: React.FC = () => {
     useEffect(() => {
         const fetchAppointmentDetails = async () => {
             try {
-                const appointmentData = await getAppointmentDetails(Number(appointmentId));
+                const appointmentData = await getAppointmentDetailsVet(Number(appointmentId));
                 setAppointment(appointmentData);
 
                 // Fetch medical report if it exists
@@ -212,10 +215,25 @@ const VetAppointmentDetails: React.FC = () => {
             alert('Failed to mark appointment as done. Please try again.');
         }
     };
+    const handleOpenModal = () => {
+        setIsModalOpen(true); // Open the modal
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false); // Close the modal
+        setDescription(''); // Reset description on close
+    };
+
+    const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setDescription(e.target.value); // Update the description state
+    };
 
     return (
         <div className="container-fluid vh-100 text-start d-flex align-items-center justify-content-center">
-            <button className="btn btn-secondary back-button" onClick={handleBack}>
+            <button
+                className="btn btn-secondary mb-3"
+                style={{position: 'absolute', top: '12%', left: '3%'}}
+                onClick={handleBack}>
                 Back
             </button>
             {appointment && (
@@ -248,7 +266,7 @@ const VetAppointmentDetails: React.FC = () => {
 
                             <p><strong>Service:</strong> {appointment.service.service_name}</p>
                             <p><strong>Description:</strong> {appointment.description}</p>
-                            {medicalReport && appointment.current_status === 'ON_GOING' &&(
+                            {medicalReport && appointment.current_status === 'ON_GOING' && (
                                 <button className="btn btn-secondary mt-3" onClick={handleFinish}>
                                     Finish
                                 </button>
@@ -289,7 +307,6 @@ const VetAppointmentDetails: React.FC = () => {
                             )}
 
 
-
                             {isReportVisible && medicalReport && (
                                 <MedicalReportComponent
                                     medicalReport={medicalReport}
@@ -316,8 +333,48 @@ const VetAppointmentDetails: React.FC = () => {
                                 handleCreateReport={handleCreateReport}
                             />
                         </div>
+
+                        {/* Modal for creating follow-up appointments */}
+                        {isModalOpen && (
+                            <div className="modal-overlay" onClick={handleCloseModal}>
+                                <div className="modal-content"
+                                     onClick={(e) => e.stopPropagation()}> {/* Prevent click event from bubbling up to the overlay */}
+                                    <div className="modal-header">
+                                        <h5 className="modal-title appointment-title">Follow Up Appointment</h5>
+                                        <button type="button" className="close-button" onClick={handleCloseModal}>
+                                            &times; {/* Close button content */}
+                                        </button>
+                                    </div>
+                                    <div className="modal-body" style={{marginLeft: "8%"}}>
+
+                                        {/* Pass vetId or any necessary data to AvailableSlot */}
+                                        <AvailableSlot vetId={vetId}
+                                                       appointmentId={Number(appointmentId)}
+                                                       description={description}/>
+                                        <input
+                                            type="text"
+                                            placeholder="Description"
+                                            value={description}
+                                            onChange={handleDescriptionChange}
+                                            className="form-control mb-2 mt-3"
+                                        />
+                                    </div>
+
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                    <div>
+                    <button
+                        className="btn btn-primary mt-3"
+
+                        onClick={handleOpenModal}
+                    >
+                        Create Follow Up Appointment
+                    </button>
                     </div>
                 </div>
+
             )}
         </div>
     );
