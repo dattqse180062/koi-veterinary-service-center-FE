@@ -80,6 +80,19 @@ p{
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Add a subtle shadow effect */
     opacity: 1; /* Full opacity on hover */
 }
+.vet-card{
+    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease, opacity 0.2s ease; /* Smooth transition for scaling and opacity */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transform: scale(0.95); /* Default scale down */
+    opacity: 0.8; /* Default opacity */
+}
+
+.vet-card:hover {
+    transform: scale(1.05); /* Scale up the card on hover */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Add a subtle shadow effect */
+    opacity: 1.05; /* Full opacity on hover */
+}
 
 .service-section {
     display: flex;
@@ -89,18 +102,6 @@ p{
     background-color: #f8f9fa; /* Background color */
 }
 
-.vet-card{
-    transition: transform 0.2s ease, opacity 0.2s ease; /* Smooth transition for scaling and opacity */
-    cursor: pointer; /* Change cursor to pointer on hover */
-    transform: scale(0.95); /* Default scale down */
-    opacity: 0.8; /* Default opacity */
-}
-
-.vet-card:hover {
-    transform: scale(1.05); /* Scale up the card on hover */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Add a subtle shadow effect */
-    opacity: 1.05; /* Full opacity on hover */
-}
 
 .prev-next-button {
     background-color: #02033B; /* Bootstrap primary color */
@@ -113,6 +114,7 @@ p{
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
     display: flex; /* Flexbox for alignment */
     align-items: center; /* Center icon and text vertically */
+    max-height: 42px;
 }
 
 .prev-next-button:hover {

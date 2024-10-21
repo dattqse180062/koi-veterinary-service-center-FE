@@ -89,7 +89,7 @@ input::placeholder {
 
 .custom-card-img {
   width: 320px; /* Fixed width */
-  height: 180px; /* Fixed height */
+  height: 210px; /* Fixed height */
   object-fit: cover; /* Maintains aspect ratio while filling the box */
   border-radius: 48px 48px 0 0; /* Rounded top corners */
 }

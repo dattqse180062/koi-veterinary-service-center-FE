@@ -5,7 +5,7 @@ import axios from 'axios';
 import '../../styles/Schedule.css';
 import { useDispatch } from "react-redux";
 import { setSlot } from '../../store/actions';
-
+import defaultImage from "../../assets/images/defaultImage.jpg"
 const slotOrderToTime = {
     1: '7:30 - 9:30',
     2: '10:00 - 12:00',
@@ -57,7 +57,6 @@ const AvailableSlot: React.FC<AvailableSlotProps> = ({ vetId, appointmentId, des
     const dispatch = useDispatch();
     const doctor = useSelector((state: any) => state.doctor);
     const currentUserId = doctor?.user_id; // Get the doctor's user ID
-
   // Initialize useNavigate
     const currentYear = new Date().getUTCFullYear();
     const [selectedYear, setSelectedYear] = useState(currentYear);
@@ -140,14 +139,14 @@ const AvailableSlot: React.FC<AvailableSlotProps> = ({ vetId, appointmentId, des
                     Back
                 </button>
                     )}
-                <div className="row ">
+                <div className="row gap-4">
                     {currentUserId && (
 
-                    <div className="col-md-3 mb-4 d-flex justify-content-center align-items-center">
+                    <div className="ms-5 col-md-3 mb-4 d-flex justify-content-center align-items-center">
                         <div className="card shadow mt-5"
                              style={{borderRadius: '40px', width: '300px', height: '330px'}}>
                             <img
-                                src={doctor?.avatar}
+                                src={doctor.avatar || defaultImage}
                                 className="card-img-top rounded-circle mx-auto mt-4"
                                 alt={`${doctor?.first_name} ${doctor?.last_name}`}
                                 style={{width: '200px', height: '200px'}}
