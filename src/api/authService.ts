@@ -28,6 +28,9 @@ export const register = async (username: string, email: string, password: string
     }
 };
 
+
+
+
 // export const login = async (username: string, password: string) => {
 //     const response = await axios.get(`${API_URL}/login`);
 //     const users = response.data;
@@ -44,6 +47,7 @@ export const register = async (username: string, email: string, password: string
 //         throw new Error('Invalid credentials');
 //     }
 // };
+
 // API để lấy thông tin người dùng
 export const getUserInfo = async (userId: number) => {
     const response = await axios.get(`${BASE_URL}/profile?userId=${userId}`);
@@ -72,6 +76,7 @@ export const changePassword = async (userId: number, currentPassword: string, ne
     }
 };
 
+
 export const logout = async (token: string) => {
     try {
         const response = await axios.post(`${BASE_URL}/logout`, { token });
@@ -85,3 +90,19 @@ export const logout = async (token: string) => {
     }
 };
 
+
+
+
+export const updateUserAvatarAPI = async (userId: number, image: File) => {
+    const formData = new FormData();
+    formData.append("user_id", userId.toString());
+    formData.append("image", image);
+
+    const response = await axios.put('http://localhost:8080/api/v1/users/avatar', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+
+    return response.data;
+};

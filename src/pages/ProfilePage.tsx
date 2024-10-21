@@ -1,10 +1,11 @@
-
+import defaultImage from "../../src/assets/images/defaultImage.jpg"
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/layout/Sidebar";
 import { useAuth } from "../hooks/context/AuthContext";
-import {getUserInfo, updateUserAddressAPI, updateUserInfoAPI} from "../api/authService"; // Import authService functions
+import {getUserInfo, updateUserAddressAPI, updateUserInfoAPI, updateUserAvatarAPI} from "../api/authService"; // Import authService functions
 import { Link,useNavigate } from "react-router-dom";
 import '../styles/Profile.css'
+import axios from "axios";
 
 // Define interfaces for user data
 
@@ -23,6 +24,7 @@ interface UserData {
     first_name: string;
     last_name: string;
     phone_number: string;
+    avatar?: string;
     // address: UserAddress;
 }
 
@@ -35,14 +37,15 @@ const Profile: React.FC = () => {
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
     const [phone, setPhone] = useState("");
-    // const [state, setState] = useState("");
-    // const [city, setCity] = useState("");
-    // const [ward, setWard] = useState("");
-    // const [homeNumber, setHomeNumber] = useState("");
+
     const [errorPhone, setErrorPhone] = useState("");
     const [errorAddress, setErrorAddress] = useState("");
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
     const navigate = useNavigate();
+
+    const [userProfiles, setUserProfiles] = useState<UserData | null>(null);
+
 
     // Fetch user data from API on component mount
     useEffect(() => {
@@ -50,15 +53,15 @@ const Profile: React.FC = () => {
             try {
 
                 if (userId) {
-                    const user = await getUserInfo(userId); // Call authService function
+                    const user = await getUserInfo(userId);
                     setUserData(user);
                     setFirstname(user.first_name || '');
                     setLastname(user.last_name || '');
                     setPhone(user.phone_number || '');
-                    // setState(user.address?.district || '');
-                    // setCity(user.address?.city || '');
-                    // setWard(user.address?.ward || '');
-                    // setHomeNumber(user.address?.home_number || '');
+
+                    if (user.avatar) {
+                        setSelectedImage(user.avatar);
+                    }
                 }
             } catch (error) {
                 console.error('Failed to fetch user data:', error);
@@ -66,17 +69,27 @@ const Profile: React.FC = () => {
         };
 
         fetchUserData();
-    }, []);
+    }, [userId]);
 
     // Handle image upload
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setSelectedImage(reader.result as string);
-            };
-            reader.readAsDataURL(file);
+            setSelectedImage(URL.createObjectURL(file)); // Để hiển thị hình ảnh ngay lập tức
+            updateAvatar(file); // Gọi hàm cập nhật avatar
+        }
+    };
+
+    const updateAvatar = async (image: File) => {
+        if (userId) {
+            try {
+                await updateUserAvatarAPI(userId, image); // Gọi hàm API cập nhật avatar
+                alert("Avatar updated successfully!");
+                // Có thể gọi lại API để lấy lại thông tin người dùng mới nếu cần
+            } catch (error) {
+                console.error('Failed to update avatar:', error);
+                alert("Failed to update avatar.");
+            }
         }
     };
 
@@ -90,19 +103,6 @@ const Profile: React.FC = () => {
         }
     };
 
-    // Validate address fields
-    // const validateAddress = () => {
-    //     const addressFieldsFilled = [state, city, ward, homeNumber].some(field => field.trim() !== "");
-    //     const allAddressFieldsFilled = [state, city, ward, homeNumber].every(field => field.trim() !== "");
-    //
-    //     if (addressFieldsFilled && !allAddressFieldsFilled) {
-    //         setErrorAddress("Please fill all address fields if you enter one.");
-    //         return false;
-    //     } else {
-    //         setErrorAddress("");
-    //         return true;
-    //     }
-    // };
 
     // Handle saving updated user info
     const handleSave = async () => {
@@ -114,21 +114,14 @@ const Profile: React.FC = () => {
                 firstname,
                 lastname,
                 phone,
-                // address: {
-                //     state,
-                //     city,
-                //     ward,
-                //     homeNumber,
-                // },
+
             };
 
 
             if (userId) {
                 await updateUserInfoAPI(userId, updatedData); // Use authService function
                 console.log("User profile updated successfully!");
-                // const addressData = { state, city, ward, homeNumber };
-                // console.log("Updating user address with data:", addressData);
-                // await updateUserAddressAPI(userId, { state, city, ward, homeNumber });
+
                 alert('User data updated successfully!');
             }
         } catch (error) {
@@ -142,13 +135,9 @@ const Profile: React.FC = () => {
             setFirstname(userData.first_name || '');
             setLastname(userData.last_name || '');
             setPhone(userData.phone_number || '');
-            // setState(userData.address?.district || '');
-            // setCity(userData.address?.city || '');
-            // setWard(userData.address?.ward || '');
-            // setHomeNumber(userData.address?.home_number || '');
+
         }
     };
-
 
     const canEditProfile = roleId === 'CUS' || roleId === 'MAN';
 
@@ -161,21 +150,18 @@ const Profile: React.FC = () => {
                 <div className="profile-container">
                     <div className="image-section">
                         <div className="image-background">
-                            {selectedImage ? (
-
-                                <img src={selectedImage} alt="Uploaded" className="uploaded-image" />
-                            ) : (
-                                <div className="image-placeholder">No Image Selected</div>
-                            )}
+                            <img
+                                src={selectedImage || defaultImage}
+                                alt="User Avatar"
+                                className="uploaded-image"
+                            />
                         </div>
-                        <label className="upload-btn">
+                        <label className="upload-btn btn-shadow">
                             {selectedImage ? "Change Image" : "Choose Image"}
-
                             <input
                                 type="file"
                                 accept="image/*"
                                 onChange={handleImageChange}
-
                                 style={{ display: 'none' }}
                             />
                         </label>

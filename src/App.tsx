@@ -93,6 +93,9 @@ function App() {
                             <Route path="/add-koifish" element={withRole(AddKoiFishPage, ['CUS'])} />
                             <Route path="/koi-details" element={withRole(KoiDetails, ['CUS'])} />
 
+                            <Route path="/addresses" element={withRole(AddressManagementPage, ['CUS'])} />
+                            <Route path="/address-details" element={withRole(AddressDetails, ['CUS'])} />
+                            <Route path="/add-address" element={withRole(AddAddressPage, ['CUS'])} />
                             {/* Make appointment  */}
                             <Route path="/appointment/service-selection" element={withRole(ServiceSelectionPage, ['CUS'])} />
                             <Route path="/appointment/vet-selection" element={withRole(VeterinarianSelectionPage, ['CUS'])} />

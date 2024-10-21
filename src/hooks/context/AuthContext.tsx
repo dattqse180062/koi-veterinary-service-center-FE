@@ -86,7 +86,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         delete axios.defaults.headers.common['Authorization'];
         localStorage.clear();
     };
-    // console.log(isAuthenticated)
     return (
 
         <AuthContext.Provider value={{ isAuthenticated, user, loading, login, logout }}>
