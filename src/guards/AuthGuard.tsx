@@ -12,6 +12,7 @@ const AuthGuard = ({ children }: { children: JSX.Element }) => {
 
     // Nếu chưa đăng nhập, điều hướng về trang login
     if (!isAuthenticated) {
+        alert("You did not login!!! please login.")
         return <Navigate to="/login" />;
     }
 

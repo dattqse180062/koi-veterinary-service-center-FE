@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Chiều cao 100% của viewport */
 }
 
 @import 'Font.css';
@@ -44,6 +47,8 @@
   min-height: 100vh; /* Make sure the App component covers at least the viewport height */
 }
 
+
+
 .background {
   position: absolute;
   top: 0;
@@ -84,13 +89,13 @@ input::placeholder {
 
 .custom-card-img {
   width: 320px; /* Fixed width */
-  height: 180px; /* Fixed height */
+  height: 210px; /* Fixed height */
   object-fit: cover; /* Maintains aspect ratio while filling the box */
   border-radius: 48px 48px 0 0; /* Rounded top corners */
 }
 
 .card-title {
-  width: 200px;
+  width: 220px;
   margin: 25px 0px;
   color: #02033B;
   font-weight: bold;
@@ -100,7 +105,7 @@ input::placeholder {
 }
 
 .card-title-service{
-  margin:25px 50px;
+  margin:25px 35px;
   height: 57.6px;
 }
 

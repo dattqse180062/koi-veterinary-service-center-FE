@@ -7,23 +7,22 @@ import AuthGuard from '../src/guards/AuthGuard';
 import GuestGuard from '../src/guards/GuestGuard';
 import RoleBasedGuard from '../src/guards/RoleBasedGuard';
 import UnauthorizedPage from "./pages/UnauthorizedPage";
+import ServiceSelectionPage from "./pages/Appointment/ServiceSelectionPage";
+import VeterinarianSelectionPage from "./pages/Appointment/VeterinarianSelectionPage";
+import SlotDateSelectionPage from "./pages/Appointment/SlotDateSelectionPage";
+import InformationPage from "./pages/Appointment/InformationPage";
+import OrderConfirmPage from "./pages/Appointment/OrderConfirmPage";
 
 
-
-
-
-import AppointmentCustomerHistoryTable from './components/Customerpage/Appointment/AppointmentTable';
 import AppointmentHistoryTable from './components/Managerpage/Appointment/AppointmentHistoryTable';
-import AppointmentDetailsPage from './components/Customerpage/Appointment/AppointmentDetailsPage';
 import AppointmentHistoryDetailsPage from './components/Managerpage/Appointment/AppointmentDetailsPage';
 import FeedbackDetailPage from './components/Veterinarianpage/FeedbackAndDetails/FeedbackDetailsPage';
-import CustomerAccountTable from './components/Managerpage/Customer/CustomerTable';
-import CustomerDetailPage from './components/Managerpage/Customer/CustomerDetailsPage';
-import FeedbackTable from './components/Managerpage/FeebackAndRating/FeedbackTable';
 import FeedbackDetailPageForManager from './components/Managerpage/FeebackAndRating/FeedbackDetailsForManager';
 import AddressManagementPage from "./pages/AddressManagementPage";
 import AddressDetails from "./pages/AddressDetails";
 import AddAddressPage from "./pages/AddAddressPage";
+import VetSchedulePage from "./pages/VetSchedulePage";
+import VetAppointmentDetails from "./pages/VetAppointmentDetails";
 
 
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
@@ -43,244 +42,92 @@ const ManagerPage = lazy(() => import("./pages/ManagerPage"));
 const VeterinarianPage = lazy(() => import("./pages/VeterinarianPage"));
 const VetDetails = lazy(() => import("./pages/VetDetails"));
 
+
+// NEW
+const CustomerManagementPage = lazy(() => import("./pages/CustomerManagementPage"))
+const CustomerDetailPage = lazy(() => import("./pages/CustomerDetails"))
+const FeedbackManagementPage = lazy(() => import("./pages/FeedbackManagementPage"))
+const FeedbackDetail = lazy(() => import("./pages/FeedbackDetails"))
+const StaffAppointment = lazy(() => import("./pages/StaffAppointment"))
+const StaffAppointmentDetails = lazy(() => import("./pages/StaffAppointmentDetails"))
+const ManagerAppointment = lazy(() => import("./pages/ManagerAppointment"))
+
+
+// Define a higher-order component with authentication
+const withAuth = (Component: React.ComponentType) => (
+    <AuthGuard>
+        <Component />
+    </AuthGuard>
+);
+
+// Define a higher-order component with role-based authentication
+const withRole = (Component: React.ComponentType, allowedRoles: string[]) => (
+    <AuthGuard>
+        <RoleBasedGuard allowedRoles={allowedRoles}>
+            <Component />
+        </RoleBasedGuard>
+    </AuthGuard>
+);
+
+
 function App() {
     return (
         <div className="App">
             <AuthProvider>
                 <Router>
-                    <Navbar/>
+                    <Navbar />
                     <Suspense fallback={<div>Loading...</div>}>
-                    <Routes>
-                        {/* Tất cả người dùng */}
-                        <Route path="/login" element={<DangNhapNguoiDung />} />
-                        <Route path="/register" element={<RegisterPage />} />
-                        <Route
-                            path="/settings"
-                            element={
-                                <AuthGuard>
-                                    <ProfilePage />
-                                </AuthGuard>
-                            }
-                        />
-                        <Route
-                            path="/password-change"
-                            element={
-                                <AuthGuard>
-                                    <PasswordChangePage />
-                                </AuthGuard>
-                            }
-                        />
+                        <Routes>
+                            {/* Public routes */}
+                            <Route path="/login" element={<DangNhapNguoiDung />} />
+                            <Route path="/register" element={<RegisterPage />} />
+                            <Route path="/" element={<HomePage />} />
+                            <Route path="/no-access" element={<UnauthorizedPage />} />
 
-                        {/* Customer routes */}
-                        <Route
-                            path="/koi"
-                            element={
-                                <RoleBasedGuard allowedRoles={['CUS']}>
-                                    <KoiFishPage />
-                                </RoleBasedGuard>
-                            }
-                        />
-                        <Route
-                            path="/add-koifish"
-                            element={
-                                <RoleBasedGuard allowedRoles={['CUS']}>
-                                    <AddKoiFishPage />
-                                </RoleBasedGuard>
-                            }
-                        />
-                        <Route
-                            path="/koi-details"
-                            element={
-                                <RoleBasedGuard allowedRoles={['CUS']}>
-                                    <KoiDetails />
-                                </RoleBasedGuard>
-                            }
-                        />
+                            {/* Authenticated routes */}
+                            <Route path="/settings" element={withAuth(ProfilePage)} />
+                            <Route path="/password-change" element={withAuth(PasswordChangePage)} />
 
-                        <Route
-                            path="/addresses"
-                            element={
-                                <RoleBasedGuard allowedRoles={['CUS']}>
-                                    <AddressManagementPage />
-                                </RoleBasedGuard>
-                            }
-                        />
-                        <Route
-                            path="/address-details"
-                            element={
-                                <RoleBasedGuard allowedRoles={['CUS']}>
-                                    <AddressDetails />
-                                </RoleBasedGuard>
-                            }
-                        />
+                            {/* Customer routes */}
+                            <Route path="/koi" element={withRole(KoiFishPage, ['CUS'])} />
+                            <Route path="/add-koifish" element={withRole(AddKoiFishPage, ['CUS'])} />
+                            <Route path="/koi-details" element={withRole(KoiDetails, ['CUS'])} />
 
-                        <Route
-                            path="/add-address"
-                            element={
-                                <RoleBasedGuard allowedRoles={['CUS']}>
-                                    <AddAddressPage />
-                                </RoleBasedGuard>
-                            }
-                        />
+                            <Route path="/addresses" element={withRole(AddressManagementPage, ['CUS'])} />
+                            <Route path="/address-details" element={withRole(AddressDetails, ['CUS'])} />
+                            <Route path="/add-address" element={withRole(AddAddressPage, ['CUS'])} />
+                            {/* Make appointment  */}
+                            <Route path="/appointment/service-selection" element={withRole(ServiceSelectionPage, ['CUS'])} />
+                            <Route path="/appointment/vet-selection" element={withRole(VeterinarianSelectionPage, ['CUS'])} />
+                            <Route path="/appointment/slot-date-selection" element={withRole(SlotDateSelectionPage, ['CUS'])} />
+                            <Route path="/appointment/fill-information" element={withRole(InformationPage, ['CUS'])} />
+                            <Route path="/appointment/order-confirm" element={withRole(OrderConfirmPage, ['CUS'])} />
 
-                        {/* Manager routes */}
-                        <Route
-                            path="/vetshift"
-                            element={
-                                <RoleBasedGuard allowedRoles={['MAN']}>
-                                    <VetShiftSchePage />
-                                </RoleBasedGuard>
-                            }
-                        />
-                        <Route
-                            path="/vet-details"
-                            element={
-                                <RoleBasedGuard allowedRoles={['MAN']}>
-                                    <VetDetails />
-                                </RoleBasedGuard>
-                            }
-                        />
+                            {/* Manager routes */}
+                            <Route path="/vetshift" element={withRole(VetShiftSchePage, ['MAN'])} />
+                            <Route path="/vet-details" element={withRole(VetDetails, ['MAN'])} />
+                            <Route path="/vetsche" element={withRole(ViewScheduleOfVetPage, ['MAN'])} />
+                            <Route path="/service-pricing" element={withRole(ServicePricingPage, ['MAN'])} />
+                            <Route path="/transport-pricing" element={withRole(TransportationPricingPage, ['MAN'])} />
+                            <Route path="/customer" element={withRole(CustomerManagementPage, ['MAN'])} />
+                            <Route path="/customer-details" element={withRole(CustomerDetailPage, ['MAN'])} />
+                            <Route path="/feedback" element={withRole(FeedbackManagementPage, ['MAN'])} />
+                            <Route path="/feedback-details" element={withRole(FeedbackDetail, ['MAN'])} />
+                            <Route path="/history" element={withRole(ManagerAppointment, ['MAN'])} />
+                            <Route path="/appointment" element={withRole(AppointmentHistoryTable, ['MAN'])} />
+                            <Route path="/appointment-details" element={withRole(AppointmentHistoryDetailsPage, ['MAN'])} />
 
-                        <Route
-                            path="/vetsche"
-                            element={
-                                <RoleBasedGuard allowedRoles={['MAN']}>
-                                    <ViewScheduleOfVetPage />
-                                </RoleBasedGuard>
-                            }
-                        />
-                        <Route
-                            path="/service-pricing"
-                            element={
-                                <RoleBasedGuard allowedRoles={['MAN']}>
-                                    <ServicePricingPage />
-                                </RoleBasedGuard>
-                            }
-                        />
-                        <Route
-                            path="/transport-pricing"
-                            element={
-                                <RoleBasedGuard allowedRoles={['MAN']}>
-                                    <TransportationPricingPage />
-                                </RoleBasedGuard>
-                            }
-                        />
-
-                        <Route
-                            path="/manager"
-                            element={
-                                <RoleBasedGuard allowedRoles={['MAN']}>
-                                    <ManagerPage />
-                                </RoleBasedGuard>
-                            }
-                        />
-
-                        <Route
-                            path="/customer"
-                            element={
-                                <RoleBasedGuard allowedRoles={['MAN']}>
-                                    <CustomerAccountTable />
-                                </RoleBasedGuard>
-                            }
-                        />
-
-                        <Route
-                            path="/customer-details/:customerID"
-                            element={
-                                <RoleBasedGuard allowedRoles={['MAN']}>
-                                    <CustomerDetailPage />
-                                </RoleBasedGuard>
-                            }
-                        />
-
-                        <Route
-                            path="/feedback"
-                            element={
-                                <RoleBasedGuard allowedRoles={['MAN']}>
-                                    <FeedbackTable />
-                                </RoleBasedGuard>
-                            }
-                        />
-
-                        <Route
-                            path="/feedback-details"
-                            element={
-                                <RoleBasedGuard allowedRoles={['MAN']}>
-                                    <FeedbackDetailPageForManager />
-                                </RoleBasedGuard>
-                            }
-                        />
-
-                        <Route
-                            path="/veterinarian"
-                            element={
-                                <RoleBasedGuard allowedRoles={['VET']}>
-                                    <VeterinarianPage />
-                                </RoleBasedGuard>
-                            }
-                        />
+                            {/* Staff routes */}
+                            <Route path="/my-appointment" element={withRole(StaffAppointment, ['STA'])} />
+                            <Route path="/my-appointment-details" element={withRole(StaffAppointmentDetails, ['STA'])} />
 
 
-                        <Route
-                            path="/feedback/:id"
-                            element={
-                                <RoleBasedGuard allowedRoles={['VET']}>
-                                    <FeedbackDetailPage />
-                                </RoleBasedGuard>
-                            }
-                        />
+                            {/* Role: Veterinarian */}
+                            <Route path="/veterinarian-schedule" element={withRole(VetSchedulePage, ['VET'])} />
+                            <Route path="/appointment-details/:appointmentId/veterinarian" element={withRole(VetAppointmentDetails, ['VET'])} />
 
-                        <Route
-                            path="/feedback/:id"
-                            element={
-                                <RoleBasedGuard allowedRoles={['MAN']}>
-                                    <FeedbackDetailPage />
-                                </RoleBasedGuard>
-                            }
-                        />
+                        </Routes>
 
-                        <Route
-                            path="/appointment"
-                            element={
-                                <RoleBasedGuard allowedRoles={['MAN']}>
-                                    <AppointmentHistoryTable />
-                                </RoleBasedGuard>
-                            }
-                        />
-
-                        <Route
-                            path="/appointment-details"
-                            element={
-                                <RoleBasedGuard allowedRoles={['MAN']}>
-                                    <AppointmentHistoryDetailsPage />
-                                </RoleBasedGuard>
-                            }
-                        />
-
-
-
-                        <Route
-                            path="/my-appointment"
-                            element={
-                                <RoleBasedGuard allowedRoles={['CUS']}>
-                                    <AppointmentCustomerHistoryTable />
-                                </RoleBasedGuard>
-                            }
-                        />
-
-                        <Route
-                            path="/appointment/:id"
-                            element={
-                                <RoleBasedGuard allowedRoles={['CUS']}>
-                                    <AppointmentDetailsPage  />
-                                </RoleBasedGuard>
-                            }
-                        />
-
-                        {/* Trang chủ */}
-                        <Route path="/" element={<HomePage />} />
-                        <Route path="/no-access" element={<UnauthorizedPage />} />
-                    </Routes>
                     </Suspense>
                 </Router>
             </AuthProvider>

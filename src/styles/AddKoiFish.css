@@ -1,5 +1,5 @@
 .container-fluid {
-    padding: auto;
+    padding: 0px;
 
 }
 
@@ -94,7 +94,8 @@
 }
 
 .back-button {
-    position: fixed;
+
+    position: relative;
     top: 10%;
     left: 2%;
     z-index: 1000;
