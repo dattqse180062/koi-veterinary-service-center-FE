@@ -7,7 +7,7 @@ import {
     getMedicines,
     createPrescription,
     fetchPrescriptionDetails, updateAppointmentStatus, updateDoneStatus
-} from '../../src/api/appointmentApi';
+} from '../api/appointmentApi';
 import "../styles/Appointment.css";
 import {useAuth} from "../hooks/context/AuthContext";
 import {MedicalReportComponent } from "../components/vetAppointmentDetails/Report"
