@@ -13,18 +13,7 @@ import SlotDateSelectionPage from "./pages/Appointment/SlotDateSelectionPage";
 import InformationPage from "./pages/Appointment/InformationPage";
 import OrderConfirmPage from "./pages/Appointment/OrderConfirmPage";
 
-
-import AppointmentHistoryTable from './components/Managerpage/Appointment/AppointmentHistoryTable';
-import AppointmentHistoryDetailsPage from './components/Managerpage/Appointment/AppointmentDetailsPage';
-import FeedbackDetailPage from './components/Veterinarianpage/FeedbackAndDetails/FeedbackDetailsPage';
-import FeedbackDetailPageForManager from './components/Managerpage/FeebackAndRating/FeedbackDetailsForManager';
-import AddressManagementPage from "./pages/AddressManagementPage";
-import AddressDetails from "./pages/AddressDetails";
-import AddAddressPage from "./pages/AddAddressPage";
-import VetSchedulePage from "./pages/VetSchedulePage";
-import VetAppointmentDetails from "./pages/VetAppointmentDetails";
-
-
+// Lazy load pages
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
 const DangNhapNguoiDung = lazy(() => import("./pages/LoginPage"));
 const HomePage = lazy(() => import("./pages/HomePage"));
@@ -37,9 +26,8 @@ const VetShiftSchePage = lazy(() => import("./pages/VetShiftSchePage"));
 const ViewScheduleOfVetPage = lazy(() => import("./pages/ViewScheduleOfVetPage"));
 const ServicePricingPage = lazy(() => import("./pages/ServicePricingPage"));
 const TransportationPricingPage = lazy(() => import("./pages/TransportationPricingPage"));
-const SecretPage = lazy(() => import("./pages/SecretPage"));
-const ManagerPage = lazy(() => import("./pages/ManagerPage"));
-const VeterinarianPage = lazy(() => import("./pages/VeterinarianPage"));
+
+
 const VetDetails = lazy(() => import("./pages/VetDetails"));
 
 
@@ -47,11 +35,26 @@ const VetDetails = lazy(() => import("./pages/VetDetails"));
 const CustomerManagementPage = lazy(() => import("./pages/CustomerManagementPage"))
 const CustomerDetailPage = lazy(() => import("./pages/CustomerDetails"))
 const FeedbackManagementPage = lazy(() => import("./pages/FeedbackManagementPage"))
-const FeedbackDetail = lazy(() => import("./pages/FeedbackDetails"))
-const StaffAppointment = lazy(() => import("./pages/StaffAppointment"))
+const FeedbackDetail = lazy(() => import("./pages/FeedbackDetailsManagerPage"))
 const StaffAppointmentDetails = lazy(() => import("./pages/StaffAppointmentDetails"))
 const ManagerAppointment = lazy(() => import("./pages/ManagerAppointment"))
+const ManagerAppointmentDetails = lazy(() => import("./pages/ManagerAppointmentDetails"))
+const CustomerAppointmentDetails = lazy(() => import("./pages/CustomerAppointmentDetails"))
+const ManagerStaffPage = lazy(() => import("./pages/ManagerStaffPage"))
+const AddStaffPage = lazy(() => import("./pages/AddStaffPage"))
+// Define a higher-order component with authentication
+// const CustomerAppointment = lazy(() => import("./pages/CustomerAppointment"))
+// const StaffAppointment = lazy(() => import("./pages/StaffAppointment"))
 
+const DispatchAppointment = lazy(() => import("./pages/DispatchAppointment")) // NEW
+const DispatchFeedback = lazy(() => import("./pages/DispatchFeedback")) // NEW
+
+// For customer
+// const MakeFeedback = lazy(() => import("./pages/MakeFeedback")) // NEW
+
+
+//NEW: FOR VETERINARIAN
+const VeterinarianFeedbackDetailsPage = lazy(() => import("./pages/VeterinarianFeedbackDetailsPage"))
 
 // Define a higher-order component with authentication
 const withAuth = (Component: React.ComponentType) => (
@@ -78,6 +81,13 @@ function App() {
                     <Navbar />
                     <Suspense fallback={<div>Loading...</div>}>
                         <Routes>
+
+                            {/* Shared appointment route for different roles: STA, CUS */}
+                            <Route path="/my-appointment" element={withAuth(DispatchAppointment)} />
+
+                            {/* Shared feedback route for different roles: VET, MAN */}
+                            <Route path="/feedback" element={withAuth(DispatchFeedback)} />
+
                             {/* Public routes */}
                             <Route path="/login" element={<DangNhapNguoiDung />} />
                             <Route path="/register" element={<RegisterPage />} />
@@ -92,7 +102,9 @@ function App() {
                             <Route path="/koi" element={withRole(KoiFishPage, ['CUS'])} />
                             <Route path="/add-koifish" element={withRole(AddKoiFishPage, ['CUS'])} />
                             <Route path="/koi-details" element={withRole(KoiDetails, ['CUS'])} />
-
+                            {/* <Route path="/my-appointment" element={withRole(CustomerAppointment, ['CUS'])} /> */}
+                            <Route path="/my-appointment-details-customer" element={withRole(CustomerAppointmentDetails, ['CUS'])} />
+                            
                             {/* Make appointment  */}
                             <Route path="/appointment/service-selection" element={withRole(ServiceSelectionPage, ['CUS'])} />
                             <Route path="/appointment/vet-selection" element={withRole(VeterinarianSelectionPage, ['CUS'])} />
@@ -110,18 +122,17 @@ function App() {
                             <Route path="/customer-details" element={withRole(CustomerDetailPage, ['MAN'])} />
                             <Route path="/feedback" element={withRole(FeedbackManagementPage, ['MAN'])} />
                             <Route path="/feedback-details" element={withRole(FeedbackDetail, ['MAN'])} />
-                            <Route path="/history" element={withRole(ManagerAppointment, ['MAN'])} />
-                            <Route path="/appointment" element={withRole(AppointmentHistoryTable, ['MAN'])} />
-                            <Route path="/appointment-details" element={withRole(AppointmentHistoryDetailsPage, ['MAN'])} />
+                            <Route path="/appointment" element={withRole(ManagerAppointment, ['MAN'])} />
+                            <Route path="/appointment-details" element={withRole(ManagerAppointmentDetails, ['MAN'])} />
+                            <Route path="/staff" element={withRole(ManagerStaffPage, ['MAN'])} />
+                            <Route path="/add-staff" element={withRole(AddStaffPage, ['MAN'])} />
+
 
                             {/* Staff routes */}
-                            <Route path="/my-appointment" element={withRole(StaffAppointment, ['STA'])} />
-                            <Route path="/my-appointment-details" element={withRole(StaffAppointmentDetails, ['STA'])} />
-
+                            <Route path="/appointments/:appointment_id" element={withRole(StaffAppointmentDetails, ['STA'])} />
 
                             {/* Role: Veterinarian */}
-                            <Route path="/veterinarian-schedule" element={withRole(VetSchedulePage, ['VET'])} />
-                            <Route path="/appointment-details/:appointmentId/veterinarian" element={withRole(VetAppointmentDetails, ['VET'])} />
+                            <Route path="/vet-feedback-details" element={withRole(VeterinarianFeedbackDetailsPage, ['VET'])} />
 
                         </Routes>
 

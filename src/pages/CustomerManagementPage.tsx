@@ -5,20 +5,18 @@ import { useNavigate } from 'react-router-dom';
 import { fetchCustomers } from '../api/customerApi';
 
 interface Customer {
-    // avatar: string;
     user_id: number;
     first_name: string;
     last_name: string;
     username: string;
     email: string;
     phone_number: string;
-    address: string;
-    // Include other fields as needed
+    // address: string;
 }
 const CustomerManagementPage: React.FC = () => {
-    const [vets, setVets] = useState<any[]>([]);
-    const columns = ['user_id', 'fullName', 'username', 'email', 'phone_number', 'address'];
-    const columnHeaders = ['Customer ID', 'Full Name', 'Username', 'Email', 'Phone Number', 'Address'];
+    const [customers, setCustomers] = useState<any[]>([]);
+    const columns = ['user_id', 'fullName', 'username', 'email', 'phone_number'];
+    const columnHeaders = ['Customer ID', 'Full Name', 'Username', 'Email', 'Phone Number'];
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -26,11 +24,13 @@ const CustomerManagementPage: React.FC = () => {
             try {
                 const data = await fetchCustomers();
                 const filteredData = data.map((vet: any) => {
-                    const { password, ...rest } = vet; // Exclude password
-                    return rest;
+                    const { address, ...rest } = vet; // Lấy address ra
+                    const addressString = `${address.home_number} ${address.ward}, ${address.district}, ${address.city}`; // Tạo chuỗi địa chỉ
+                    return { ...rest, address: addressString }; // Thay thế địa chỉ bằng chuỗi
                 });
+                
                 const sortedData = filteredData.sort((a: Customer, b: Customer) => a.user_id - b.user_id);
-                setVets(sortedData);
+                setCustomers(sortedData);
             } catch (error) {
                 console.error('Error fetching customer:', error);
             }
@@ -39,21 +39,13 @@ const CustomerManagementPage: React.FC = () => {
         getVets();
     }, []);
 
-    // Update the onClick function to have fullName as optional
-    const handleVetScheduleClick = (userID: number, fullName?: string) => {
-        navigate(`/vetsche`, { state: { userID, fullName } });
-    };
 
+    // Function to handle customer details
     const handleCustomerDetails = (userID: number) => {
         navigate('/customer-details', { state: { userID } });
     };
 
     const actions = [
-        // {
-        //     label: 'View Schedule',
-        //     icon: 'fas fa-calendar-alt',
-        //     onClick: handleVetScheduleClick, // This is now compatible
-        // },
         {
             label: 'View Details',
             icon: 'fas fa-info-circle',
@@ -75,7 +67,7 @@ const CustomerManagementPage: React.FC = () => {
                         <TableComponent
                             columns={columns}
                             columnHeaders={columnHeaders}
-                            data={vets}
+                            data={customers}
                             actions={actions} // Actions for manager : manage customer
                             isKoiFishPage={false}
                         />

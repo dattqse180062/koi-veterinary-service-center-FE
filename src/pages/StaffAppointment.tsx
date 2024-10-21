@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from 'react';
 
-import TableComponent from '../components/table/TableComponent';
+// import TableComponent from '../components/table/TableComponent';
+import TableComponent from '../components/table/TableComponentForStaff';
 import { useNavigate } from 'react-router-dom';
-import { fetchAppointment } from '../api/appointmentApi';
+import { fetchAppointment, fetchAppointmentAndVeterinarians } from '../api/appointmentApi';
 
 interface Appointment {
     appointment_id: number;
     created_date: string;
     service_name: string;
     appointment_status: Status;
-    customer_name: string; // chưa có customer name khi list ra trong danh sách chung của staff
-    // email: string;
-    // phone_number: string;
-    // description: string;
-    // total_price: number;
-    // service: Service;
-    // moving_surcharge: movingSurcharge;
-    // address: Address
-    // veterinarian: Veterinarian;
-    // fish: Fish;
+    customer_name: string; 
+    time_slot: TimeSlot;
 }
+
+interface TimeSlot {
+    slot_id: number,
+    year: number,
+    month: number,
+    day: number,
+    slot_order: number,
+    description: string
+}
+
 
 enum Status {
     CANCELLED = 'CANCELLED',
@@ -104,7 +107,7 @@ const StaffAppointment: React.FC = () => {
             try {
                 const data = await fetchAppointment();
                 const filteredData = data.map((appointment: any) => {
-                    const { password, created_date,  ...rest } = appointment; // Exclude password
+                    const { password, created_date, ...rest } = appointment; // Exclude password
                     return {
                         ...rest,
                         date_time: formatDateTime(created_date), // Format created_date to desired format
@@ -124,10 +127,12 @@ const StaffAppointment: React.FC = () => {
     // chuyển tới path my-appointment/appointment_id với state là appointment_id not path /số ra page khác 
     // dấu / là trang khác còn : là trang cùng 1 trang
     // dấu / chuyển theo path vd: appointment?appointment_id=1 ---> chuyền qua url parameters
+ 
     const handleAppointmentDetails = (appointment_id: number) => {
-        console.log(appointment_id); // check xem có ra id không
-        navigate('/my-appointment-details', { state: { appointment_id } });
+        // console.log(appointment_id);
+        navigate(`/appointments/${appointment_id}`);
     };
+    
 
     const actions = [
         {
@@ -136,7 +141,9 @@ const StaffAppointment: React.FC = () => {
             onClick: handleAppointmentDetails,
         },
     ];
-    console.log(appointment);
+    
+    // console.log(appointment);
+    
     return (
         <div className="d-flex flex-grow-1">
             <div className="container" style={{ marginTop: "6rem" }}>
@@ -151,9 +158,7 @@ const StaffAppointment: React.FC = () => {
                             columns={columns}
                             columnHeaders={columnHeaders}
                             data={appointment}
-                            actions={actions} // Pass the actions to the TableComponent
-                            isKoiFishPage={false}
-                            isAddressPage={false}
+                            actions={actions}
                             isAppointmentPage={true}
                         />
                     </div>

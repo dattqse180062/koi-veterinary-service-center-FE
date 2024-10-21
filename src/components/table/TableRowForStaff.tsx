@@ -2,7 +2,7 @@ import React from 'react';
 
 interface Action {
     label: string;
-    onClick: (id: number, fullName?: string) => void; // Updated to accept fullName as an optional parameter
+    onClick: (id: number, veterinarian_id: number) => void; // Updated to accept fullName as an optional parameter
     icon?: string; // Optional icon property for actions
 }
 
@@ -19,7 +19,6 @@ interface TableRowProps {
 // Function to format DateTime
 const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
-    
     if (isNaN(date.getTime())) {
         return 'Invalid date';
     }
@@ -31,15 +30,12 @@ const formatDateTime = (dateString: string) => {
         minute: '2-digit',
         hour12: false,
     };
-    
     return date.toLocaleString('en-GB', options);
 };
 
-    const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isKoiFishPage, isAddressPage, isAppointmentPage, isFeedbackPage }) => {
-        // console.log("date", formatDateTime(rowData.created_date));
+const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isKoiFishPage, isAddressPage, isAppointmentPage, isFeedbackPage }) => {
 
     const fullName = `${rowData.first_name || rowData.name} ${rowData.last_name || ''}`.trim(); // Tạo fullName
-    const dayOfSlot = `${rowData.time_slot.day}/${rowData.time_slot.month}/${rowData.time_slot.year}`.trim(); // Tạo dayOfSlot
 
     return (
         <tr>
@@ -54,10 +50,8 @@ const formatDateTime = (dateString: string) => {
                             />
                             {fullName}
                         </div>
-                    )  : column === 'dayOfSlot' ? (
-                        <div>{dayOfSlot}</div> // Format datetime column
-                    )  : column === 'datetime' ? (
-                        <div>{rowData.created_date}</div> // Format datetime column
+                    ) : column === 'datetime' ? (
+                        formatDateTime(rowData.datetime) // Format datetime column
                     ) : (
                         !rowData[column] ? 'N/A' : rowData[column]
                     )}
@@ -73,7 +67,8 @@ const formatDateTime = (dateString: string) => {
                                     <span className="dropdown-item" onClick={() => {
 
                                         const id = isKoiFishPage ? rowData.fish_id : isAddressPage ? rowData.address_id : isAppointmentPage ? rowData.appointment_id : isFeedbackPage ? rowData.feedback_id : rowData.user_id; // Lấy id tương ứng
-                                        action.onClick(id, fullName); // Pass fullName as an argument
+                                        const veterinarian_id = isAppointmentPage ? rowData.veterinarian_id : undefined; // Lấy veterinarian_id nếu là trang Appointment
+                                        action.onClick(id, veterinarian_id); // Pass fullName as an argument
                                     }
 
                                     }>
@@ -89,7 +84,6 @@ const formatDateTime = (dateString: string) => {
                     <button
                         onClick={() => console.log("View ")}
                         className="btn btn-primary btn-sm"
-                        
                     >
                         View
                     </button>
