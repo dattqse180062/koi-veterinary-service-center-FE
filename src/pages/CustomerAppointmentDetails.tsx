@@ -165,9 +165,9 @@ const CustomerAppointmentDetails: React.FC = () => {
 
             try {
                 // Call the createFeedback API function
-                await createFeedback(appointment_id, feedbackDto);
+                // await createFeedback(appointment_id, feedbackDto);
 
-                setShowFeedbackModal(false);  // Close the modal after successful submission
+                // setShowFeedbackModal(false);  // Close the modal after successful submission
 
                 // Cập nhật appointment để thêm feedback_id, nhằm ẩn nút "Make Feedback"
 
@@ -177,18 +177,19 @@ const CustomerAppointmentDetails: React.FC = () => {
                 // } : null);
 
                 // // Gọi API tạo phản hồi và nhận feedback_id từ response
-                // const response = await createFeedback(appointment_id, feedbackDto);
+                const response = await createFeedback(appointment_id, feedbackDto);
 
+                alert('Do you want to submit feedback?');    
                 // // Đóng modal phản hồi sau khi gửi thành công
-                // setShowFeedbackModal(false);
+                setShowFeedbackModal(false);
 
-                // // Cập nhật appointment với feedback_id từ response
-                // if (response?.feedback_id) {
-                //     setAppointment(prevAppointment => prevAppointment ? {
-                //         ...prevAppointment,
-                //         feedback_id: response.feedback_id // Cập nhật feedback_id thực tế
-                //     } : null);
-                // }
+                 // Cập nhật appointment với feedback_id từ response
+                if (response?.feedback_id) {
+                    setAppointment(prevAppointment => prevAppointment ? {
+                        ...prevAppointment,
+                        feedback_id: response.feedback_id // Cập nhật feedback_id thực tế
+                    } : null);
+                }
 
 
                 // Optionally, reset the feedback form
@@ -236,12 +237,14 @@ const CustomerAppointmentDetails: React.FC = () => {
                                     fontWeight: '900',
                                     color: 'white',
                                     padding: '4px 8px',
-                                    backgroundColor: appointment?.current_status === 'DONE' ? 'green' :
-                                        appointment?.current_status === 'PENDING' ? 'orange' :
-                                            appointment?.current_status === 'DONE' ? 'white' :
-                                                appointment?.current_status === 'ON_GOING' ? 'blue' :
-                                                    appointment?.current_status === 'CANCELLED' ? 'red' :
-                                                        'black' // Default color for other statuses
+                                    backgroundColor: 
+                                    appointment?.current_status === 'CANCELED' ? 'red' :
+                                                    appointment?.current_status === 'CHECKED_IN' ? 'blue' :
+                                                        appointment?.current_status === 'CONFIRMED' ? 'green' :
+                                                            appointment?.current_status === 'DONE' ? 'gray' :
+                                                                appointment?.current_status === 'ON_GOING' ? 'orange' :
+                                                                    appointment?.current_status === 'PENDING' ? 'purple' :
+                                                                        'black',
                                 }}>
                                     {appointment?.current_status}
                                 </span>
@@ -262,18 +265,38 @@ const CustomerAppointmentDetails: React.FC = () => {
                             <h5 className="mt-3" style={{ fontWeight: '900' }}>- Veterinarian Information</h5>
                             <p><strong>Name:</strong> {appointment.veterinarian?.first_name} {appointment.veterinarian?.last_name}</p>
 
-                            <h5 className="mt-3" style={{ fontWeight: '900' }}>- Address Information</h5>
-                            {appointment.address?.home_number}, {appointment.address?.ward}, {appointment.address?.district}, {appointment.address?.city}
-                            <h5 className="mt-3" style={{ fontWeight: '900' }}>- Fish Information</h5>
-                            <p><strong>Species:</strong> {appointment.fish?.species || 'NA'}</p>
-                            <p><strong>Gender:</strong> {appointment.fish?.gender || 'NA'}</p>
-                            <p><strong>Size:</strong> {appointment.fish?.size || 'NA'} cm </p>
-                            <p><strong>Weight:</strong> {appointment.fish?.weight || 'NA'} kg</p>
-                            <p><strong>Origin:</strong> {appointment.fish?.origin || 'NA'}</p>
+                            {/* Chỉ hiển thị khi có địa chỉ */}
+                            {appointment.address && (
+                                <div>
+                                    <h5 className="mt-3" style={{ fontWeight: '900', display: 'inline' }}>- Address Information: </h5>
+                                    <span style={{ fontWeight: '300' }}>
+                                        {appointment.address?.home_number}, {appointment.address?.ward}, {appointment.address?.district}, {appointment.address?.city}
+                                    </span>
+                                </div>
 
-                            <h5 className="mt-3" style={{ fontWeight: '900' }}>- Moving Surcharge</h5>
-                            <p><strong>District:</strong> {appointment.moving_surcharge?.district || 'Not available'}</p>
-                            <p><strong>Price:</strong> {appointment.moving_surcharge?.price || '0'} VND</p>
+
+                            )}
+
+                            {/* Chỉ hiển thị khi có thông tin cá */}
+                            {appointment.fish && (
+                                <div>
+                                    <h5 className="mt-3" style={{ fontWeight: '900' }}>- Fish Information</h5>
+                                    <p><strong>Species:</strong> {appointment.fish?.species || 'NA'}</p>
+                                    <p><strong>Gender:</strong> {appointment.fish?.gender || 'NA'}</p>
+                                    <p><strong>Size:</strong> {appointment.fish?.size || 'NA'} cm </p>
+                                    <p><strong>Weight:</strong> {appointment.fish?.weight || 'NA'} kg</p>
+                                    <p><strong>Origin:</strong> {appointment.fish?.origin || 'NA'}</p>
+                                </div>
+                            )}
+
+                            {/* Chỉ hiển thị khi có thông tin moving surcharge */}
+                            {appointment.moving_surcharge && (
+                                <div>
+                                    <h5 className="mt-3" style={{ fontWeight: '900' }}>- Moving Surcharge</h5>
+                                    <p><strong>District:</strong> {appointment.moving_surcharge?.district || 'Not available'}</p>
+                                    <p><strong>Price:</strong> {appointment.moving_surcharge?.price || '0'} VND</p>
+                                </div>
+                            )}
 
                             <h5 className="mt-3" style={{ fontWeight: '900' }}>- Total Price</h5>
                             <p><strong>Total:</strong> {appointment?.total_price || ''} VND</p>
@@ -301,7 +324,7 @@ const CustomerAppointmentDetails: React.FC = () => {
                                 </p>
 
                                 {/* Show Payment button only if payment method is VN PAY and curreny status is NOT_PAID */}
-                                {PaymentDetails?.payment_method === payment_method.VN_PAY && PaymentDetails?.status === payment_status.NOT_PAID && (
+                                { PaymentDetails?.payment_method === payment_method.VN_PAY && PaymentDetails?.status === payment_status.NOT_PAID &&  appointment.current_status === 'CONFIRMED' &&(
                                     <button className="btn btn-primary mt-3" onClick={handlePayment}>Pay</button>
                                 )}
                             </div>

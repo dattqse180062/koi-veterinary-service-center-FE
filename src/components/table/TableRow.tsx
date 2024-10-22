@@ -40,9 +40,11 @@ interface TableRowProps {
 
     const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isKoiFishPage, isAddressPage, isAppointmentPage, isFeedbackPage }) => {
     const fullName = `${rowData.first_name || rowData.name} ${rowData.last_name || ''}`.trim(); // Tạo fullName
+
         const dayOfSlot = rowData.time_slot
             ? `${rowData.time_slot.day}/${rowData.time_slot.month}/${rowData.time_slot.year}`.trim()
             : 'N/A';
+
     return (
         <tr>
             {columns.map((column) => (

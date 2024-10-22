@@ -20,13 +20,15 @@ const CustomerManagementPage: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const getVets = async () => {
+        const getCustomerInfo = async () => {
             try {
                 const data = await fetchCustomers();
                 const filteredData = data.map((vet: any) => {
                     const { address, ...rest } = vet; // Lấy address ra
-                    const addressString = `${address.home_number} ${address.ward}, ${address.district}, ${address.city}`; // Tạo chuỗi địa chỉ
-                    return { ...rest, address: addressString }; // Thay thế địa chỉ bằng chuỗi
+                    // const addressString = `${address.home_number} ${address.ward}, ${address.district}, ${address.city}`; // Tạo chuỗi địa chỉ
+                    return { ...rest
+                        // address: addressString
+                     }; // Thay thế địa chỉ bằng chuỗi
                 });
                 
                 const sortedData = filteredData.sort((a: Customer, b: Customer) => a.user_id - b.user_id);
@@ -36,7 +38,7 @@ const CustomerManagementPage: React.FC = () => {
             }
         };
 
-        getVets();
+        getCustomerInfo();
     }, []);
 
 

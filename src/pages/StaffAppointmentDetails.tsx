@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getAppointmentDetails, updateAppointment } from '../api/appointmentApi';
 import { fetchPayment, updatePayment } from '../api/paymentApi';
-import { updateAppointmentStatus, fetchAppointmentAndVeterinariansDemo } from '../api/appointmentApi';
+import { updateAppointmentStatus, fetchAppointmentAndVeterinariansDemo, updateAppointmentStatusCanceled } from '../api/appointmentApi';
 import { fetchVetBySlotId } from '../api/vetApi';
 import { useParams } from 'react-router-dom';
 interface AppointmentDetailsProps {
@@ -99,6 +99,11 @@ const AppointmentDetails: React.FC = () => {
     const [isPaymentVisible, setIsPaymentVisible] = useState(false); // State to track if payment details are visible
 
     const [isEditingPaymentMethod, setIsEditingPaymentMethod] = useState(false); // State to handle editing payment method
+    //State to handing appointment status
+    const [appointmentStatus, setAppointmentStatus] = useState(false); // State to store selected appointment
+
+    const [isEditingStatus, setIsEditingStatus] = useState(false); // New state for editing status
+
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>(''); // State to store selected payment method
 
     const navigate = useNavigate();
@@ -135,26 +140,21 @@ const AppointmentDetails: React.FC = () => {
 
 
     // Function to handle view payment details
-    const handleViewPaymentDetails = async () => {
-        if (!isPaymentVisible) {
-            // Fetch payment details only when opening
-            try {
-                const paymentData = await fetchPayment(appointmentIdNumber);
-                setPaymentDetails(paymentData);
 
-                // Scroll to the payment details section after loading the details
-                if (paymentRef.current) {
-                    paymentRef.current.scrollIntoView({ behavior: 'smooth' });
+    useEffect(() => {
+        const fetchPaymentDetails = async () => {
+            if (appointmentIdNumber) {
+                try {
+                    const paymentData = await fetchPayment(appointmentIdNumber);
+                    setPaymentDetails(paymentData);
+                } catch (error) {
+                    console.error('Error fetching payment details:', error);
                 }
-            } catch (error) {
-                console.error('Error fetching payment details:', error);
             }
-        }
+        };
 
-        // Toggle the visibility of the payment details
-        setIsPaymentVisible(!isPaymentVisible);
-    };
-
+        fetchPaymentDetails();
+    }, [appointmentIdNumber]);
 
     const handleEditPaymentMethod = () => {
         setIsEditingPaymentMethod(true); // Switch to editing mode
@@ -188,33 +188,57 @@ const AppointmentDetails: React.FC = () => {
 
     //Fucntion to update appointment status: current status
     const handleUpdateAppointmentStatus = async () => {
-        if (appointment && selectedStatus) {
-            try {
-                // Gọi API để cập nhật trạng thái
-                await updateAppointmentStatus(appointment.appointment_id, selectedStatus);
-                // Cập nhật lại thông tin trạng thái trong state appointment
-                setAppointment(prevAppointment => {
-                    if (prevAppointment) {
-                        return {
-                            ...prevAppointment,
-                            current_status: selectedStatus
-                        };
-                    }
-                    return prevAppointment;
-                });
-                // Đặt selectedStatus về giá trị mới
-                setSelectedStatus(selectedStatus);
+        if (appointment && selectedStatus === 'CONFIRMED') {
+            const confirmUpdate = window.confirm(`Appointment status updated to: ${selectedStatus}, do you want to change it?`);
+            if (confirmUpdate) {
+                try {
+                    // Gọi API để cập nhật trạng thái
+                    await updateAppointmentStatus(appointment.appointment_id, selectedStatus);
+                    // Cập nhật lại thông tin trạng thái trong state appointment
+                    setAppointment(prevAppointment => {
+                        if (prevAppointment) {
+                            return {
+                                ...prevAppointment,
+                                current_status: selectedStatus
+                            };
+                        }
+                        return prevAppointment;
+                    });
+                    // Đặt selectedStatus về giá trị mới
+                    setSelectedStatus(selectedStatus);
 
-                console.log('Updated appointment status:', selectedStatus);
-            } catch (error) {
-                console.error('Error updating appointment status:', error);
+                    console.log('Updated appointment status:', selectedStatus);
+                } catch (error) {
+                    console.error('Error updating appointment status:', error);
+                }
+            }
+        } else if (appointment && selectedStatus === 'CANCELED') {
+            const confirmUpdate = window.confirm(`Appointment status updated to: ${selectedStatus}, do you want to change it?`);
+            if (confirmUpdate) {
+                try {
+                    // Gọi API để cập nhật trạng thái
+                    await updateAppointmentStatusCanceled(appointment.appointment_id);
+                    // Cập nhật lại thông tin trạng thái trong state appointment
+                    setAppointment(prevAppointment => {
+                        if (prevAppointment) {
+                            return {
+                                ...prevAppointment,
+                                current_status: selectedStatus
+                            };
+                        }
+                        return prevAppointment;
+                    });
+                    // Đặt selectedStatus về giá trị mới
+                    setSelectedStatus(selectedStatus);
+                    console.log('Updated appointment status:', selectedStatus);
+                } catch (error) {
+                    console.error('Error updating appointment status:', error);
+                }
             }
         }
     };
 
     // xử lý khi bác sĩ được chọn, chỉ run khi chưa có bác sĩ!
-
-
     // Fetch vet by slot id
     useEffect(() => {
         const fetchVet = async () => {
@@ -257,8 +281,11 @@ const AppointmentDetails: React.FC = () => {
 
 
     // Function for submitting the selected veterinarian
-    const handleSubmitOrder = async () => {
+    const handleSubmitOrder = async () => {       
         if (selectedVetId && appointment) {
+            // thông báo điều chỉnh bác sĩ
+            const confirmUpdate = window.confirm(`Are you sure you want to assign this veterinarian?`);
+            if (!confirmUpdate) return; // Nếu không xác nhận thì không thực hiện gì cả
             try {
                 await updateAppointment(appointmentIdNumber, selectedVetId); // Gửi selectedVetId trực tiếp
 
@@ -282,6 +309,7 @@ const AppointmentDetails: React.FC = () => {
                 console.error('Error updating appointment:', error);
             }
         }
+
     };
 
 
@@ -297,6 +325,25 @@ const AppointmentDetails: React.FC = () => {
         return <div>Loading...</div>;
     }
 
+    const handleEditStatus = () => {
+        if (appointment?.current_status === 'PENDING') { // Chỉ cho phép chỉnh sửa nếu trạng thái là 'PENDING'
+            setIsEditingStatus(true); // Chuyển sang chế độ chỉnh sửa
+        } else {
+            console.log("Status is not 'PENDING', cannot edit.");
+        }
+    };
+
+
+    const handleSaveClick = () => {
+        // Thực hiện logic lưu lại status
+        console.log('Status saved:', selectedStatus);
+        setIsEditingStatus(false); // Sau khi lưu, quay lại chế độ ban đầu
+    };
+
+    const handleCancelEditStatus = () => {
+        setIsEditingStatus(false); // Hide the status editor
+    };
+
     // Function to format DateTime
     const formatDateTime = (dateString: string) => {
         const options: Intl.DateTimeFormatOptions = {
@@ -311,6 +358,8 @@ const AppointmentDetails: React.FC = () => {
 
     const formattedDate = formatDateTime(appointment.created_date);
 
+
+
     return (
         <div className="container" style={{ marginTop: '2rem', textAlign: 'left' }}>
             <h2 className="mb-4" style={{ paddingTop: '65px' }}>Appointment Details</h2>
@@ -323,35 +372,29 @@ const AppointmentDetails: React.FC = () => {
                         <div className="row">
                             <div className="col-md-6">
                                 <p><strong>Date:</strong> {formattedDate}</p>
-                                <p><strong>Status:</strong> {appointment?.current_status}</p>
-
-                                {appointment.current_status !== 'ON_GOING' && (
-                                    <>
-                                        <span style={{fontWeight: '900', color:'brown', backgroundColor:'', padding: '10px', fontSize:'20px'}}>Update status:</span>
-                                        <select
-                                            className="form-select"
-                                            value={selectedStatus}
-                                            onChange={(e) => setSelectedStatus(e.target.value)}
-                                            style={{ marginLeft: '10px', width: '150px', marginTop:'15px' }}
-                                        >
-                                            
-                                            <option value="CANCELED">CANCELED</option>                                            
-                                            <option value="CONFIRMED">CONFIRMED</option>
-                                            {/* <option value="CHECKED_IN">CHECKED_IN</option> */}
-
-                                            {/* <option value="ON_GOING">ON_GOING</option> */}
-                                        </select>
-
-                                        {/* Hiển thị nút Save nếu trạng thái đã thay đổi */}
-                                        <button
-                                            className="btn btn-primary mt-2"
-                                            onClick={handleUpdateAppointmentStatus}
-                                            style={{ marginLeft: '10px' }}
-                                        >
-                                            Save changes
-                                        </button>
-                                    </>
-                                )}
+                                {/* <p><strong>Status:</strong> {appointment?.current_status}</p> */}
+                                <p>
+                                    <strong>Status:</strong>
+                                    <span
+                                        style={{
+                                            backgroundColor:
+                                                appointment?.current_status === 'CANCELED' ? 'red' :
+                                                    appointment?.current_status === 'CHECKED_IN' ? 'blue' :
+                                                        appointment?.current_status === 'CONFIRMED' ? 'green' :
+                                                            appointment?.current_status === 'DONE' ? 'gray' :
+                                                                appointment?.current_status === 'ON_GOING' ? 'orange' :
+                                                                    appointment?.current_status === 'PENDING' ? 'purple' :
+                                                                        'black',
+                                            color: 'white',
+                                            padding: '4px 8px',
+                                            marginLeft: '10px',
+                                            borderRadius: '4px',
+                                            fontWeight: 'bold',
+                                        }}
+                                    >
+                                        {appointment?.current_status}
+                                    </span>
+                                </p>
 
                                 <h5 className="mt-3" style={{ fontWeight: '900' }}>- Customer Information</h5>
                                 <p><strong>Name:</strong> {appointment?.customer_name}</p>
@@ -366,7 +409,7 @@ const AppointmentDetails: React.FC = () => {
                                 <h5 className="mt-3" style={{ fontWeight: '900' }}>- Service Information</h5>
                                 <p><strong>Service id:</strong> {appointment.service?.service_id}</p>
                                 <p><strong>Service name:</strong> {appointment.service?.service_name}</p>
-                                <p><strong>Service Price:</strong> {appointment.service?.service_price} USD</p>
+                                <p><strong>Service Price:</strong> {appointment.service?.service_price} VND</p>
 
                                 <h5 className="mt-3" style={{ fontWeight: '900' }}>- Veterinarian Information</h5>
 
@@ -399,8 +442,95 @@ const AppointmentDetails: React.FC = () => {
                                     )
                                 }
 
-                                <h5 className="mt-3" style={{ fontWeight: '900' }}>- Address Information: </h5>
-                                {appointment.address?.home_number || 'Not available'}, {appointment.address?.ward || 'Not available'}, {appointment.address?.district || 'Not available'}, {appointment.address?.city || 'Not available'}
+                                {/* Chỉ hiển thị khi có địa chỉ */}
+                                {appointment.address && (
+                                    <div>
+                                        <h5 className="mt-3" style={{ fontWeight: '900', display: 'inline' }}>- Address Information: </h5>
+                                        <span style={{ fontWeight: '300' }}>
+                                            {appointment.address?.home_number}, {appointment.address?.ward}, {appointment.address?.district}, {appointment.address?.city}
+                                        </span>
+                                    </div>
+                                )}
+
+                                {/* Hàm chỉnh appointment status */}
+                                {/* {appointment.current_status !== 'PENDING' && (
+                                    <>
+                                        <span style={{ fontWeight: '900', color: 'brown', backgroundColor: '', padding: '10px', fontSize: '20px' }}>Update status:</span>
+                                        <select
+                                            className="form-select"
+                                            value={selectedStatus}
+                                            onChange={(e) => setSelectedStatus(e.target.value)}
+                                            style={{ marginLeft: '10px', width: '150px', marginTop: '15px' }}
+                                        >
+
+                                            <option value="CANCELED">CANCELED</option>
+                                            <option value="CONFIRMED">CONFIRMED</option>
+                                        </select>
+                                        <button
+                                            className="btn btn-primary mt-2"
+                                            onClick={handleUpdateAppointmentStatus}
+                                            style={{ marginLeft: '10px' }}
+                                        >
+                                            Save changes
+                                        </button>
+
+                                        <button
+                                            className="btn btn-primary mt-2"
+                                            onClick={handleCancelEditStatus}
+                                            style={{ marginLeft: '10px' }}
+                                        >
+                                            Cancel
+                                        </button>
+                                    </>
+                                )} */}
+
+                                {/* test */}
+                                {/* {appointment.current_status === 'PENDING'  ? (
+                                    <>
+                                        <p style={{ fontWeight: '900', color: 'brown', backgroundColor: '', padding: '10px', fontSize: '20px' }}>Update Status</p>
+                                        <button className="btn btn-info" onClick={handleEditStatus}>Click here to Update</button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <p style={{ fontWeight: '900', color: 'brown', backgroundColor: '', padding: '10px', fontSize: '20px' }}>Update Status</p>
+                                        <select
+                                            className='form-select'
+                                            value={selectedStatus}
+                                            onChange={(e) => setSelectedStatus(e.target.value)}
+                                            style={{ marginLeft: '10px', width: '150px', marginTop: '15px' }}
+                                        >
+                                            <option value="Confirmed">Confirmed</option>
+                                            <option value="Cancelled">Cancelled</option>
+                                        </select>
+                                        <button className="btn btn-primary mt-2" style={{ marginLeft: '10px' }} onClick={handleSaveClick}>Save</button>
+                                        <button className="btn btn-secondary mt-2" style={{ marginLeft: '10px' }} onClick={handleCancelEditStatus}>Cancel</button>
+                                    </>
+                                )} */}
+
+                                {appointment.current_status === 'PENDING' && (
+                                    !isEditingStatus ? (
+                                        <>
+                                            <p style={{ fontWeight: '900', color: 'brown', padding: '10px', fontSize: '20px' }}>Update Status</p>
+                                            <button className="btn btn-info" onClick={handleEditStatus}>Click here to Update</button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <p style={{ fontWeight: '900', color: 'brown', padding: '10px', fontSize: '20px' }}>Update Status</p>
+                                            <select
+                                                className='form-select'
+                                                value={selectedStatus}
+                                                onChange={(e) => setSelectedStatus(e.target.value)}
+                                                style={{ marginLeft: '10px', width: '150px', marginTop: '15px' }}
+                                            >
+                                                <option value="">Select status:</option>
+                                                <option value="CONFIRMED">CONFIRMED</option>
+                                                <option value="CANCELED">CANCELED</option>
+                                            </select>
+                                            <button className="btn btn-primary mt-2" style={{ marginLeft: '10px' }} onClick={handleUpdateAppointmentStatus}>Save</button>
+                                            <button className="btn btn-secondary mt-2" style={{ marginLeft: '10px' }} onClick={handleCancelEditStatus}>Cancel</button>
+                                        </>
+                                    ))}
+
                             </div>
 
                             <div className="col-md-6">
@@ -417,12 +547,71 @@ const AppointmentDetails: React.FC = () => {
                                 )
                                 }
 
-                                <h5 className="mt-3" style={{ fontWeight: '900' }}>- Moving Surcharge</h5>
-                                <p><strong>District:</strong> {appointment.moving_surcharge?.district || 'Not available'}</p>
-                                <p><strong>Price:</strong> {appointment.moving_surcharge?.price || '0'} USD </p>
+                                {/* Chỉ show moving surcharge khi có */}
+                                {appointment.moving_surcharge && (
+                                    <div>
+                                        <h5 className="mt-3" style={{ fontWeight: '900' }}>- Moving Surcharge</h5>
+                                        <p><strong>District:</strong> {appointment.moving_surcharge?.district || 'Not available'}</p>
+                                        <p><strong>Price:</strong> {appointment.moving_surcharge?.price || '0'} VND </p>
+                                    </div>
+                                )}
 
                                 <h5 className="mt-3" style={{ fontWeight: '900' }}>- Total Price</h5>
-                                <p><strong>Total:</strong> {appointment?.total_price || ''} USD</p>
+                                <p><strong>Total:</strong> {appointment?.total_price || ''} VND</p>
+
+                                {/* Conditionally render payment details */}
+                                {paymentDetails?.payment_id && (
+                                    <div className=""
+                                        style={{ marginBottom: '2rem' }}
+                                    >
+                                        <div className="">
+                                            <h5 className="card-title">Payment Details</h5>
+                                            <p><strong>Payment ID:</strong> {paymentDetails.payment_id}</p>
+                                            <p><strong>Payment method: </strong>{paymentDetails.payment_method}</p>
+                                            <p><strong>Payment amount:</strong> {paymentDetails.payment_amount} VND</p>
+                                            <p>
+                                                <strong>Status:</strong>
+                                                <span
+                                                    style={{
+                                                        backgroundColor:
+                                                            paymentDetails.status === 'NOT_PAID' ? 'red' :
+                                                                paymentDetails.status === 'PAID' ? 'green' :
+                                                                    'black',
+                                                        color: 'white',
+                                                        padding: '4px 8px',
+                                                        marginLeft: '10px',
+                                                        borderRadius: '4px',
+                                                        fontWeight: 'bold',
+                                                    }}
+                                                >
+                                                    {paymentDetails.status || 'Unknown'}
+                                                </span>
+                                            </p>
+
+                                            {/* Hiển thị phần update payment chỉ khi status là NOT_PAID và method là CASH */}
+                                            {appointment.current_status === 'CONFIRMED' && paymentDetails.status === "NOT_PAID" && paymentDetails.payment_method === "CASH" && (
+                                                <div>
+                                                    <span style={{ fontWeight: 'bold', fontSize: '24px', fontStyle: 'italic' }}>Update Payment Status: </span>
+                                                    {!isEditingPaymentMethod ? (
+                                                        <button className="btn btn-primary" onClick={handleEditPaymentMethod}>
+                                                            Edit Payment Method
+                                                        </button>
+                                                    ) : (
+                                                        <div>
+                                                            <button className="btn btn-success mt-2" onClick={handleUpdatePaymentMethod}>
+                                                                Update CONFIRMED
+                                                            </button>
+                                                            <button className="btn btn-success mt-2" style={{ marginLeft: '12px', backgroundColor: 'red' }} onClick={() => setIsEditingPaymentMethod(false)}>
+                                                                Cancel
+                                                            </button>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
+
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -435,53 +624,7 @@ const AppointmentDetails: React.FC = () => {
                 {/* Back Button */}
                 <button className="btn btn-secondary mt-3" onClick={() => navigate(-1)}>Back</button>
 
-                {/* View Payment Details Button */}
-                <button className="btn btn-primary mt-3"
-                    style={{ marginLeft: '10px' }}
-                    onClick={handleViewPaymentDetails}>
-                    View Payment Details
-                </button>
-
             </div>
-
-
-            {/* Conditionally render payment details */}
-            {isPaymentVisible && paymentDetails && (
-                <div className="card mt-4"
-                    style={{ marginBottom: '2rem' }}
-                >
-                    <div className="card-body">
-                        <h5 className="card-title">Payment Details</h5>
-                        <p><strong>Payment ID:</strong> {paymentDetails.payment_id}</p>
-                        <p><strong>Payment method: </strong>{paymentDetails.payment_method}</p>
-                        <p><strong>Payment amount:</strong> {paymentDetails.payment_amount} USD</p>
-                        <p><strong>Status:</strong> {paymentDetails.status || 'Unknown'}</p>
-
-                        {/* Hiển thị phần update payment chỉ khi status là NOT_PAID và method là VN_PAY */}
-                        {paymentDetails.status === payment_status.NOT_PAID && paymentDetails.payment_method === payment_method.VN_PAY && (
-                            <div>
-                                <h4>Update Payment Status</h4>
-                                {!isEditingPaymentMethod ? (
-                                    <button className="btn btn-primary" onClick={handleEditPaymentMethod}>
-                                        Edit Payment Method
-                                    </button>
-                                ) : (
-                                    <div>
-                                        <button className="btn btn-success mt-2" onClick={handleUpdatePaymentMethod}>
-                                            Update CONFIRMED
-                                        </button>
-                                        <button className="btn btn-success mt-2" style={{ marginLeft: '12px', backgroundColor: 'red' }} onClick={() => setIsEditingPaymentMethod(false)}>
-                                            Cancel
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-                    </div>
-                </div>
-            )}
-
 
         </div>
 
