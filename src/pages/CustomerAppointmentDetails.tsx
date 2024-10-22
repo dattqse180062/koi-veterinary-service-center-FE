@@ -216,6 +216,7 @@ const CustomerAppointmentDetails: React.FC = () => {
                                     padding: '4px 8px',
                                     backgroundColor: appointment?.current_status === 'DONE' ? 'green' :
                                         appointment?.current_status === 'PENDING' ? 'orange' :
+                                        appointment?.current_status === 'DONE' ? 'white' :
                                             appointment?.current_status === 'ON_GOING' ? 'blue' :
                                                 appointment?.current_status === 'CANCELLED' ? 'red' :
                                                     'black' // Default color for other statuses
