@@ -115,7 +115,7 @@ const AppointmentDetails: React.FC = () => {
     const [selectedStatus, setSelectedStatus] = useState<string>('');
 
     console.log('Appointment id:', appointmentIdNumber);
-    
+
 
     // Fetch appointment details by ID
     useEffect(() => {
@@ -213,7 +213,7 @@ const AppointmentDetails: React.FC = () => {
     };
 
     // xử lý khi bác sĩ được chọn, chỉ run khi chưa có bác sĩ!
-    
+
 
     // Fetch vet by slot id
     useEffect(() => {
@@ -221,7 +221,7 @@ const AppointmentDetails: React.FC = () => {
             if (appointment?.slot?.slot_id) {
                 try {
                     // Fetch danh sách bác sĩ theo slot_id
-                    
+
                     const vetData = await fetchVetBySlotId(appointment.slot.slot_id);
                     setVetList(vetData); // Lưu danh sách bác sĩ vào state vetList
 
@@ -239,7 +239,7 @@ const AppointmentDetails: React.FC = () => {
 
     // Gọi hàm lấy chi tiết cuộc hẹn và danh sách bác sĩ, và có thể gán bác sĩ cho cuộc hẹn
     useEffect(() => {
-         // Nếu không có slot_id thì không cần fetch
+        // Nếu không có slot_id thì không cần fetch
         const fetchVetDetails = async () => {
             if (appointment?.slot?.slot_id && selectedVetId) {
                 try {
@@ -327,18 +327,17 @@ const AppointmentDetails: React.FC = () => {
 
                                 {appointment.current_status !== 'ON_GOING' && (
                                     <>
-                                        <p>Update status:</p>
+                                        <span style={{fontWeight: '900', color:'brown', backgroundColor:'', padding: '10px', fontSize:'20px'}}>Update status:</span>
                                         <select
                                             className="form-select"
                                             value={selectedStatus}
                                             onChange={(e) => setSelectedStatus(e.target.value)}
-                                            style={{ marginLeft: '10px', width: '150px' }}
+                                            style={{ marginLeft: '10px', width: '150px', marginTop:'15px' }}
                                         >
-                                            <option value="PENDING">PENDING</option>
-                                            <option value="ON_GOING">ON_GOING</option>
-                                            {/* <option value="DONE">DONE</option> */}
+                                            <option value="PENDING">PENDING</option>                                            
                                             <option value="CONFIRMED">CONFIRMED</option>
                                             <option value="CHECKED_IN">CHECKED_IN</option>
+                                            <option value="ON_GOING">ON_GOING</option>
                                         </select>
 
                                         {/* Hiển thị nút Save nếu trạng thái đã thay đổi */}
@@ -403,12 +402,18 @@ const AppointmentDetails: React.FC = () => {
                             </div>
 
                             <div className="col-md-6">
-                                <h5 className="mt-3" style={{ fontWeight: '900' }}>- Fish Information</h5>
-                                <p><strong>Species:</strong> {appointment.fish?.species}</p>
-                                <p><strong>Gender:</strong> {appointment.fish?.gender}</p>
-                                <p><strong>Size:</strong> {appointment.fish?.size} cm</p>
-                                <p><strong>Weight:</strong> {appointment.fish?.weight} kg</p>
-                                <p><strong>Origin:</strong> {appointment.fish?.origin}</p>
+
+                                {appointment.fish && (
+                                    <div>
+                                        <h5 className="mt-3" style={{ fontWeight: '900' }}>- Fish Information</h5>
+                                        <p><strong>Species:</strong> {appointment.fish?.species}</p>
+                                        <p><strong>Gender:</strong> {appointment.fish?.gender}</p>
+                                        <p><strong>Size:</strong> {appointment.fish?.size} cm</p>
+                                        <p><strong>Weight:</strong> {appointment.fish?.weight} kg</p>
+                                        <p><strong>Origin:</strong> {appointment.fish?.origin}</p>
+                                    </div>
+                                )
+                                }
 
                                 <h5 className="mt-3" style={{ fontWeight: '900' }}>- Moving Surcharge</h5>
                                 <p><strong>District:</strong> {appointment.moving_surcharge?.district || 'Not available'}</p>
