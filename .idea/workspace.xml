@@ -6,6 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="dfa0a0f8-c0d0-4cf7-b8ea-c32e2affc709" name="Changes" comment="">
 <<<<<<< HEAD
+      <change afterPath="$PROJECT_DIR$/src/assets/images/defaultImage.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/table/TableRow.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/table/TableRow.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/context/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/context/AuthContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ProfilePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/VetDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/VetDetails.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/VetShiftSchePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/VetShiftSchePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/Profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/Profile.css" afterDir="false" />
+=======
+<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/src/components/vetAppointmentDetails/CreateFollowUpModal.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/components/vetAppointmentDetails/CreateMedicalReport.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/components/vetAppointmentDetails/Report.tsx" afterDir="false" />
@@ -23,6 +33,7 @@
       <change beforePath="$PROJECT_DIR$/src/pages/ManagerAppointment.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ManagerAppointment.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/StaffAppointment.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/StaffAppointment.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/StaffAppointmentDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/StaffAppointmentDetails.tsx" afterDir="false" />
+>>>>>>> dev
 >>>>>>> dev
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -62,7 +73,11 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+<<<<<<< HEAD
+    &quot;git-widget-placeholder&quot;: &quot;modify-feature/manager-add-get-certificate-for-vet&quot;,
+=======
     &quot;git-widget-placeholder&quot;: &quot;feature/kvfs-156-vet-view-shift-schedule&quot;,
+>>>>>>> dev
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -89,6 +104,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Admin\Desktop\reactjs\test-fe\src\assets\images" />
       <recent name="C:\Users\Admin\Desktop\reactjs\test-fe\src\pages" />
     </key>
   </component>
@@ -128,6 +144,11 @@
       <workItem from="1728444258887" duration="1906000" />
       <workItem from="1728475660518" duration="300000" />
       <workItem from="1728624215836" duration="13212000" />
+<<<<<<< HEAD
+      <workItem from="1729346280180" duration="14448000" />
+      <workItem from="1729391180387" duration="1805000" />
+      <workItem from="1729398046547" duration="3872000" />
+=======
       <workItem from="1729047383851" duration="5453000" />
       <workItem from="1729084672240" duration="1042000" />
       <workItem from="1729257949376" duration="7784000" />
@@ -137,6 +158,7 @@
       <workItem from="1729306469095" duration="227000" />
       <workItem from="1729307523503" duration="2009000" />
       <workItem from="1729408668182" duration="6497000" />
+>>>>>>> dev
     </task>
     <servers />
   </component>

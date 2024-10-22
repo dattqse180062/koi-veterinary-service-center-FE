@@ -51,7 +51,7 @@ const AddAddress: React.FC = () => {
 
         if (userId) {
             try {
-                await addAddress(userId, newAddress);
+                await addAddress(newAddress);
                 alert("Address added successfully!");
                 navigate('/addresses');
             } catch (error) {

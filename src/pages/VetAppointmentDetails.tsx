@@ -8,6 +8,7 @@ import {
     getMedicines,
     createPrescription,
     fetchPrescriptionDetails, updateAppointmentStatus, updateDoneStatus, getAppointmentDetailsVet
+
 } from '../api/appointmentApi';
 import "../styles/Appointment.css";
 import {useAuth} from "../hooks/context/AuthContext";

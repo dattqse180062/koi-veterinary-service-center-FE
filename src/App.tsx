@@ -52,9 +52,18 @@ const DispatchFeedback = lazy(() => import("./pages/DispatchFeedback")) // NEW
 // For customer
 // const MakeFeedback = lazy(() => import("./pages/MakeFeedback")) // NEW
 
+//New: fix
+const AddressManagementPage = lazy(() => import("./pages/AddressManagementPage"))
+const AddressDetails = lazy(() => import("./pages/AddressDetails"))
+const AddAddressPage = lazy(() => import("./pages/AddAddressPage"))
+
+const StaffAppointment = lazy(() => import("./pages/StaffAppointment"))
+
+const VetSchedulePage = lazy(() => import("./pages/VetSchedulePage"))
 
 //NEW: FOR VETERINARIAN
 const VeterinarianFeedbackDetailsPage = lazy(() => import("./pages/VeterinarianFeedbackDetailsPage"))
+const VetAppointmentDetails = lazy(() => import("./pages/VetAppointmentDetails"))
 
 // Define a higher-order component with authentication
 const withAuth = (Component: React.ComponentType) => (
@@ -102,9 +111,17 @@ function App() {
                             <Route path="/koi" element={withRole(KoiFishPage, ['CUS'])} />
                             <Route path="/add-koifish" element={withRole(AddKoiFishPage, ['CUS'])} />
                             <Route path="/koi-details" element={withRole(KoiDetails, ['CUS'])} />
+
                             {/* <Route path="/my-appointment" element={withRole(CustomerAppointment, ['CUS'])} /> */}
                             <Route path="/my-appointment-details-customer" element={withRole(CustomerAppointmentDetails, ['CUS'])} />
                             
+
+
+                            <Route path="/addresses" element={withRole(AddressManagementPage, ['CUS'])} />
+                            <Route path="/address-details" element={withRole(AddressDetails, ['CUS'])} />
+                            <Route path="/add-address" element={withRole(AddAddressPage, ['CUS'])} />
+
+
                             {/* Make appointment  */}
                             <Route path="/appointment/service-selection" element={withRole(ServiceSelectionPage, ['CUS'])} />
                             <Route path="/appointment/vet-selection" element={withRole(VeterinarianSelectionPage, ['CUS'])} />
@@ -129,10 +146,20 @@ function App() {
 
 
                             {/* Staff routes */}
+
                             <Route path="/appointments/:appointment_id" element={withRole(StaffAppointmentDetails, ['STA'])} />
 
                             {/* Role: Veterinarian */}
                             <Route path="/vet-feedback-details" element={withRole(VeterinarianFeedbackDetailsPage, ['VET'])} />
+
+                            <Route path="/my-appointment" element={withRole(StaffAppointment, ['STA'])} />
+                            <Route path="/my-appointment-details" element={withRole(StaffAppointmentDetails, ['STA'])} />
+
+
+                            {/* Role: Veterinarian */}
+                            <Route path="/veterinarian-schedule" element={withRole(VetSchedulePage, ['VET'])} />
+                            <Route path="/appointment-details/:appointmentId/veterinarian" element={withRole(VetAppointmentDetails, ['VET'])} />
+
 
                         </Routes>
 
