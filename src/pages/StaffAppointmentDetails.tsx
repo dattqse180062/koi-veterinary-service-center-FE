@@ -1,16 +1,16 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getAppointmentDetails, updateAppointment } from '../api/appointmentAPI';
+import { getAppointmentDetails, updateAppointment } from '../api/appointmentApi';
 import { fetchPayment, updatePayment } from '../api/paymentApi';
-import { updateAppointmentStatus, fetchAppointmentAndVeterinariansDemo } from '../api/appointmentAPI';
+import { updateAppointmentStatus, fetchAppointmentAndVeterinariansDemo } from '../api/appointmentApi';
 import { fetchVetBySlotId } from '../api/vetApi';
-
+import { useParams } from 'react-router-dom';
 interface AppointmentDetailsProps {
     appointment_id: number;
     created_date: string;
     current_status: string;
     customer_name: string;
-    time_slot: time_Slot;
+    slot: time_Slot;
     email: string;
     phone_number: string;
     description: string;
@@ -90,8 +90,8 @@ enum payment_status {
 
 
 const AppointmentDetails: React.FC = () => {
-    const location = useLocation(); // Get the location object
-    const appointment_id: number = location.state?.appointment_id; // Get the appointment_id from the location state
+    const { appointment_id } = useParams<{ appointment_id: string }>();  // Get the appointment_id from the location state
+    const appointmentIdNumber = Number(appointment_id);
     // const slot_id: number = location.state?.slot_id; // Get the slot_id from the location state
     const [appointment, setAppointment] = useState<AppointmentDetailsProps | null>(null); // Assuming your data structure
     const [paymentDetails, setPaymentDetails] = useState<PaymentDetails | null>(null); // State for payment details
@@ -105,7 +105,7 @@ const AppointmentDetails: React.FC = () => {
     const paymentRef = useRef<HTMLDivElement>(null); // Ref for payment details section
 
     // NEW
-    const [vetList, setVetList] = useState<Veterinarian[] | null>(null); // List of vets
+    const [vetList, setVetList] = useState<Veterinarian[]>([]); // List of vets
     const [selectedVetId, setSelectedVetId] = useState<number | null>(null); // Selected vet ID
 
     // Tạo trạng thái isVetSelected
@@ -114,15 +114,15 @@ const AppointmentDetails: React.FC = () => {
     // Tạo biến selectedStatus
     const [selectedStatus, setSelectedStatus] = useState<string>('');
 
-    console.log('Appointment id:', appointment_id);
+    console.log('Appointment id:', appointmentIdNumber);
     
 
     // Fetch appointment details by ID
     useEffect(() => {
         const fetchAppointmentDetails = async () => {
-            if (appointment_id) {
+            if (appointmentIdNumber) {
                 try {
-                    const appointmentData = await getAppointmentDetails(appointment_id); // Fetch details by ID
+                    const appointmentData = await getAppointmentDetails(appointmentIdNumber); // Fetch details by ID
                     setAppointment(appointmentData); // Set the appointment details                
                 } catch (error) {
                     console.error('Error fetching appointment details:', error);
@@ -130,16 +130,16 @@ const AppointmentDetails: React.FC = () => {
             }
         };
         fetchAppointmentDetails();
-    }, [appointment_id]);
+    }, [appointmentIdNumber]);
+    console.log('Appointment slot id:', appointment);
 
-    console.log('Appointment slot id:', appointment?.time_slot.slot_id);
 
     // Function to handle view payment details
     const handleViewPaymentDetails = async () => {
         if (!isPaymentVisible) {
             // Fetch payment details only when opening
             try {
-                const paymentData = await fetchPayment(appointment_id);
+                const paymentData = await fetchPayment(appointmentIdNumber);
                 setPaymentDetails(paymentData);
 
                 // Scroll to the payment details section after loading the details
@@ -170,7 +170,7 @@ const AppointmentDetails: React.FC = () => {
         if (confirmUpdate) {
             try {
                 console.log('Updating payment method:', selectedPaymentMethod);
-                const updatedPayment = await updatePayment(appointment_id,
+                const updatedPayment = await updatePayment(appointmentIdNumber,
                     {
                         // Update the payment status only                        
                         status: 'PAID' // Chỉ cập nhật trạng thái thanh toán                        
@@ -188,16 +188,27 @@ const AppointmentDetails: React.FC = () => {
 
     //Fucntion to update appointment status: current status
     const handleUpdateAppointmentStatus = async () => {
-        try {
-            // console.log('Updating appointment status:', appointment?.current_status);
-            const updatedAppointment = await updateAppointmentStatus(appointment_id, {
-                status: selectedStatus, // Truyền giá trị của current_status vào đây
-            });
-            setAppointment(updatedAppointment);
-            console.log('Updated appointment status:', appointment?.current_status);
-            console.log('Appointment slot id:', appointment?.time_slot.slot_id);
-        } catch (error) {
-            console.error('Error updating appointment status:', error);
+        if (appointment && selectedStatus) {
+            try {
+                // Gọi API để cập nhật trạng thái
+                await updateAppointmentStatus(appointment.appointment_id, selectedStatus);
+                // Cập nhật lại thông tin trạng thái trong state appointment
+                setAppointment(prevAppointment => {
+                    if (prevAppointment) {
+                        return {
+                            ...prevAppointment,
+                            current_status: selectedStatus
+                        };
+                    }
+                    return prevAppointment;
+                });
+                // Đặt selectedStatus về giá trị mới
+                setSelectedStatus(selectedStatus);
+
+                console.log('Updated appointment status:', selectedStatus);
+            } catch (error) {
+                console.error('Error updating appointment status:', error);
+            }
         }
     };
 
@@ -206,14 +217,13 @@ const AppointmentDetails: React.FC = () => {
 
     // Fetch vet by slot id
     useEffect(() => {
-        if(appointment?.veterinarian.user_id) return; // Nếu không có slot_id thì không cần fetch
         const fetchVet = async () => {
-            if (appointment?.time_slot.slot_id) {
+            if (appointment?.slot?.slot_id) {
                 try {
                     // Fetch danh sách bác sĩ theo slot_id
                     
-                    const vetData = await fetchVetBySlotId(appointment?.time_slot.slot_id);
-                    setVetList(vetData); // Lưu danh sách bác sĩ vào state vetList 
+                    const vetData = await fetchVetBySlotId(appointment.slot.slot_id);
+                    setVetList(vetData); // Lưu danh sách bác sĩ vào state vetList
 
                     // LẤY CẢ USER ID , FIRST LAST NAME
                 } catch (error) {
@@ -224,16 +234,16 @@ const AppointmentDetails: React.FC = () => {
 
         fetchVet();
 
-    }, [appointment?.time_slot.slot_id]); // Chỉ gọi khi slot_id thay đổi
+    }, [appointment?.slot.slot_id]); // Chỉ gọi khi slot_id thay đổi
 
 
     // Gọi hàm lấy chi tiết cuộc hẹn và danh sách bác sĩ, và có thể gán bác sĩ cho cuộc hẹn
     useEffect(() => {
-        if(appointment?.veterinarian.user_id) return; // Nếu không có slot_id thì không cần fetch
+         // Nếu không có slot_id thì không cần fetch
         const fetchVetDetails = async () => {
-            if (appointment?.time_slot.slot_id) {
+            if (appointment?.slot?.slot_id && selectedVetId) {
                 try {
-                    const { appointmentDetails, veterinarians } = await fetchAppointmentAndVeterinariansDemo(appointment?.time_slot.slot_id, appointment?.veterinarian?.user_id);
+                    const { appointmentDetails, veterinarians } = await fetchAppointmentAndVeterinariansDemo(appointment?.slot.slot_id, selectedVetId);
                     setAppointment(appointmentDetails);
                     setVetList(veterinarians); // Cập nhật danh sách bác sĩ
                 } catch (error) {
@@ -243,14 +253,14 @@ const AppointmentDetails: React.FC = () => {
         };
 
         fetchVetDetails();
-    }, [appointment?.time_slot.slot_id]);
+    }, [appointment?.slot.slot_id]);
 
 
     // Function for submitting the selected veterinarian
     const handleSubmitOrder = async () => {
         if (selectedVetId && appointment) {
             try {
-                await updateAppointment(appointment_id, selectedVetId); // Gửi selectedVetId trực tiếp
+                await updateAppointment(appointmentIdNumber, selectedVetId); // Gửi selectedVetId trực tiếp
 
                 // Cập nhật lại thông tin bác sĩ trong appointment
                 setAppointment(prevAppointment => {
@@ -345,7 +355,7 @@ const AppointmentDetails: React.FC = () => {
                                 <h5 className="mt-3" style={{ fontWeight: '900' }}>- Customer Information</h5>
                                 <p><strong>Name:</strong> {appointment?.customer_name}</p>
                                 {/* <p><strong>Slot ID:</strong> {appointment?.slot?.slot_id || 'NULL'}</p> */}
-                                <p><strong>Slot ID:</strong> {appointment?.time_slot?.slot_id || 'Not available'}</p>
+                                <p><strong>Slot ID:</strong> {appointment.slot.slot_id}</p>
 
 
                                 <p><strong>Email:</strong> {appointment?.email}</p>

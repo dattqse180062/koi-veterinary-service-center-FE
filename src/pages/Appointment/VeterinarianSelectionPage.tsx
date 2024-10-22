@@ -5,6 +5,7 @@ import {setDoctor} from "../../store/actions";
 import { useDispatch } from 'react-redux';
 import {useNavigate} from "react-router-dom";
 import { useSelector } from 'react-redux';
+import defaultImage from "../../assets/images/defaultImage.jpg"
 interface Doctor {
     user_id: number;
     first_name: string;
@@ -52,6 +53,7 @@ const ChooseVeterinarianPage: React.FC = () => {
         fetchDoctors(); // Fetch the data when the component mounts
     }, []);
 
+
     // Function to scroll left
     const scrollLeft = () => {
         if (cardContainerRef.current) {
@@ -71,7 +73,7 @@ const ChooseVeterinarianPage: React.FC = () => {
             user_id: doctor.user_id,
             first_name: doctor.first_name,
             last_name: doctor.last_name,
-            image: doctor.avatar,
+            avatar: doctor.avatar,
 
         };
 
@@ -99,7 +101,7 @@ const ChooseVeterinarianPage: React.FC = () => {
             style={{minHeight: '80vh', marginTop: '75px'}} // Center the section vertically
         >
 
-            <div className="container-fluid">
+            <div className="container-fluid" style={{padding:"0px"}}>
                 <button
                     className="btn btn-secondary mb-3"
                     style={{position: 'absolute', top: '12%', left: '3%'}}
@@ -117,7 +119,7 @@ const ChooseVeterinarianPage: React.FC = () => {
                     className="d-flex " // Enable horizontal scrolling
                     ref={cardContainerRef} // Attach ref to the container
                     style={{
-                        padding: '20px',
+                        padding: '40px',
                         flexWrap: 'nowrap',
                         overflow: 'hidden',// Prevent wrapping to a new line
                     }}
@@ -131,18 +133,18 @@ const ChooseVeterinarianPage: React.FC = () => {
                                 margin: '0 10px', // Add margin for spacing between cards
                             }}
                         >
-                            <div className="card shadow vet-card"
-                                 style={{borderRadius: '40px', width: '300px', height: '330px'}}
+                            <div className="card vet-card"
+                                 style={{borderRadius: '40px', width: '300px', height: '340px'}}
                                  onClick={() => handleCardClick(doctor)}>
                                 <img
-                                    src={doctor.avatar}
-                                    className="card-img-top rounded-circle mx-auto mt-4"
+                                    src={doctor.avatar || defaultImage}
+                                    className="card-img-top  rounded-circle mx-auto mt-5 mb-2"
                                     alt={`${doctor.first_name} ${doctor.last_name}`}
-                                    style={{width: '200px', height: '200px'}}
+                                    style={{width: '190px', height: '190px'}}
                                 />
-                                <div className="card-body text-center">
+                                <div className="row justify-content-center d-flex align-items-end text-center">
                                     <h5 className="card-title text-center font-weight-bold"
-                                        style={{marginLeft: "25px"}}>{`${doctor.first_name} ${doctor.last_name}`}</h5>
+                                        >{`${doctor.first_name} ${doctor.last_name}`}</h5>
 
                                 </div>
                             </div>
@@ -150,10 +152,13 @@ const ChooseVeterinarianPage: React.FC = () => {
                     ))}
                 </div>
                 {/* Navigation buttons */}
-                <div className="d-flex justify-content-between" style={{margin:"0px 20px"}}>
+                <div className="d-flex justify-content-between" style={{margin: "0px 20px"}}>
                     <button className="prev-next-button d-flex align-items-center fw-bold" onClick={scrollLeft}>
                         <i className="fa-solid fa-circle-chevron-left " style={{marginRight: '8px'}}></i>
                         Prev
+                    </button>
+                    <button className="btn btn-warning px-4 py-2 rounded-pill fw-bold mt-3" onClick={handleSkipClick}>
+                        Not indicated
                     </button>
                     <button className="prev-next-button d-flex align-items-center fw-bold" onClick={scrollRight}>
                         Next
@@ -161,11 +166,7 @@ const ChooseVeterinarianPage: React.FC = () => {
                     </button>
                 </div>
                 {/* Skip button */}
-                <div className="text-right mt-2">
-                    <button className="btn btn-warning px-4 py-2 rounded-pill fw-bold" onClick={handleSkipClick}>
-                        Skip
-                    </button>
-                </div>
+
             </div>
         </div>
     );

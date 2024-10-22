@@ -1,28 +1,48 @@
 /* Apply border radius to the table */
 .table-small {
-    font-size: 0.9rem; /* Reduce font size */
+    font-size: 0.9rem;
     border-collapse: separate;
-    border-spacing: 0; /* Make sure the cells aren't overlapping the border */
-    border-radius: 10px; /* Add border radius */
-    overflow: hidden; /* Ensure the rounded corners apply */
-    box-shadow:6px 6px 8px rgba(0, 0, 0, 0.20);
-    border: 1px solid rgba(13, 72, 159, 0.37);
 
+    border-spacing: 0;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .table-small th, .table-small td {
-    padding: 0.3rem; /* Adjust padding for smaller table */
-
-    height: 64px;
-    border: 1px solid #dee2e6;
-}
-
-.table-small-auto th, .table-small-auto td {
-    height: auto; /* Override height for this specific table */
+    padding: 0.3rem;
+    text-align: center;
+    vertical-align: middle;
+    height: 74px;
+    border: 1px solid #c2c5cd;
 
 }
 
-.table-small td {
+
+.table-small th, .table-small td {
+
+/*=======*/
+/*    border-spacing: 0; !* Make sure the cells aren't overlapping the border *!*/
+/*    border-radius: 10px; !* Add border radius *!*/
+/*    overflow: hidden; !* Ensure the rounded corners apply *!*/
+/*    box-shadow:6px 6px 8px rgba(0, 0, 0, 0.20);*/
+/*    border: 1px solid rgba(13, 72, 159, 0.37);*/
+
+/*}*/
+
+/*.table-small th, .table-small td {*/
+/*    padding: 0.3rem; !* Adjust padding for smaller table *!*/
+
+/*   */
+/*    border: 1px solid #dee2e6;*/
+/*}*/
+
+/*.table-small-auto th, .table-small-auto td {*/
+/*    height: auto; !* Override height for this specific table *!*/
+
+/*>>>>>>> dev*/
+}
+
+.table-small tr {
 
 
 }
@@ -31,15 +51,16 @@
     margin: 0; /* Remove default margin */
     margin-bottom: 0.2rem; /* Add some bottom margin for spacing */
     margin-top: 0.2rem;
+    font-size: 1.1rem;
 }
 
 /* Styling the table header */
 .table-small thead th {
+    background-color: #002d72;
+    color: white;
 
-    background-color: #002d72; /* Apply the blue color */
-    color: white; /* White text to contrast the blue background */
     padding: 0.5rem;
-    border: none; /* Remove borders from the header for a cleaner look */
+    border: none;
     font-size: 1.05rem;
 }
 
@@ -54,8 +75,8 @@
 
 /* Form select elements */
 .form-select {
-    width: auto; /* Adjust the width to fit the content */
-    min-width: 80px; /* Minimum width if needed */
+    width: auto;
+    min-width: 80px;
 }
 
 /* Bold the Slot column */

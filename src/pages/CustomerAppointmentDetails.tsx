@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getAppointmentDetailsForCus } from '../api/appointmentAPI';
+import { getAppointmentDetailsForCus } from '../api/appointmentApi';
+
+import { getAppointmentDetails } from '../api/appointmentApi';
+
 import { createPayment, fetchPayment } from '../api/paymentApi';
 import { createFeedback, getFeedbackDetailsCus } from '../api/feedbackApi';
 import { Rating, Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';

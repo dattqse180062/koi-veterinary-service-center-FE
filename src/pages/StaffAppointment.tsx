@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 // import TableComponent from '../components/table/TableComponent';
 import TableComponent from '../components/table/TableComponentForStaff';
 import { useNavigate } from 'react-router-dom';
-import { fetchAppointment, fetchAppointmentAndVeterinarians } from '../api/appointmentAPI';
+import { fetchAppointment, fetchAppointmentAndVeterinarians } from '../api/appointmentApi';
 
 interface Appointment {
     appointment_id: number;
@@ -130,7 +130,7 @@ const StaffAppointment: React.FC = () => {
  
     const handleAppointmentDetails = (appointment_id: number) => {
         // console.log(appointment_id);
-        navigate('/my-appointment-details', { state: { appointment_id} });
+        navigate(`/appointments/${appointment_id}`);
     };
     
 

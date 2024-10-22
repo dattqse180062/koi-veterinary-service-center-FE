@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/layout/Sidebar';
 import TableComponent from '../components/table/TableComponentForManager';
 import { useNavigate } from 'react-router-dom';
-import { fetchAppointment } from '../api/appointmentAPI';
+import { fetchAppointment } from '../api/appointmentApi';
 import { fetchStaff } from '../api/staffApi';
 
 interface Staff {
