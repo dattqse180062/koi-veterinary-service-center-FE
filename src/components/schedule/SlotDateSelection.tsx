@@ -71,9 +71,11 @@ const AvailableSlot: React.FC<AvailableSlotProps> = ({ vetId, appointmentId, des
     useEffect(() => {
         // Use vetId if provided, otherwise fallback to doctor's user ID
         const idToUse = vetId || currentUserId;
-
+        const apiUrl = vetId
+            ? `http://localhost:8080/api/v1/slots/${idToUse}/follow-up-appointment?appointmentId=${appointmentId}`
+            : `http://localhost:8080/api/v1/slots/${idToUse}/available`;
         // Fetch available slots using the selected ID
-        axios.get(`http://localhost:8080/api/v1/slots/${idToUse}/available`)
+        axios.get(apiUrl)
             .then((response) => {
                 console.log(response);
                 setAvailableSlots(response.data);
