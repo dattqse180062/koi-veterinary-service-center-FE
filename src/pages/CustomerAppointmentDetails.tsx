@@ -230,7 +230,7 @@ const CustomerAppointmentDetails: React.FC = () => {
                             <p><strong>Email:</strong> {appointment?.email}</p>
                             <p><strong>Phone:</strong> {appointment?.phone_number}</p>
                             <p><strong>Description:</strong> {appointment?.description}</p>
-                            <p><strong>Feedback id:</strong> {appointment?.feedback_id}</p>
+                            {/* <p><strong>Feedback id:</strong> {appointment?.feedback_id}</p> */}
 
 
                             <h5 className="mt-3" style={{ fontWeight: '900' }}>- Service Information</h5>
