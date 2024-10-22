@@ -238,14 +238,14 @@ const AppointmentOrderPage: React.FC = () => {
                                 }}/>
                                 <div>
                                     <strong style={{fontSize: "1.2rem"}}>Service
-                                        Price:</strong> ${service?.service_price.toFixed(2)}
+                                        Price:</strong> {service?.service_price.toLocaleString('vi-VN')} VND
                                 </div>
                                 <div>
                                     <strong style={{fontSize: "1.2rem"}}>Surcharge
-                                        Price:</strong> ${surchargePrice !== null ? surchargePrice.toFixed(2) : '0'}
+                                        Price:</strong> {surchargePrice !== null ? surchargePrice.toLocaleString('vi-VN') : '0'} VND
                                 </div>
                                 <div>
-                                    <strong style={{fontSize: "1.2rem"}}>Total Price:</strong> ${totalPrice.toFixed(2)} ({formData?.payment_method})
+                                    <strong style={{fontSize: "1.2rem"}}>Total Price:</strong> {totalPrice.toLocaleString('vi-VN')} VND ({formData?.payment_method})
                                 </div>
                             </div>
                         </div>

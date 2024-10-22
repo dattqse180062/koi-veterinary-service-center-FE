@@ -129,7 +129,6 @@ const FillInformationPage: React.FC = () => {
                 setLoading(false);
             }
         };
-
         getFishes();
     }, [userId]);
 
@@ -159,8 +158,8 @@ const FillInformationPage: React.FC = () => {
         const isAddressValid =
             (service_id === 1) || // Service 1 does not need an address
             (serviceLocation === 'at_hospital' && formData.address_id === null) || // No address needed for hospital
-            (serviceLocation === 'at_home' && selectedAddress.trim() !== '');
-        const isFishValid = (service_id === 1 || service_id === 2 || selectedFish.trim() !== '');
+            (serviceLocation === 'at_home' && selectedAddress.trim() !== '' && addresses.length > 0);
+        const isFishValid = (service_id === 1 || service_id === 2 || selectedFish.trim() !== ''|| fishes.length > 0);
 
         setValidity({
             name: isNameValid,
@@ -185,17 +184,21 @@ const FillInformationPage: React.FC = () => {
 
     // Handle validation for phone number
     const validatePhone = () => {
-        const phonePattern = /^[0-9]{10}$/;
-        if (formData.phone.trim() === '') {
-            setErrorPhone('Phone number is required.'); // Error when phone is empty
-            return false;
-        } else if (!phonePattern.test(formData.phone)) {
-            setErrorPhone('Contact number must be a 10-digit number.'); // Error for invalid phone format
-            return false;
-        } else {
-            setErrorPhone(''); // Clear error if phone is valid
-            return true;
+        const phoneValue = formData.phone; // Lấy giá trị điện thoại từ formData
+
+        // Kiểm tra xem phoneValue có tồn tại và không phải là chuỗi rỗng
+        if (!phoneValue || phoneValue.trim() === '') {
+            setErrorPhone('Phone number is required.'); // Cài đặt thông báo lỗi nếu không có giá trị
+            return false; // Trả về false nếu không hợp lệ
         }
+        const phonePattern = /^[0-9]{10}$/;
+        if (!phonePattern.test(phoneValue)) {
+            setErrorPhone('Contact number must be a 10-digit number.'); // Kiểm tra số điện thoại có đúng định dạng không
+            return false; // Trả về false nếu không hợp lệ
+        }
+
+        setErrorPhone(''); // Xóa thông báo lỗi nếu hợp lệ
+        return true; // Trả về true nếu hợp lệ
     };
 
     // Handle validation for email
@@ -331,12 +334,15 @@ const FillInformationPage: React.FC = () => {
                                             onChange={handleFishChange}
                                         >
                                             <option value="">Select a fish</option>
-                                            {fishes.map((fish, index) => (
-                                                <option key={fish.fish_id || index}
-                                                        value={`${fish.species}/ ${fish.origin}/ ${fish.color} (${fish.gender})`}>
-                                                    {fish.species} ({fish.origin}) - Color: {fish.color}
-                                                </option>
-                                            ))}
+                                            {fishes.length > 0 ? (
+                                                fishes.map(fish => (
+                                                    <option key={fish.fish_id} value={`${fish.species}/ ${fish.origin}/ ${fish.color} (${fish.gender})`}>
+                                                        {`${fish.species}/ ${fish.origin}/ ${fish.color} (${fish.gender})`}
+                                                    </option>
+                                                ))
+                                            ) : (
+                                                <option value="" disabled>No fishes available</option>
+                                            )}
                                         </select>
                                         <i className="bi bi-chevron-down dropdown-icon"></i>
                                     </div>
@@ -394,12 +400,15 @@ const FillInformationPage: React.FC = () => {
                                                 onChange={handleAddressChange}
                                             >
                                                 <option value="">Select an address</option>
-                                                {addresses.map((address, index) => (
-                                                    <option key={address.address_id || index}
-                                                            value={`${address.home_number}/ ${address.district}/ ${address.ward}/ ${address.city}`}>
-                                                        {address.home_number}/ {address.district}/ {address.ward}/ {address.city}
-                                                    </option>
-                                                ))}
+                                                {addresses.length > 0 ? (
+                                                    addresses.map(address => (
+                                                        <option key={address.address_id} value={`${address.home_number}/ ${address.district}/ ${address.ward}/ ${address.city}`}>
+                                                            {`${address.home_number}/ ${address.district}/ ${address.ward}/ ${address.city}`}
+                                                        </option>
+                                                    ))
+                                                ) : (
+                                                    <option value="" disabled>No addresses available</option>
+                                                )}
                                             </select>
                                             <i className="bi bi-chevron-down dropdown-icon"></i>
                                         </div>
