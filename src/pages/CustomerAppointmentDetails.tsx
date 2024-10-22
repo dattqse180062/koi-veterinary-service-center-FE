@@ -169,6 +169,28 @@ const CustomerAppointmentDetails: React.FC = () => {
 
                 setShowFeedbackModal(false);  // Close the modal after successful submission
 
+                // Cập nhật appointment để thêm feedback_id, nhằm ẩn nút "Make Feedback"
+
+                // setAppointment(prevAppointment => prevAppointment ? {
+                //     ...prevAppointment,
+                //     feedback_id: feedback_id // Giả định rằng feedback_id sẽ được cập nhật thành 1 (hoặc ID thực tế của phản hồi mới)
+                // } : null);
+
+                // // Gọi API tạo phản hồi và nhận feedback_id từ response
+                // const response = await createFeedback(appointment_id, feedbackDto);
+
+                // // Đóng modal phản hồi sau khi gửi thành công
+                // setShowFeedbackModal(false);
+
+                // // Cập nhật appointment với feedback_id từ response
+                // if (response?.feedback_id) {
+                //     setAppointment(prevAppointment => prevAppointment ? {
+                //         ...prevAppointment,
+                //         feedback_id: response.feedback_id // Cập nhật feedback_id thực tế
+                //     } : null);
+                // }
+
+
                 // Optionally, reset the feedback form
                 setRating(null);
                 setComment('');
@@ -216,10 +238,10 @@ const CustomerAppointmentDetails: React.FC = () => {
                                     padding: '4px 8px',
                                     backgroundColor: appointment?.current_status === 'DONE' ? 'green' :
                                         appointment?.current_status === 'PENDING' ? 'orange' :
-                                        appointment?.current_status === 'DONE' ? 'white' :
-                                            appointment?.current_status === 'ON_GOING' ? 'blue' :
-                                                appointment?.current_status === 'CANCELLED' ? 'red' :
-                                                    'black' // Default color for other statuses
+                                            appointment?.current_status === 'DONE' ? 'white' :
+                                                appointment?.current_status === 'ON_GOING' ? 'blue' :
+                                                    appointment?.current_status === 'CANCELLED' ? 'red' :
+                                                        'black' // Default color for other statuses
                                 }}>
                                     {appointment?.current_status}
                                 </span>
@@ -232,7 +254,6 @@ const CustomerAppointmentDetails: React.FC = () => {
                             <p><strong>Phone:</strong> {appointment?.phone_number}</p>
                             <p><strong>Description:</strong> {appointment?.description}</p>
                             {/* <p><strong>Feedback id:</strong> {appointment?.feedback_id}</p> */}
-
 
                             <h5 className="mt-3" style={{ fontWeight: '900' }}>- Service Information</h5>
                             <p><strong>Service name:</strong> {appointment.service?.service_name}</p>
