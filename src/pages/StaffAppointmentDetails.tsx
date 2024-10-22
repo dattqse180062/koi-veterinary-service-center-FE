@@ -334,10 +334,12 @@ const AppointmentDetails: React.FC = () => {
                                             onChange={(e) => setSelectedStatus(e.target.value)}
                                             style={{ marginLeft: '10px', width: '150px', marginTop:'15px' }}
                                         >
-                                            <option value="PENDING">PENDING</option>                                            
+                                            
+                                            <option value="CANCELED">CANCELED</option>                                            
                                             <option value="CONFIRMED">CONFIRMED</option>
-                                            <option value="CHECKED_IN">CHECKED_IN</option>
-                                            <option value="ON_GOING">ON_GOING</option>
+                                            {/* <option value="CHECKED_IN">CHECKED_IN</option> */}
+
+                                            {/* <option value="ON_GOING">ON_GOING</option> */}
                                         </select>
 
                                         {/* Hiển thị nút Save nếu trạng thái đã thay đổi */}
