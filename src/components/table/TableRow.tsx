@@ -41,7 +41,9 @@ const formatDateTime = (dateString: string) => {
     const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isKoiFishPage, isAddressPage, isAppointmentPage, isFeedbackPage }) => {
         // console.log("date", formatDateTime(rowData.created_date));
     const fullName = `${rowData.first_name || rowData.name} ${rowData.last_name || ''}`.trim(); // Tạo fullName
-    const dayOfSlot = `${rowData.time_slot.day}/${rowData.time_slot.month}/${rowData.time_slot.year}`.trim(); // Tạo dayOfSlot
+    const dayOfSlot = rowData.time_slot ? 
+    `${rowData.time_slot.day}/${rowData.time_slot.month}/${rowData.time_slot.year}`.trim()
+    : 'N/A'; // Tạo dayOfSlot
 
     return (
         <tr>
