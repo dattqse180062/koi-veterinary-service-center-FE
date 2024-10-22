@@ -45,11 +45,12 @@ const formatDateTime = (dateString: string) => {
                 <td key={column}>
                     {column === 'fullName' ? (
                         <div className="d-flex justify-content-center align-items-center">
-                            <img
+                            {/* <img
                                 src={rowData.avatar}
                                 alt={fullName}
                                 style={{ width: 30, height: 30, borderRadius: '50%', marginRight: '1rem' }}
-                            />
+                            /> */}
+                            {/* Lỗi avatar nên chưa để vào */}
                             {fullName}
                         </div>
                     ) : column === 'datetime' ? (

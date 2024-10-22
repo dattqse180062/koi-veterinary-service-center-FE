@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getAppointmentDetails } from '../api/appointmentAPI';
+import { getAppointmentDetailsForCus } from '../api/appointmentAPI';
 import { createPayment, fetchPayment } from '../api/paymentApi';
-import { createFeedback } from '../api/feedbackApi';
+import { createFeedback, getFeedbackDetailsCus } from '../api/feedbackApi';
 import { Rating, Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
 
 interface AppointmentDetailsProps {
@@ -21,6 +21,7 @@ interface AppointmentDetailsProps {
     veterinarian: Veterinarian;
     fish: Fish;
     payment: PaymentDetails;
+    feedback_id: number
 }
 
 interface Service {
@@ -107,7 +108,7 @@ const CustomerAppointmentDetails: React.FC = () => {
         const fetchDetails = async () => {
             if (appointment_id) {
                 try {
-                    const appointmentData = await getAppointmentDetails(Number(appointment_id));
+                    const appointmentData = await getAppointmentDetailsForCus(Number(appointment_id));
                     const paymentData = await fetchPayment(appointment_id);
                     setAppointment(appointmentData);
                     setPaymentDetails(paymentData); // Update only PaymentDetails state
@@ -161,10 +162,10 @@ const CustomerAppointmentDetails: React.FC = () => {
 
             try {
                 // Call the createFeedback API function
-                await createFeedback(appointment_id, feedbackDto);            
-        
+                await createFeedback(appointment_id, feedbackDto);
+
                 setShowFeedbackModal(false);  // Close the modal after successful submission
-        
+
                 // Optionally, reset the feedback form
                 setRating(null);
                 setComment('');
@@ -197,17 +198,37 @@ const CustomerAppointmentDetails: React.FC = () => {
 
                     <div className="row">
                         <div className="col-md-6">
-                            <p><strong>Date: </strong>                             
-                            {appointment.slot?.day}/{appointment.slot?.month}/{appointment.slot?.year} 
+                            <p><strong>Date: </strong>
+                                {appointment.slot?.day}/{appointment.slot?.month}/{appointment.slot?.year}
                             </p>
                             <p><strong>Description:</strong> {appointment.slot?.description}</p>
-                            <p><strong>Status:</strong> {appointment?.current_status}</p>
+                            {/* <p><strong>Status: </strong> 
+                            {appointment?.current_status}                            
+                            </p> */}
+
+                            <p><strong>Status: </strong>
+                                <span style={{
+                                    fontWeight: '900',
+                                    color: 'white',
+                                    padding: '4px 8px',
+                                    backgroundColor: appointment?.current_status === 'DONE' ? 'green' :
+                                        appointment?.current_status === 'PENDING' ? 'orange' :
+                                            appointment?.current_status === 'ON_GOING' ? 'blue' :
+                                                appointment?.current_status === 'CANCELLED' ? 'red' :
+                                                    'black' // Default color for other statuses
+                                }}>
+                                    {appointment?.current_status}
+                                </span>
+                            </p>
+
 
                             <h5 className="mt-3" style={{ fontWeight: '900' }}>- Customer Information</h5>
                             <p><strong>Name:</strong> {appointment?.customer_name}</p>
                             <p><strong>Email:</strong> {appointment?.email}</p>
                             <p><strong>Phone:</strong> {appointment?.phone_number}</p>
                             <p><strong>Description:</strong> {appointment?.description}</p>
+                            <p><strong>Feedback id:</strong> {appointment?.feedback_id}</p>
+
 
                             <h5 className="mt-3" style={{ fontWeight: '900' }}>- Service Information</h5>
                             <p><strong>Service name:</strong> {appointment.service?.service_name}</p>
@@ -237,7 +258,23 @@ const CustomerAppointmentDetails: React.FC = () => {
                                 <p><strong>Payment Method:</strong> {PaymentDetails?.payment_method || 'N/A'}</p>
                                 <p><strong>Payment Amount:</strong> {PaymentDetails?.payment_amount || 'N/A'} VND</p>
                                 <p><strong>Description:</strong> {PaymentDetails?.description || 'N/A'}</p>
-                                <p><strong>Status:</strong> {PaymentDetails?.status || 'N/A'}</p>
+                                {/* <p><strong>Status: </strong> 
+                                {PaymentDetails?.status || 'N/A'}
+                                </p> */}
+                                <p><strong>Status: </strong>
+                                    <span style={{
+                                        backgroundColor: PaymentDetails?.status === 'PAID' ? 'green' :
+                                            PaymentDetails?.status === 'NOT_PAID' ? 'red' : 'transparent',
+                                        color: 'white',
+                                        padding: '4px 8px',
+                                        borderRadius: '4px',
+                                        display: 'inline-block',
+                                        fontWeight: 'bold'
+                                    }}>
+                                        {PaymentDetails?.status || 'N/A'}
+                                    </span>
+                                </p>
+
                                 {/* Show Payment button only if payment method is VN PAY and curreny status is NOT_PAID */}
                                 {PaymentDetails?.payment_method === payment_method.VN_PAY && PaymentDetails?.status === payment_status.NOT_PAID && (
                                     <button className="btn btn-primary mt-3" onClick={handlePayment}>Pay</button>
@@ -246,8 +283,8 @@ const CustomerAppointmentDetails: React.FC = () => {
 
 
 
-                            {/* Show Make Feedback button only if current_status is 'done' */}
-                            {appointment.current_status === 'DONE' && PaymentDetails?.status === 'PAID' && (
+                            {/* Show Make Feedback button only if current_status is 'done' and don't have feedback id */}
+                            {appointment.current_status === 'DONE' && PaymentDetails?.status === 'PAID' && !appointment.feedback_id && (
                                 <div className="mt-3">
                                     <button
                                         className="btn btn-success"

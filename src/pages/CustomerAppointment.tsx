@@ -51,7 +51,6 @@ const formatDateTime = (dateString: string) => {
     return date.toLocaleString('GB-en', options);
 };
 
-
 const CustomerAppointment: React.FC = () => {
     const [appointment, setAppointment] = useState<Appointment[]>([]);
     const columns = ['appointment_id', 'date_time', 'dayOfSlot' ,'service_name', 'veterinarian_name', 'appointment_status','payment_status'];

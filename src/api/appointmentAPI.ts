@@ -156,4 +156,15 @@ export const updateAppointmentStatus = async (appointment_id: number, status: an
     }
 }
 
+//get appointment details for customer
+export const getAppointmentDetailsForCus = async (appointment_id: number) => {
+    try {
+        const response = await axios.get(`http://localhost:8080/api/v1/appointments/${appointment_id}/customer`);
+        return response.data; // trả về dữ liệu từ API
+    } catch (error) {
+        console.error('Error fetching appointment details:', error);
+        
+    }
+}
+
 export { createAppointment };

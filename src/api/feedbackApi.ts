@@ -76,3 +76,19 @@ export const createFeedback = async (appointmentId: number, feedbackDto: any) =>
       console.error('Error creating feedback:', error);
   }
 };
+
+//For customer: get feedback details
+export const getFeedbackDetailsCus = async(feedback_id: number) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/${feedback_id}/customer`,
+      {
+        params: { feedback_id },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+    throw error;
+  }
+}
+
