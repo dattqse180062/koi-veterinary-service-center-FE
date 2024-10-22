@@ -1,5 +1,5 @@
 import React from 'react';
-import TableRow from './TableRow';
+import TableRowForVet from './TableRowForVet';
 import "../../styles/Schedule.css"
 import "../../styles/ServicePricing.css"
 
@@ -48,7 +48,7 @@ const TableComponent: React.FC<TableComponentProps> = ({ columns, columnHeaders,
                 <tbody>
 
                     {paginatedData.map((item) => (
-                        <TableRow
+                        <TableRowForVet
                             key={item[columns[0]]} // Assuming first column is ID
                             columns={columns}
                             rowData={{

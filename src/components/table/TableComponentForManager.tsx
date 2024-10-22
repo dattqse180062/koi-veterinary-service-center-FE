@@ -1,5 +1,5 @@
 import React from 'react';
-import TableRow from './TableRow';
+import TableRow from './TableRowForManager';
 import "../../styles/Schedule.css"
 import "../../styles/ServicePricing.css"
 

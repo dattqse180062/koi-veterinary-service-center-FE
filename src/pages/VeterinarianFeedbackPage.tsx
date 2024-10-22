@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/layout/Sidebar';
-import TableComponent from '../components/table/TableComponentForManager';
+import TableComponent from '../components/table/TableComponentForVet';
 import { useNavigate } from 'react-router-dom';
-import { fecthFeedbacks } from '../api/feedbackApi'
+import { fetchVetFeedbacks } from '../api/feedbackApi'
 
 interface Feedback {
     feedback_id: number;
@@ -11,7 +11,8 @@ interface Feedback {
     date_time: string;
     // Include other fields as needed
 }
-const FeebackManagementPage: React.FC = () => {
+
+const VeterinarianFeedbackPage: React.FC = () => {
     const [Feedbacks, setFeedbacks] = useState<Feedback[]>([]);
     const columns = ['feedback_id', 'rating', 'comment', 'date_time'];
     const columnHeaders = ['Feedback ID', 'Rating', 'Comment', 'Date & time'];
@@ -20,7 +21,7 @@ const FeebackManagementPage: React.FC = () => {
     useEffect(() => {
         const getFeedbacks = async () => {
             try {
-                const data = await fecthFeedbacks();
+                const data = await fetchVetFeedbacks();
                 const filteredData = data.map((feedback: any) => {
                     const { date_time, ...rest } = feedback; // Exclude password
                     return {
@@ -46,7 +47,7 @@ const FeebackManagementPage: React.FC = () => {
 
     const handleFeedbackDetails = (feedback_id: number) => {
         console.log('Feedback ID:', feedback_id);
-        navigate('/feedback-details', { state: { feedback_id } });
+        navigate('/vet-feedback-details', { state: { feedback_id } });
     };
 
     // Function to format DateTime
@@ -58,7 +59,7 @@ const FeebackManagementPage: React.FC = () => {
         }
 
         const options: Intl.DateTimeFormatOptions = {
-            day: '2-digit',
+            day: 'numeric',
             month: '2-digit',
             year: '2-digit',
             hour: '2-digit',
@@ -102,4 +103,4 @@ const FeebackManagementPage: React.FC = () => {
     );
 };
 
-export default FeebackManagementPage;
+export default VeterinarianFeedbackPage;
