@@ -90,6 +90,10 @@ export const logout = async (token: string) => {
     }
 };
 
+export const refreshToken = async (token: string) => {
+    const response = await axios.post(`${BASE_URL}/refresh`, { refreshToken: token });
+    return response.data.result.token; // Adjust based on your actual API response structure
+};
 
 
 
