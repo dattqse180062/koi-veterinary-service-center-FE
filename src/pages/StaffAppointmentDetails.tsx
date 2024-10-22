@@ -281,8 +281,11 @@ const AppointmentDetails: React.FC = () => {
 
 
     // Function for submitting the selected veterinarian
-    const handleSubmitOrder = async () => {
+    const handleSubmitOrder = async () => {       
         if (selectedVetId && appointment) {
+            // thông báo điều chỉnh bác sĩ
+            const confirmUpdate = window.confirm(`Are you sure you want to assign this veterinarian?`);
+            if (!confirmUpdate) return; // Nếu không xác nhận thì không thực hiện gì cả
             try {
                 await updateAppointment(appointmentIdNumber, selectedVetId); // Gửi selectedVetId trực tiếp
 
@@ -306,6 +309,7 @@ const AppointmentDetails: React.FC = () => {
                 console.error('Error updating appointment:', error);
             }
         }
+
     };
 
 
