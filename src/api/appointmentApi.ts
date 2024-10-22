@@ -271,6 +271,8 @@ export const updateAppointment = async (appointment_id: number, veterinarian_id:
     }
 }
 
+
+
 //View medical report of an appointment
 export const fetchMedicalReport = async (appointment_id: number) => {
     try {
@@ -305,6 +307,17 @@ export const updateAppointmentStatus = async (appointment_id: number, status: st
         throw error; // ném lỗi để xử lý ở nơi gọi
     }
 };
+
+// Staff update appointmet status: ONLY CANCELED
+export const updateAppointmentStatusCanceled = async (appointment_id: number) => {
+    try {
+        const response = await axios.delete(`http://localhost:8080/api/v1/appointments/${appointment_id}`);
+        return response.data; // trả về dữ liệu từ API
+    } catch (error) {
+        console.error('Error updating appointment status:', error);
+        throw error; // ném lỗi để xử lý ở nơi gọi
+    }
+}
 
 //get appointment details for customer
 export const getAppointmentDetailsForCus = async (appointment_id: number) => {
