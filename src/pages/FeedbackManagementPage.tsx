@@ -46,7 +46,7 @@ const FeebackManagementPage: React.FC = () => {
 
     const handleFeedbackDetails = (feedback_id: number) => {
         console.log('Feedback ID:', feedback_id);
-        navigate('/feedback-details', { state: { feedback_id } });
+        navigate('/manager/feedback-details', { state: { feedback_id } });
     };
 
     // Function to format DateTime

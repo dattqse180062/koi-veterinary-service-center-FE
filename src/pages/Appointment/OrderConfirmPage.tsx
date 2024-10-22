@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import {createAppointment} from "../../api/appointmentApi";
 import {persistor} from "../../store/store";
+import defaultImage from "../../assets/images/defaultImage.jpg";
 
 
 
@@ -153,7 +154,7 @@ const AppointmentOrderPage: React.FC = () => {
                             <div className="card shadow d-flex flex-column align-items-center justify-content-center"
                                  style={{borderRadius: '40px', width: '320px', height: '360px'}}>
                                 <img
-                                    src={doctor?.avatar}
+                                    src={doctor?.avatar  || defaultImage}
                                     className="card-img-top rounded-circle mt-4"
                                     alt={`${doctor?.first_name} ${doctor?.last_name}`}
                                     style={{width: '200px', height: '200px'}}
@@ -237,14 +238,14 @@ const AppointmentOrderPage: React.FC = () => {
                                 }}/>
                                 <div>
                                     <strong style={{fontSize: "1.2rem"}}>Service
-                                        Price:</strong> ${service?.service_price.toFixed(2)}
+                                        Price:</strong> {service?.service_price.toLocaleString('vi-VN')} VND
                                 </div>
                                 <div>
                                     <strong style={{fontSize: "1.2rem"}}>Surcharge
-                                        Price:</strong> ${surchargePrice !== null ? surchargePrice.toFixed(2) : '0'}
+                                        Price:</strong> {surchargePrice !== null ? surchargePrice.toLocaleString('vi-VN') : '0'} VND
                                 </div>
                                 <div>
-                                    <strong style={{fontSize: "1.2rem"}}>Total Price:</strong> ${totalPrice.toFixed(2)} ({formData?.payment_method})
+                                    <strong style={{fontSize: "1.2rem"}}>Total Price:</strong> {totalPrice.toLocaleString('vi-VN')} VND ({formData?.payment_method})
                                 </div>
                             </div>
                         </div>

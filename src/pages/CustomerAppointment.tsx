@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import TableComponent from '../components/table/TableComponent';
 import { useNavigate } from 'react-router-dom';
 import { fetchAppointmentForCus } from '../api/appointmentApi';
+import Sidebar from "../components/layout/Sidebar";
 
 interface Appointment {
     appointment_id: number;
@@ -54,7 +55,7 @@ const formatDateTime = (dateString: string) => {
 const CustomerAppointment: React.FC = () => {
     const [appointment, setAppointment] = useState<Appointment[]>([]);
     const columns = ['appointment_id', 'date_time', 'dayOfSlot' ,'service_name', 'veterinarian_name', 'appointment_status','payment_status'];
-    const columnHeaders = ['Appointment ID', 'Created date', 'Slot day' ,'Service name', 'Veterinarian name', 'Apppointment status', 'Payment status'];
+    const columnHeaders = ['ID', 'Created date', 'Slot day' ,'Service name', 'Veterinarian name', 'Apppointment status', 'Payment status'];
     // tạm thời chưa có customer name!
     const navigate = useNavigate();
 
@@ -86,7 +87,7 @@ const CustomerAppointment: React.FC = () => {
     // dấu / chuyển theo path vd: appointment?appointment_id=1 ---> chuyền qua url parameters
     const handleAppointmentDetails = (appointment_id: number) => {
         // console.log(appointment_id); // check xem có ra id không
-        navigate('/my-appointment-details-customer', { state: { appointment_id } });
+        navigate('/appointment-details', { state: { appointment_id } });
     };
 
     const actions = [
@@ -99,6 +100,7 @@ const CustomerAppointment: React.FC = () => {
     console.log(appointment);
     return (
         <div className="d-flex flex-grow-1">
+            <Sidebar/>
             <div className="container" style={{ marginTop: "6rem" }}>
                 <div className="card" style={{ width: '100%' }}>
                     <div className="card-header">

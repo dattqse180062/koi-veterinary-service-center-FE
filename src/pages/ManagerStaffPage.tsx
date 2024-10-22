@@ -61,7 +61,7 @@ const ManagerStaffPage: React.FC = () => {
                         </h5>
                         <button
                             className="btn btn-primary"
-                            onClick={() => navigate('/add-staff')}
+                            onClick={() => navigate('/manager/add-staff')}
                             style={{ padding: '0.5rem 1rem' }}
                         >
                             Add Staff

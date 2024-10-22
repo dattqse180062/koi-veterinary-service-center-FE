@@ -42,3 +42,26 @@
     margin-left: 2px;
     font-size: 1rem;
 }
+
+.card-login {
+    max-width: 70vw;
+    width: 385px;
+    height: 490px;
+    background: rgba(103,82,49,0.24);
+    backdrop-filter: blur(2px);
+    border-color: rgba(198,149,51,0.45);
+    box-shadow: 4px 10px 20px rgba(0, 0, 0, 0.25);
+}
+
+.card-register {
+    max-width: 70vw;
+    width: 385px;
+    background: rgba(103,82,49,0.24);
+    backdrop-filter: blur(2px);
+    border-color: rgba(198,149,51,0.45);
+    display: flex;
+    box-shadow: 4px 10px 20px rgba(0, 0, 0, 0.25);
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch ;
+}

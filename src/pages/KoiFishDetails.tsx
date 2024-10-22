@@ -45,6 +45,7 @@ const KoiDetail: React.FC = () => {
         try {
             await updateKoi(fishId, koiData);
             alert('Koi updated successfully!');
+            navigate('/koi');
         } catch (error) {
             console.error('Error updating koi:', error);
         }
@@ -64,7 +65,7 @@ const KoiDetail: React.FC = () => {
     };
 
     const handleBack = () => {
-        navigate('/koi');
+        navigate('/koi/my-koi');
     };
 
     const handleCancel = () => {

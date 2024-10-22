@@ -34,9 +34,9 @@ const Profile: React.FC = () => {
     const roleId = user?.roleId;
 
     const [userData, setUserData] = useState<UserData | null>(null);
-    const [firstname, setFirstname] = useState("");
-    const [lastname, setLastname] = useState("");
-    const [phone, setPhone] = useState("");
+    const [first_name, setFirstname] = useState("");
+    const [last_name, setLastname] = useState("");
+    const [phone_number, setPhone] = useState("");
 
     const [errorPhone, setErrorPhone] = useState("");
     const [errorAddress, setErrorAddress] = useState("");
@@ -96,7 +96,7 @@ const Profile: React.FC = () => {
     // Validate phone number
     const validatePhone = () => {
         const phonePattern = /^[0-9]{10}$/;
-        if (phone.trim() !== "" && !phonePattern.test(phone)) {
+        if (phone_number.trim() !== "" && !phonePattern.test(phone_number)) {
             setErrorPhone("Contact number must be a 10-digit number.");
         } else {
             setErrorPhone("");
@@ -111,9 +111,9 @@ const Profile: React.FC = () => {
         if (errorPhone) return;
         try {
             const updatedData = {
-                firstname,
-                lastname,
-                phone,
+                first_name,
+                last_name,
+                phone_number,
 
             };
 
@@ -183,16 +183,16 @@ const Profile: React.FC = () => {
                                 <div className="form-group">
                                     <label className="fw-bold">First Name</label>
 
-                                    <input type="text" className="form-control input-field" value={firstname} onChange={e => setFirstname(e.target.value)} readOnly={!canEditProfile}/>
+                                    <input type="text" className="form-control input-field" value={first_name} onChange={e => setFirstname(e.target.value)} readOnly={!canEditProfile}/>
                                 </div>
                                 <div className="form-group">
                                     <label className="fw-bold">Last Name</label>
-                                    <input type="text" className="form-control input-field" value={lastname} onChange={e => setLastname(e.target.value)} readOnly={!canEditProfile}/>
+                                    <input type="text" className="form-control input-field" value={last_name} onChange={e => setLastname(e.target.value)} readOnly={!canEditProfile}/>
                                 </div>
                             </div>
                             <div className="form-group">
                                 <label className="fw-bold">Contact Number</label>
-                                <input type="text" className="form-control input-field" value={phone} onChange={e => setPhone(e.target.value)} onBlur={validatePhone} readOnly={!canEditProfile} />
+                                <input type="text" className="form-control input-field" value={phone_number} onChange={e => setPhone(e.target.value)} onBlur={validatePhone} readOnly={!canEditProfile} />
                                 {errorPhone && <div className="error-register">{errorPhone}</div>}
                             </div>
 
@@ -201,7 +201,7 @@ const Profile: React.FC = () => {
                                 <div>
                                     <button
                                         className="btn btn-primary"
-                                        onClick={() => navigate(`/addresses`)}
+                                        onClick={() => navigate(`/address/my-address`)}
                                     >
                                         Address Management
                                     </button>

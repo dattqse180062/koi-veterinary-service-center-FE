@@ -45,7 +45,7 @@
     background-color: #002d72; /* Blue color */
     color: white; /* White text to contrast the blue */
     padding: 0.5rem;
-    min-width: 120px;
+
     border: none; /* Cleaner look with no borders */
     font-size: 1.2rem;
 }

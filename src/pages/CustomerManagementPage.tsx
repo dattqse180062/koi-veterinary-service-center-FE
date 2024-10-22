@@ -44,7 +44,7 @@ const CustomerManagementPage: React.FC = () => {
 
     // Function to handle customer details
     const handleCustomerDetails = (userID: number) => {
-        navigate('/customer-details', { state: { userID } });
+        navigate('/manager/customer-details', { state: { userID } });
     };
 
     const actions = [

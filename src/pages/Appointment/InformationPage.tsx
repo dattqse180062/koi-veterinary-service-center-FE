@@ -5,7 +5,7 @@ import { useAuth } from "../../hooks/context/AuthContext";
 import { fetchAddresses } from "../../api/addressApi";
 import { fetchFishes } from "../../api/koiApi";
 import { getUserInfo } from "../../api/authService";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { setForm } from '../../store/actions';
 
@@ -14,12 +14,14 @@ const FillInformationPage: React.FC = () => {
     const { user } = useAuth(); // Use Auth context to get userId
     const userId = user?.userId;
     const navigate = useNavigate();
+    const location = useLocation();
     const [fishes, setFishes] = useState<any[]>([]);
     const [addresses, setAddresses] = useState<any[]>([]);
-
+    const [serviceLocation, setServiceLocation] = useState<string>('at_home');
     const [selectedAddress, setSelectedAddress] = useState<string>("");
     const [selectedFish, setSelectedFish] = useState<string>("");
     const service = useSelector((state: any) => state.service);
+    const slotDate = useSelector((state: any) => state.slot);
     const dispatch = useDispatch();
 
     const [error, setError] = useState<string | null>(null);
@@ -50,7 +52,7 @@ const FillInformationPage: React.FC = () => {
         fish: true,
     });
 
-    const slotDate = useSelector((state: any) => state.slot);
+
 
     useEffect(() => {
         // If service is null, navigate to service selection
@@ -127,7 +129,6 @@ const FillInformationPage: React.FC = () => {
                 setLoading(false);
             }
         };
-
         getFishes();
     }, [userId]);
 
@@ -154,8 +155,11 @@ const FillInformationPage: React.FC = () => {
         const isNameValid = validateName();
         const isPhoneValid = validatePhone();
         const isEmailValid = validateEmail();
-        const isAddressValid =  (selectedAddress.trim() !== '' || service_id === 1);
-        const isFishValid = (service_id === 1 || service_id === 2 || selectedFish.trim() !== '');
+        const isAddressValid =
+            (service_id === 1) || // Service 1 does not need an address
+            (serviceLocation === 'at_hospital' && formData.address_id === null) || // No address needed for hospital
+            (serviceLocation === 'at_home' && selectedAddress.trim() !== '' && addresses.length > 0);
+        const isFishValid = (service_id === 1 || service_id === 2 || selectedFish.trim() !== ''|| fishes.length > 0);
 
         setValidity({
             name: isNameValid,
@@ -180,17 +184,21 @@ const FillInformationPage: React.FC = () => {
 
     // Handle validation for phone number
     const validatePhone = () => {
-        const phonePattern = /^[0-9]{10}$/;
-        if (formData.phone.trim() === '') {
-            setErrorPhone('Phone number is required.'); // Error when phone is empty
-            return false;
-        } else if (!phonePattern.test(formData.phone)) {
-            setErrorPhone('Contact number must be a 10-digit number.'); // Error for invalid phone format
-            return false;
-        } else {
-            setErrorPhone(''); // Clear error if phone is valid
-            return true;
+        const phoneValue = formData.phone; // Lấy giá trị điện thoại từ formData
+
+        // Kiểm tra xem phoneValue có tồn tại và không phải là chuỗi rỗng
+        if (!phoneValue || phoneValue.trim() === '') {
+            setErrorPhone('Phone number is required.'); // Cài đặt thông báo lỗi nếu không có giá trị
+            return false; // Trả về false nếu không hợp lệ
         }
+        const phonePattern = /^[0-9]{10}$/;
+        if (!phonePattern.test(phoneValue)) {
+            setErrorPhone('Contact number must be a 10-digit number.'); // Kiểm tra số điện thoại có đúng định dạng không
+            return false; // Trả về false nếu không hợp lệ
+        }
+
+        setErrorPhone(''); // Xóa thông báo lỗi nếu hợp lệ
+        return true; // Trả về true nếu hợp lệ
     };
 
     // Handle validation for email
@@ -229,6 +237,30 @@ const FillInformationPage: React.FC = () => {
     const handleBackClick = () => {
         navigate('/appointment/slot-date-selection'); // Navigate back to service selection page
     };
+
+    const handleServiceLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const location = e.target.value;
+        setServiceLocation(location);
+
+        if (location === 'at_home') {
+            setFormData({ ...formData, address_id: formData.address_id });
+        } else {
+            setSelectedAddress(""); // Clear the selected address
+            setFormData({ ...formData, address: '', address_id: null }); // Set address to empty and address_id to null
+        }
+    };
+
+
+    const handleAddFish = () => {
+        dispatch(setForm(formData));
+        navigate('/koi/add', { state: { from: location.pathname } });
+    };
+
+    const handleAddAddress = () => {
+        dispatch(setForm(formData));
+        navigate('/address/add', { state: { from: location.pathname } });
+    };
+
     return (
         <div className="container profile-page d-flex flex-grow-1 align-items-center justify-content-center">
             <div className="form-section w-100" style={{width: "100%", maxWidth: 900}}>
@@ -286,7 +318,13 @@ const FillInformationPage: React.FC = () => {
                             </div>
                             {service_id !== 1 && service_id !== 2 && (
                                 <div className="form-group mb-3 position-relative">
-                                    <label className="fw-bold form-label">Fish</label>
+                                    <div className="d-flex justify-content-between mb-1">
+                                        <label className="fw-bold form-label">Fish</label>
+                                        <button type="button" className="btn btn-sm btn-primary ms-2"
+                                                onClick={handleAddFish}>
+                                            <i className="fas fa-plus"></i>
+                                        </button>
+                                    </div>
                                     <div className="position-relative">
                                         <select
                                             className={`form-control input-field ${!validity.fish ? 'border-danger' : ''}`}
@@ -296,12 +334,15 @@ const FillInformationPage: React.FC = () => {
                                             onChange={handleFishChange}
                                         >
                                             <option value="">Select a fish</option>
-                                            {fishes.map((fish, index) => (
-                                                <option key={fish.fish_id || index}
-                                                        value={`${fish.species}/ ${fish.origin}/ ${fish.color} (${fish.gender})`}>
-                                                    {fish.species} ({fish.origin}) - Color: {fish.color}
-                                                </option>
-                                            ))}
+                                            {fishes.length > 0 ? (
+                                                fishes.map(fish => (
+                                                    <option key={fish.fish_id} value={`${fish.species}/ ${fish.origin}/ ${fish.color} (${fish.gender})`}>
+                                                        {`${fish.species}/ ${fish.origin}/ ${fish.color} (${fish.gender})`}
+                                                    </option>
+                                                ))
+                                            ) : (
+                                                <option value="" disabled>No fishes available</option>
+                                            )}
                                         </select>
                                         <i className="bi bi-chevron-down dropdown-icon"></i>
                                     </div>
@@ -310,82 +351,123 @@ const FillInformationPage: React.FC = () => {
                         </div>
 
                         <div className="col-md-6">
-                            {(service_id !== 1) && (
-                                <div className="form-group mb-3 position-relative">
-                                    <label className="fw-bold form-label">Address</label>
-                                    <div className="position-relative">
-                                        <select
-                                            className={`form-control input-field ${!validity.address ? 'border-danger' : ''}`}
-                                            id="address"
-                                            name="address"
-                                            value={selectedAddress}
-                                            onChange={handleAddressChange}
-                                        >
-                                            <option value="">Select an address</option>
-                                            {addresses.map((address, index) => (
-                                                <option key={address.address_id || index}
-                                                        value={`${address.home_number}/ ${address.district}/ ${address.ward}/ ${address.city}`}>
-                                                    {address.home_number}/ {address.district}/ {address.ward}/ {address.city}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <i className="bi bi-chevron-down dropdown-icon"></i>
+                            {service_id !== 1 && (
+                                <div className="form-group mb-3">
+
+                                <label className="fw-bold form-label">Service Location</label>
+                                    <div className="d-flex align-items-center">
+                                    <div className="form-check me-3">
+                                        <input
+                                            className="form-check-input"
+                                            type="radio"
+                                            name="serviceLocation"
+                                            value="at_home"
+                                            checked={serviceLocation === 'at_home'}
+                                            onChange={handleServiceLocationChange}
+                                        />
+                                        <label className="form-check-label">At Home</label>
                                     </div>
+                                    <div className="form-check">
+                                        <input
+                                            className="form-check-input"
+                                            type="radio"
+                                            name="serviceLocation"
+                                            value="at_hospital"
+                                            checked={serviceLocation === 'at_hospital'}
+                                            onChange={handleServiceLocationChange}
+                                        />
+                                        <label className="form-check-label">At Hospital</label>
+                                    </div>
+                                    </div>
+
                                 </div>
                             )}
+                                {serviceLocation === 'at_home' && ( // Chỉ hiển thị địa chỉ khi chọn 'At Home' và service_id không phải 1
+                                    <div className="form-group mb-3 position-relative">
+                                        <div className="d-flex justify-content-between mb-1">
+                                            <label className="fw-bold form-label">Address</label>
+                                            <button type="button" className="btn btn-sm btn-primary ms-2"
+                                                    onClick={handleAddAddress}>
+                                                <i className="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <div className="position-relative">
+                                            <select
+                                                className={`form-control input-field ${!validity.address ? 'border-danger' : ''}`}
+                                                id="address"
+                                                name="address"
+                                                value={selectedAddress}
+                                                onChange={handleAddressChange}
+                                            >
+                                                <option value="">Select an address</option>
+                                                {addresses.length > 0 ? (
+                                                    addresses.map(address => (
+                                                        <option key={address.address_id} value={`${address.home_number}/ ${address.district}/ ${address.ward}/ ${address.city}`}>
+                                                            {`${address.home_number}/ ${address.district}/ ${address.ward}/ ${address.city}`}
+                                                        </option>
+                                                    ))
+                                                ) : (
+                                                    <option value="" disabled>No addresses available</option>
+                                                )}
+                                            </select>
+                                            <i className="bi bi-chevron-down dropdown-icon"></i>
+                                        </div>
 
-                            <div className="form-group mb-3">
-                                <label className="fw-bold form-label">Description</label>
-                                <textarea
-                                    className="form-control input-field"
-                                    name="description"
-                                    rows={4}
-                                    value={formData.description}
-                                    onChange={handleChange}
-                                    placeholder="Description"
-                                />
-                            </div>
+                                    </div>
+                                )}
 
-                            <div className=" form-group mb-3">
-                                <label className="fw-bold form-label">Payment Method</label>
-                                <div className="form-check">
-                                    <input
-                                        className="form-check-input"
-                                        type="radio"
-                                        name="payment_method"
-                                        value="VN_PAY"
-                                        checked={formData.payment_method === 'VN_PAY'}
+                                <div className="form-group mb-3">
+                                    <label className="fw-bold form-label">Description</label>
+                                    <textarea
+                                        className="form-control input-field"
+                                        name="description"
+                                        rows={4}
+                                        value={formData.description}
                                         onChange={handleChange}
-
+                                        placeholder="Description"
                                     />
-                                    <label className="form-check-label">Pay Online</label>
                                 </div>
 
-                                {/* Show cash payment option only if service_id is not 1 */}
-                                {service_id !== 1 && (
+                                <div className=" form-group mb-3">
+                                    <label className="fw-bold form-label">Payment Method</label>
                                     <div className="form-check">
                                         <input
                                             className="form-check-input"
                                             type="radio"
                                             name="payment_method"
-                                            value="CASH"
-                                            checked={formData.payment_method === 'CASH'}
+                                            value="VN_PAY"
+                                            checked={formData.payment_method === 'VN_PAY'}
                                             onChange={handleChange}
+
                                         />
-                                        <label className="form-check-label">Pay with Cash</label>
+                                        <label className="form-check-label">Pay Online</label>
                                     </div>
-                                )}
+
+                                    {/* Show cash payment option only if service_id is not 1 */}
+                                    {service_id !== 1 && (
+                                        <div className="form-check">
+                                            <input
+                                                className="form-check-input"
+                                                type="radio"
+                                                name="payment_method"
+                                                value="CASH"
+                                                checked={formData.payment_method === 'CASH'}
+                                                onChange={handleChange}
+                                            />
+                                            <label className="form-check-label">Pay with Cash</label>
+                                        </div>
+                                    )}
+                                </div>
+
+
+                                <div className="d-flex justify-content-end">
+                                    <button type="submit" className="btn btn-primary">
+                                        Next
+                                    </button>
+                                </div>
+
                             </div>
-
-
-                            <div className="d-flex justify-content-end">
-                                <button type="submit" className="btn btn-primary">
-                                    Next
-                                </button>
-                            </div>
-
                         </div>
-                    </div>
                 </form>
             </div>
         </div>

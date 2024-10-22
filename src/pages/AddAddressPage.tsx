@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import { fetchDistricts, addAddress } from '../api/addressApi';
 import { useAuth } from "../hooks/context/AuthContext";
 
@@ -12,7 +12,7 @@ const AddAddress: React.FC = () => {
     const navigate = useNavigate();
     const { user } = useAuth();
     const userId = user?.userId;
-
+    const location = useLocation();
     const [districts, setDistricts] = useState<District[]>([]);
     const [selectedDistrict, setSelectedDistrict] = useState<string>("");
     const [ward, setWard] = useState<string>("");
@@ -53,7 +53,7 @@ const AddAddress: React.FC = () => {
             try {
                 await addAddress(newAddress);
                 alert("Address added successfully!");
-                navigate('/addresses');
+                navigate(location.state?.from ||'/addresses');
             } catch (error) {
                 alert("Failed to add address");
             }

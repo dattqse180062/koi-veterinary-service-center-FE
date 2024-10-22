@@ -10,8 +10,7 @@ const KoiFishPage: React.FC = () => {
     const navigate = useNavigate();
     const { user  } = useAuth(); // Use Auth context to get userId
     const userId = user?.userId; // Access userId safely
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [itemsPerPage] = useState<number>(8); // Set the number of items per page
+
 
     useEffect(() => {
 
@@ -35,17 +34,9 @@ const KoiFishPage: React.FC = () => {
 
     const handleKoiFishClick = (fishId: number) => {
         console.log("Clicked fish ID:", fishId); // Thêm dòng này để kiểm tra
-        navigate(`/koi-details`, { state: { fishId } }); // Truyền fishId vào state
+        navigate(`/koi/details`, { state: { fishId } }); // Truyền fishId vào state
     };
-// Calculate total pages
-    const indexOfLastAddress = currentPage * itemsPerPage;
-    const indexOfFirstAddress = indexOfLastAddress - itemsPerPage;
-    const currentKoi = koiFishData.slice(indexOfFirstAddress, indexOfLastAddress)
 
-    // Handle page change
-    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        setCurrentPage(value);
-    };
     return (
         <div className="d-flex flex-grow-1">
             <Sidebar />
@@ -57,7 +48,7 @@ const KoiFishPage: React.FC = () => {
                         </h5>
                         <button
                             className="btn btn-primary"
-                            onClick={() => navigate(`/add-koifish?id=${userId}`)}
+                            onClick={() => navigate(`/koi/add?id=${userId}`)}
                         >
                             Add Koi Fish
                         </button>
@@ -65,18 +56,12 @@ const KoiFishPage: React.FC = () => {
                     <div className="card-body">
                         <TableComponent
                             columns={['fish_id', 'species', 'age', 'gender', 'color', 'size']}
-                            columnHeaders={['Fish ID', 'Species', 'Age', 'Gender', 'Color', 'Size (cm)']}
-                            data={currentKoi}
+                            columnHeaders={['ID', 'Species', 'Age', 'Gender', 'Color', 'Size (cm)']}
+                            data={koiFishData}
                             actions={[{ label: 'View Details', icon: 'fas fa-info-circle', onClick: handleKoiFishClick }]} // Action for Koi Fish
                             isKoiFishPage={true} // Thêm prop này
                         />
-                        <Pagination
-                            count={Math.ceil(koiFishData.length / itemsPerPage)} // Total pages
-                            shape="rounded"
-                            page={currentPage} // Current page
-                            onChange={handlePageChange} // Page change handler
-                            style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }} // Center the pagination
-                        />
+
                     </div>
                 </div>
             </div>

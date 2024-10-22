@@ -233,8 +233,8 @@
 .modal-content {
     background: white;
     padding: 20px;
-    border-radius: 8px;
-    max-width: 800px;
+    border-radius: 40px;
+    max-width: 1050px;
     z-index: 9999; /* On top of the backdrop */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }

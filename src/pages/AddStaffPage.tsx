@@ -146,7 +146,7 @@ const AddStaffPage: React.FC = () => {
     };
 
     const handleCancel = () => {
-        navigate('/staff'); // Go back to the staff list page without saving
+        navigate('/manager/staff-list'); // Go back to the staff list page without saving
     };
 
     return (
