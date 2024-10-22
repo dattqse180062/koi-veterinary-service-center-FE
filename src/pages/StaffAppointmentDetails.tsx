@@ -1,15 +1,16 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getAppointmentDetails, updateAppointment } from '../api/appointmentAPI';
+import { getAppointmentDetails, updateAppointment } from '../api/appointmentApi';
 import { fetchPayment, updatePayment } from '../api/paymentApi';
-import { fetchAppointmentAndVeterinarians } from '../api/appointmentAPI';
-
+import { updateAppointmentStatus, fetchAppointmentAndVeterinariansDemo } from '../api/appointmentApi';
+import { fetchVetBySlotId } from '../api/vetApi';
+import { useParams } from 'react-router-dom';
 interface AppointmentDetailsProps {
     appointment_id: number;
     created_date: string;
     current_status: string;
     customer_name: string;
-    slot_id: number;
+    slot: time_Slot;
     email: string;
     phone_number: string;
     description: string;
@@ -19,6 +20,15 @@ interface AppointmentDetailsProps {
     address: Address
     veterinarian: Veterinarian;
     fish: Fish;
+}
+
+interface time_Slot {
+    slot_id: number;
+    year: number;
+    month: number;
+    day: number;
+    slot_order: number;
+    description: string;
 }
 
 interface Service {
@@ -80,13 +90,14 @@ enum payment_status {
 
 
 const AppointmentDetails: React.FC = () => {
-    const location = useLocation(); // Get the location object
-    const appointment_id: number = location.state?.appointment_id; // Get the appointment_id from the location state
+    const { appointment_id } = useParams<{ appointment_id: string }>();  // Get the appointment_id from the location state
+    const appointmentIdNumber = Number(appointment_id);
     // const slot_id: number = location.state?.slot_id; // Get the slot_id from the location state
     const [appointment, setAppointment] = useState<AppointmentDetailsProps | null>(null); // Assuming your data structure
     const [paymentDetails, setPaymentDetails] = useState<PaymentDetails | null>(null); // State for payment details
     // const [showDetails, setShowDetails] = useState(false); // State để quản lý hiển thị bảng view details
     const [isPaymentVisible, setIsPaymentVisible] = useState(false); // State to track if payment details are visible
+
     const [isEditingPaymentMethod, setIsEditingPaymentMethod] = useState(false); // State to handle editing payment method
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>(''); // State to store selected payment method
 
@@ -94,34 +105,41 @@ const AppointmentDetails: React.FC = () => {
     const paymentRef = useRef<HTMLDivElement>(null); // Ref for payment details section
 
     // NEW
-    const [vetList, setVetList] = useState<Veterinarian[] | null>(null); // List of vets
+    const [vetList, setVetList] = useState<Veterinarian[]>([]); // List of vets
     const [selectedVetId, setSelectedVetId] = useState<number | null>(null); // Selected vet ID
 
     // Tạo trạng thái isVetSelected
     const [isVetSelected, setIsVetSelected] = useState(false);
 
+    // Tạo biến selectedStatus
+    const [selectedStatus, setSelectedStatus] = useState<string>('');
+
+    console.log('Appointment id:', appointmentIdNumber);
+
+
     // Fetch appointment details by ID
     useEffect(() => {
-        const fetchDetails = async () => {
-            if (appointment_id) {
+        const fetchAppointmentDetails = async () => {
+            if (appointmentIdNumber) {
                 try {
-                    const appointmentData = await getAppointmentDetails(Number(appointment_id)); // Fetch details by ID
-                    setAppointment(appointmentData); // Set the appointment details                    
+                    const appointmentData = await getAppointmentDetails(appointmentIdNumber); // Fetch details by ID
+                    setAppointment(appointmentData); // Set the appointment details                
                 } catch (error) {
                     console.error('Error fetching appointment details:', error);
                 }
             }
         };
+        fetchAppointmentDetails();
+    }, [appointmentIdNumber]);
+    console.log('Appointment slot id:', appointment);
 
-        fetchDetails();
-    }, [appointment_id]);
 
     // Function to handle view payment details
     const handleViewPaymentDetails = async () => {
         if (!isPaymentVisible) {
             // Fetch payment details only when opening
             try {
-                const paymentData = await fetchPayment(appointment_id);
+                const paymentData = await fetchPayment(appointmentIdNumber);
                 setPaymentDetails(paymentData);
 
                 // Scroll to the payment details section after loading the details
@@ -144,19 +162,22 @@ const AppointmentDetails: React.FC = () => {
 
     const handlePaymentMethodChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedPaymentMethod(e.target.value); // Update selected payment method
-
+        // console.log(selectedPaymentMethod);
     };
 
     const handleUpdatePaymentMethod = async () => {
-        if (selectedPaymentMethod) {
+        const confirmUpdate = window.confirm('Are you sure you want to update the payment status to PAID?'); // Hiển thị hộp thoại xác nhận
+        if (confirmUpdate) {
             try {
-                const updatedPayment = await updatePayment(appointment_id,
-                    { // Update the payment method
-                        // status: paymentDetails?.status
-                        status: selectedPaymentMethod // Chỉ cập nhật trạng thái thanh toán
+                console.log('Updating payment method:', selectedPaymentMethod);
+                const updatedPayment = await updatePayment(appointmentIdNumber,
+                    {
+                        // Update the payment status only                        
+                        status: 'PAID' // Chỉ cập nhật trạng thái thanh toán                        
                     }
-                );
 
+                );
+                console.log(selectedPaymentMethod);
                 setPaymentDetails(updatedPayment); // Update the payment details
                 setIsEditingPaymentMethod(false); // Exit editing mode
             } catch (error) {
@@ -165,12 +186,64 @@ const AppointmentDetails: React.FC = () => {
         }
     };
 
-    // Function to handle view vet by slotId
+    //Fucntion to update appointment status: current status
+    const handleUpdateAppointmentStatus = async () => {
+        if (appointment && selectedStatus) {
+            try {
+                // Gọi API để cập nhật trạng thái
+                await updateAppointmentStatus(appointment.appointment_id, selectedStatus);
+                // Cập nhật lại thông tin trạng thái trong state appointment
+                setAppointment(prevAppointment => {
+                    if (prevAppointment) {
+                        return {
+                            ...prevAppointment,
+                            current_status: selectedStatus
+                        };
+                    }
+                    return prevAppointment;
+                });
+                // Đặt selectedStatus về giá trị mới
+                setSelectedStatus(selectedStatus);
+
+                console.log('Updated appointment status:', selectedStatus);
+            } catch (error) {
+                console.error('Error updating appointment status:', error);
+            }
+        }
+    };
+
+    // xử lý khi bác sĩ được chọn, chỉ run khi chưa có bác sĩ!
+
+
+    // Fetch vet by slot id
     useEffect(() => {
-        const fetchDetails = async () => {
-            if (appointment_id) {
+        const fetchVet = async () => {
+            if (appointment?.slot?.slot_id) {
                 try {
-                    const { appointmentDetails, veterinarians } = await fetchAppointmentAndVeterinarians(appointment_id);
+                    // Fetch danh sách bác sĩ theo slot_id
+
+                    const vetData = await fetchVetBySlotId(appointment.slot.slot_id);
+                    setVetList(vetData); // Lưu danh sách bác sĩ vào state vetList
+
+                    // LẤY CẢ USER ID , FIRST LAST NAME
+                } catch (error) {
+                    console.error('Error fetching vet by slot ID:', error);
+                }
+            }
+        };
+
+        fetchVet();
+
+    }, [appointment?.slot.slot_id]); // Chỉ gọi khi slot_id thay đổi
+
+
+    // Gọi hàm lấy chi tiết cuộc hẹn và danh sách bác sĩ, và có thể gán bác sĩ cho cuộc hẹn
+    useEffect(() => {
+        // Nếu không có slot_id thì không cần fetch
+        const fetchVetDetails = async () => {
+            if (appointment?.slot?.slot_id && selectedVetId) {
+                try {
+                    const { appointmentDetails, veterinarians } = await fetchAppointmentAndVeterinariansDemo(appointment?.slot.slot_id, selectedVetId);
                     setAppointment(appointmentDetails);
                     setVetList(veterinarians); // Cập nhật danh sách bác sĩ
                 } catch (error) {
@@ -179,43 +252,15 @@ const AppointmentDetails: React.FC = () => {
             }
         };
 
-        fetchDetails();
-    }, [appointment_id]);
+        fetchVetDetails();
+    }, [appointment?.slot.slot_id]);
 
 
-    // const handleSubmitOrder = async () => {
-    //     if (selectedVetId && appointment) {
-    //         try {
-    //             const updatedAppointment = {
-    //                 ...appointment,
-    //                 veterinarian: { veterinarian_id: selectedVetId }, // Update with selected vet ID
-    //             };
-    //             await updateAppointment(appointment_id, updatedAppointment.veterinarian.veterinarian_id); // Save changes
-    //             console.log('Updated appointment:', updatedAppointment);
-    //             // navigate('/my-appointment-details'); // Redirect after saving
-    //         } catch (error) {
-    //             console.error('Error updating appointment:', error);
-    //         }
-    //     }
-    // };
-
-    // const handleSubmitOrder = async () => {
-    //     if (selectedVetId && appointment) {
-    //         try {
-    //             await updateAppointment(appointment_id, selectedVetId); // Gửi selectedVetId trực tiếp
-    //             console.log('Updated appointment with selected veterinarian ID:', selectedVetId);
-    //             setIsVetSelected(true); // Đặt trạng thái đã lưu thông tin bác sĩ
-    //         } catch (error) {
-    //             console.error('Error updating appointment:', error);
-    //         }
-    //     }
-    // };
-
-
+    // Function for submitting the selected veterinarian
     const handleSubmitOrder = async () => {
         if (selectedVetId && appointment) {
             try {
-                await updateAppointment(appointment_id, selectedVetId); // Gửi selectedVetId trực tiếp
+                await updateAppointment(appointmentIdNumber, selectedVetId); // Gửi selectedVetId trực tiếp
 
                 // Cập nhật lại thông tin bác sĩ trong appointment
                 setAppointment(prevAppointment => {
@@ -240,21 +285,13 @@ const AppointmentDetails: React.FC = () => {
     };
 
 
-
+    // Function to handle vet selection
     const handleVetSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const vetId = Number(e.target.value);
         setSelectedVetId(vetId);
         setIsVetSelected(vetId !== 0); // Đặt trạng thái khi bác sĩ được chọn
         console.log("Selected Vet ID:", vetId);
     };
-
-
-
-    // const handleVetSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    //     const vetId = Number(e.target.value);
-    //     setSelectedVetId(vetId);
-    //     // setIsVetSelected(vetId !== 0); // Đặt trạng thái isVetSelected thành true nếu có bác sĩ được chọn
-    // };
 
     if (!appointment) {
         return <div>Loading...</div>;
@@ -288,9 +325,40 @@ const AppointmentDetails: React.FC = () => {
                                 <p><strong>Date:</strong> {formattedDate}</p>
                                 <p><strong>Status:</strong> {appointment?.current_status}</p>
 
+                                {appointment.current_status !== 'ON_GOING' && (
+                                    <>
+                                        <span style={{fontWeight: '900', color:'brown', backgroundColor:'', padding: '10px', fontSize:'20px'}}>Update status:</span>
+                                        <select
+                                            className="form-select"
+                                            value={selectedStatus}
+                                            onChange={(e) => setSelectedStatus(e.target.value)}
+                                            style={{ marginLeft: '10px', width: '150px', marginTop:'15px' }}
+                                        >
+                                            
+                                            <option value="CANCELED">CANCELED</option>                                            
+                                            <option value="CONFIRMED">CONFIRMED</option>
+                                            {/* <option value="CHECKED_IN">CHECKED_IN</option> */}
+
+                                            {/* <option value="ON_GOING">ON_GOING</option> */}
+                                        </select>
+
+                                        {/* Hiển thị nút Save nếu trạng thái đã thay đổi */}
+                                        <button
+                                            className="btn btn-primary mt-2"
+                                            onClick={handleUpdateAppointmentStatus}
+                                            style={{ marginLeft: '10px' }}
+                                        >
+                                            Save changes
+                                        </button>
+                                    </>
+                                )}
+
                                 <h5 className="mt-3" style={{ fontWeight: '900' }}>- Customer Information</h5>
                                 <p><strong>Name:</strong> {appointment?.customer_name}</p>
-                                <p><strong>Slot ID:</strong> {appointment?.slot_id}</p>
+                                {/* <p><strong>Slot ID:</strong> {appointment?.slot?.slot_id || 'NULL'}</p> */}
+                                <p><strong>Slot ID:</strong> {appointment.slot.slot_id}</p>
+
+
                                 <p><strong>Email:</strong> {appointment?.email}</p>
                                 <p><strong>Phone:</strong> {appointment?.phone_number}</p>
                                 <p><strong>Description:</strong> {appointment?.description}</p>
@@ -308,7 +376,6 @@ const AppointmentDetails: React.FC = () => {
                                         <p><strong>Name:</strong> {appointment.veterinarian?.first_name} {appointment.veterinarian?.last_name}</p>
                                     ) : (
                                         <div>
-                                            <p>No veterinarian assigned.</p>
                                             <label htmlFor="vet-select"><strong>Select Veterinarian:</strong></label>
                                             <select id="vet-select" onChange={handleVetSelection} className="form-select">
                                                 <option value="">-- Select a veterinarian --</option>
@@ -318,40 +385,37 @@ const AppointmentDetails: React.FC = () => {
                                                     </option>
                                                 ))}
                                             </select>
+
+                                            <button
+                                                className="btn btn-primary mt-3"
+                                                disabled={!selectedVetId} // Vô hiệu hóa nếu chưa chọn bác sĩ
+                                                onClick={handleSubmitOrder}
+                                                style={{ backgroundColor: 'red' }}
+                                            >
+                                                Save changes
+                                            </button>
+
                                         </div>
                                     )
                                 }
-
-                                {/* <button
-                                    className="btn btn-primary mt-3"
-                                    // disabled={isVetSelected} // Vô hiệu hóa nếu chưa chọn hoặc đã chọn bác sĩ
-                                    onClick={handleSubmitOrder}
-                                    style={{ backgroundColor: 'red' }}
-                                >
-                                    Submit Order
-                                </button> */}
-
-                                <button
-                                    className="btn btn-primary mt-3"
-                                    disabled={!selectedVetId } // Vô hiệu hóa nếu chưa chọn hoặc đã lưu bác sĩ
-                                    onClick={handleSubmitOrder}
-                                    style={{ backgroundColor: 'red' }}
-                                >
-                                    Submit Order
-                                </button>
-
 
                                 <h5 className="mt-3" style={{ fontWeight: '900' }}>- Address Information: </h5>
                                 {appointment.address?.home_number || 'Not available'}, {appointment.address?.ward || 'Not available'}, {appointment.address?.district || 'Not available'}, {appointment.address?.city || 'Not available'}
                             </div>
 
                             <div className="col-md-6">
-                                <h5 className="mt-3" style={{ fontWeight: '900' }}>- Fish Information</h5>
-                                <p><strong>Species:</strong> {appointment.fish?.species}</p>
-                                <p><strong>Gender:</strong> {appointment.fish?.gender}</p>
-                                <p><strong>Size:</strong> {appointment.fish?.size} cm</p>
-                                <p><strong>Weight:</strong> {appointment.fish?.weight} kg</p>
-                                <p><strong>Origin:</strong> {appointment.fish?.origin}</p>
+
+                                {appointment.fish && (
+                                    <div>
+                                        <h5 className="mt-3" style={{ fontWeight: '900' }}>- Fish Information</h5>
+                                        <p><strong>Species:</strong> {appointment.fish?.species}</p>
+                                        <p><strong>Gender:</strong> {appointment.fish?.gender}</p>
+                                        <p><strong>Size:</strong> {appointment.fish?.size} cm</p>
+                                        <p><strong>Weight:</strong> {appointment.fish?.weight} kg</p>
+                                        <p><strong>Origin:</strong> {appointment.fish?.origin}</p>
+                                    </div>
+                                )
+                                }
 
                                 <h5 className="mt-3" style={{ fontWeight: '900' }}>- Moving Surcharge</h5>
                                 <p><strong>District:</strong> {appointment.moving_surcharge?.district || 'Not available'}</p>
@@ -380,7 +444,7 @@ const AppointmentDetails: React.FC = () => {
 
             </div>
 
-            
+
             {/* Conditionally render payment details */}
             {isPaymentVisible && paymentDetails && (
                 <div className="card mt-4"
@@ -393,46 +457,25 @@ const AppointmentDetails: React.FC = () => {
                         <p><strong>Payment amount:</strong> {paymentDetails.payment_amount} USD</p>
                         <p><strong>Status:</strong> {paymentDetails.status || 'Unknown'}</p>
 
-                        {/* Edit Payment Method */}
-                        {isEditingPaymentMethod ? (
-                            <select
-                                className="form-select"
-                                value="PAID" // Only allow updating to PAID
-                                onChange={() => { }} // Disable change, fixed to PAID
-                                style={{ marginLeft: '10px', width: '150px' }}
-                                disabled
-                            >
-                                <option value="PAID">PAID</option>
-                            </select>
-                        ) : null}
-
-                        {/* Button to toggle edit/save */}
-                        {isEditingPaymentMethod ? (
-                            <>
-                                <button
-                                    style={{ marginTop: '5px' }}
-                                    className="btn btn-success ms-3"
-                                    onClick={handleUpdatePaymentMethod}
-                                >
-                                    Save
-                                </button>
-                                <button
-                                    style={{ marginTop: '5px' }}
-                                    className="btn btn-secondary ms-3"
-                                    onClick={() => setIsEditingPaymentMethod(false)} // Cancel editing
-                                >
-                                    Cancel
-                                </button>
-                            </>
-                        ) : (
-                            <button
-                                className="btn btn-secondary ms-3"
-                                onClick={handleEditPaymentMethod}
-                                disabled={paymentDetails.status === payment_status.PAID} // Disable if already PAID
-                                style={{ backgroundColor: 'red' }}
-                            >
-                                Update Payment Status
-                            </button>
+                        {/* Hiển thị phần update payment chỉ khi status là NOT_PAID và method là VN_PAY */}
+                        {paymentDetails.status === payment_status.NOT_PAID && paymentDetails.payment_method === payment_method.VN_PAY && (
+                            <div>
+                                <h4>Update Payment Status</h4>
+                                {!isEditingPaymentMethod ? (
+                                    <button className="btn btn-primary" onClick={handleEditPaymentMethod}>
+                                        Edit Payment Method
+                                    </button>
+                                ) : (
+                                    <div>
+                                        <button className="btn btn-success mt-2" onClick={handleUpdatePaymentMethod}>
+                                            Update CONFIRMED
+                                        </button>
+                                        <button className="btn btn-success mt-2" style={{ marginLeft: '12px', backgroundColor: 'red' }} onClick={() => setIsEditingPaymentMethod(false)}>
+                                            Cancel
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
                         )}
 
                     </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getAppointmentDetails, updateAppointment } from '../api/appointmentAPI';
-import { fetchMedicalReport, fetchLogs } from '../api/appointmentAPI';
+import { getAppointmentDetails, updateAppointment } from '../api/appointmentApi';
+import { fetchMedicalReport, fetchLogs } from '../api/appointmentApi';
 import { fetchPrescription } from '../api/prescriptionApi';
 import '../styles/ManagerAppointmentDetails.css';
 

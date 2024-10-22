@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/layout/Sidebar';
 import TableComponent from '../components/table/TableComponent';
 import { useNavigate } from 'react-router-dom';
-import { fetchAppointment } from '../api/appointmentAPI';
+import { fetchAppointment } from '../api/appointmentApi';
 
 
 interface Appointment {
@@ -77,7 +77,7 @@ const ManagerAppointment: React.FC = () => {
     // dấu / chuyển theo path vd: appointment?appointment_id=1 ---> chuyền qua url parameters
     const handleAppointmentDetails = (appointment_id: number) => {
         console.log(appointment_id); // check xem có ra id không
-        navigate('/appointment-details', { state: { appointment_id } });
+        navigate('/manager/appointment-details', { state: { appointment_id } });
     };
 
     const actions = [

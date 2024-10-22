@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import TableComponent from '../components/table/TableComponent';
 import { useNavigate } from 'react-router-dom';
-import { fetchAppointmentForCus } from '../api/appointmentAPI';
+import { fetchAppointmentForCus } from '../api/appointmentApi';
+import Sidebar from "../components/layout/Sidebar";
 
 interface Appointment {
     appointment_id: number;
@@ -10,6 +11,16 @@ interface Appointment {
     service_name: string;
     appointment_status: Status;
     customer_name: string; 
+    slot: Slot;
+}
+
+interface Slot {
+    slot_id: number,
+    year: number,
+    month: number,
+    day: number,
+    slot_order: number,
+    description: string,
 }
 
 enum Status {
@@ -32,20 +43,19 @@ const formatDateTime = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
         day: '2-digit',
         month: '2-digit',
-        year: '2-digit',
+        year: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
         hour12: false, // Use 24-hour format
     };
 
-    return date.toLocaleString('vi-VN', options);
+    return date.toLocaleString('GB-en', options);
 };
-
 
 const CustomerAppointment: React.FC = () => {
     const [appointment, setAppointment] = useState<Appointment[]>([]);
-    const columns = ['appointment_id', 'date_time', 'service_name', 'veterinarian_name', 'appointment_status'];
-    const columnHeaders = ['Appointment ID', 'Created date', 'Service name', 'Veterinarian name', 'Status'];
+    const columns = ['appointment_id', 'date_time', 'dayOfSlot' ,'service_name', 'veterinarian_name', 'appointment_status','payment_status'];
+    const columnHeaders = ['ID', 'Created date', 'Slot day' ,'Service name', 'Veterinarian name', 'Apppointment status', 'Payment status'];
     // tạm thời chưa có customer name!
     const navigate = useNavigate();
 
@@ -58,6 +68,7 @@ const CustomerAppointment: React.FC = () => {
                     return {
                         ...rest,
                         date_time: formatDateTime(created_date), // Format created_date to desired format
+
                         // current_status: mapStatus(current_status), // Map ENUM to readable status
                     };
                 });
@@ -75,8 +86,8 @@ const CustomerAppointment: React.FC = () => {
     // dấu / là trang khác còn : là trang cùng 1 trang
     // dấu / chuyển theo path vd: appointment?appointment_id=1 ---> chuyền qua url parameters
     const handleAppointmentDetails = (appointment_id: number) => {
-        console.log(appointment_id); // check xem có ra id không
-        navigate('/my-appointment-details-customer', { state: { appointment_id } });
+        // console.log(appointment_id); // check xem có ra id không
+        navigate('/appointment-details', { state: { appointment_id } });
     };
 
     const actions = [
@@ -89,6 +100,7 @@ const CustomerAppointment: React.FC = () => {
     console.log(appointment);
     return (
         <div className="d-flex flex-grow-1">
+            <Sidebar/>
             <div className="container" style={{ marginTop: "6rem" }}>
                 <div className="card" style={{ width: '100%' }}>
                     <div className="card-header">

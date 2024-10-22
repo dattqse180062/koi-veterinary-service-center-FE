@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 // import TableComponent from '../components/table/TableComponent';
 import TableComponent from '../components/table/TableComponentForStaff';
 import { useNavigate } from 'react-router-dom';
-import { fetchAppointment, fetchAppointmentAndVeterinarians } from '../api/appointmentAPI';
+import { fetchAppointment, fetchAppointmentAndVeterinarians } from '../api/appointmentApi';
+import Sidebar from "../components/layout/Sidebar";
 
 interface Appointment {
     appointment_id: number;
@@ -127,15 +128,10 @@ const StaffAppointment: React.FC = () => {
     // chuyển tới path my-appointment/appointment_id với state là appointment_id not path /số ra page khác 
     // dấu / là trang khác còn : là trang cùng 1 trang
     // dấu / chuyển theo path vd: appointment?appointment_id=1 ---> chuyền qua url parameters
-    // const handleAppointmentDetails = (appointment_id: number,  slot_id: number,  fullName?: string) => {
-    //     console.log(appointment_id); // check xem có ra id không
-    //     // console.log(slot_id);
-    //     navigate('/my-appointment-details', { state: { appointment_id, slot_id } });
-    // };
-
-    const handleAppointmentDetails = (appointment_id: number, slot_id?: number) => {
-        console.log(appointment_id);
-        navigate('/my-appointment-details', { state: { appointment_id, slot_id } });
+ 
+    const handleAppointmentDetails = (appointment_id: number) => {
+        // console.log(appointment_id);
+        navigate(`/staff/appointments/${appointment_id}`);
     };
     
 
@@ -147,9 +143,11 @@ const StaffAppointment: React.FC = () => {
         },
     ];
     
-    console.log(appointment);
+    // console.log(appointment);
+    
     return (
         <div className="d-flex flex-grow-1">
+            <Sidebar />
             <div className="container" style={{ marginTop: "6rem" }}>
                 <div className="card" style={{ width: '100%' }}>
                     <div className="card-header">

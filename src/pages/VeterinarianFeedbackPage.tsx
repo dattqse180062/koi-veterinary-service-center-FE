@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/layout/Sidebar';
-import TableComponent from '../components/table/TableComponent';
+import TableComponent from '../components/table/TableComponentForVet';
 import { useNavigate } from 'react-router-dom';
-import { fecthFeedbacks, fetchVetFeedbacks } from '../api/feedbackApi'
+import { fetchVetFeedbacks } from '../api/feedbackApi'
 
 interface Feedback {
     feedback_id: number;
@@ -11,6 +11,7 @@ interface Feedback {
     date_time: string;
     // Include other fields as needed
 }
+
 const VeterinarianFeedbackPage: React.FC = () => {
     const [Feedbacks, setFeedbacks] = useState<Feedback[]>([]);
     const columns = ['feedback_id', 'rating', 'comment', 'date_time'];
@@ -58,7 +59,7 @@ const VeterinarianFeedbackPage: React.FC = () => {
         }
 
         const options: Intl.DateTimeFormatOptions = {
-            day: '2-digit',
+            day: 'numeric',
             month: '2-digit',
             year: '2-digit',
             hour: '2-digit',

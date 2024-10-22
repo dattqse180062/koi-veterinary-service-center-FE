@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/layout/Sidebar';
-import TableComponent from '../components/table/TableComponent';
+import TableComponent from '../components/table/TableComponentForManager';
 import { useNavigate } from 'react-router-dom';
 import { fetchCustomers } from '../api/customerApi';
 
@@ -42,7 +42,7 @@ const CustomerManagementPage: React.FC = () => {
 
     // Function to handle customer details
     const handleCustomerDetails = (userID: number) => {
-        navigate('/customer-details', { state: { userID } });
+        navigate('/manager/customer-details', { state: { userID } });
     };
 
     const actions = [

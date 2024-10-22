@@ -89,7 +89,7 @@ input::placeholder {
 
 .custom-card-img {
   width: 320px; /* Fixed width */
-  height: 180px; /* Fixed height */
+  height: 210px; /* Fixed height */
   object-fit: cover; /* Maintains aspect ratio while filling the box */
   border-radius: 48px 48px 0 0; /* Rounded top corners */
 }
@@ -161,7 +161,7 @@ input::placeholder {
 }
 
 .btn-shadow {
-  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .custom-button-feedback:hover {

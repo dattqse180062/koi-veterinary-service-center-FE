@@ -11,7 +11,7 @@ function Navbar() {
     const [buttonStyleClass, setButtonStyleClass] = useState('btn-outline-warning');
     const location = useLocation();
     const navigate = useNavigate();
-
+    const role = user?.roleId;
     useEffect(() => {
         const handleScroll = () => {
             if (location.pathname === '/' && window.scrollY > 50) {
@@ -83,8 +83,16 @@ function Navbar() {
                                 Profile
                             </button>
                             <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <li><Link className="dropdown-item" to="/settings">Settings</Link></li>
-                                <li><Link className="dropdown-item" to="/my-appointment">My Appointments</Link></li>
+                                <li><Link className="dropdown-item" to="/profile">Profile</Link></li>
+                                {(role === 'STA' || role === 'CUS') && (
+                                    <li><Link className="dropdown-item" to="/my-appointment">Appointments</Link></li>
+                                )}
+                                {role === 'MAN' && (
+                                    <li><Link className="dropdown-item" to="/manager/appointment-list">Manager Appointments</Link></li>
+                                )}
+                                {role === 'VET' && (
+                                    <li><Link className="dropdown-item" to="/veterinarian/schedule">My Schedule</Link></li>
+                                )}
                                 <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
                             </ul>
                         </div>
