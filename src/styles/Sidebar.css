@@ -13,8 +13,8 @@
 }
 
 .nav-link:hover {
-    border-radius: 30px;
-    background-color: #ffc247; /* Light gray on hover */
+    border-radius: 20px;
+    background-color: rgba(31, 35, 51, 0.1); /* Light gray on hover */
 }
 
 .badge {
@@ -25,4 +25,16 @@
 .sidebar {
     background-color: rgba(32, 30, 30, 0.16);
 
+}
+.sidebar-select {
+    border-radius: 20px;
+    background-color: rgba(31, 35, 51, 0.17)!important;
+}
+
+.sidebar .nav-link {
+    font-size: 18px; /* Tăng kích thước font chữ cho tất cả các liên kết */
+}
+
+.sidebar i {
+    font-size: 18px; /* Tăng kích thước font chữ cho các icon */
 }

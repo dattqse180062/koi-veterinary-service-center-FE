@@ -2,7 +2,7 @@ import { useSelector } from "react-redux"; // Import useDispatch
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../../styles/Schedule.css';
+import '../../styles/TableSchedule.css';
 import { useDispatch } from "react-redux";
 import { setSlot } from '../../store/actions';
 import defaultImage from "../../assets/images/defaultImage.jpg"
@@ -188,7 +188,7 @@ const AvailableSlot: React.FC<AvailableSlotProps> = ({ vetId, appointmentId, des
                             </div>
                         </div>
                         <div className="table-container">
-                            <table className="table table-bordered table-small table-striped">
+                            <table className="table table-bordered table-schedule table-striped">
                                 <thead>
                                 <tr>
                                     <th className="fs-5">Slot</th>
@@ -202,7 +202,7 @@ const AvailableSlot: React.FC<AvailableSlotProps> = ({ vetId, appointmentId, des
                                 <tbody>
                                 {[1, 2, 3, 4].map((slotOrder) => (
                                     <tr key={slotOrder}>
-                                        <td style={{height:"70px"}}>{`Slot ${slotOrder}`}</td>
+                                        <td style={{height:"75px"}}>{`Slot ${slotOrder}`}</td>
                                         {weekDates.map((date, dateIndex) => {
                                             const isAvailable = availableSlots.some(slot =>
                                                 slot.year === new Date(date).getUTCFullYear() &&

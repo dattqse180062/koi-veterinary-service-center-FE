@@ -14,34 +14,34 @@ import InformationPage from "./pages/Appointment/InformationPage";
 import OrderConfirmPage from "./pages/Appointment/OrderConfirmPage";
 
 // Lazy load pages
-const RegisterPage = lazy(() => import("./pages/RegisterPage"));
-const DangNhapNguoiDung = lazy(() => import("./pages/LoginPage"));
-const HomePage = lazy(() => import("./pages/HomePage"));
-const ProfilePage = lazy(() => import("./pages/ProfilePage"));
-const PasswordChangePage = lazy(() => import("./pages/PasswordChangePage"));
-const KoiFishPage = lazy(() => import("./pages/KoiFishPage"));
-const AddKoiFishPage = lazy(() => import("./pages/AddKoiFishPage"));
-const KoiDetails = lazy(() => import("./pages/KoiFishDetails"));
-const VetShiftSchePage = lazy(() => import("./pages/VetShiftSchePage"));
-const ViewScheduleOfVetPage = lazy(() => import("./pages/ViewScheduleOfVetPage"));
-const ServicePricingPage = lazy(() => import("./pages/ServicePricingPage"));
-const TransportationPricingPage = lazy(() => import("./pages/TransportationPricingPage"));
+const RegisterPage = lazy(() => import("./pages/Common/RegisterPage"));
+const DangNhapNguoiDung = lazy(() => import("./pages/Common/LoginPage"));
+const HomePage = lazy(() => import("./pages/Common/HomePage"));
+const ProfilePage = lazy(() => import("./pages/Common/ProfilePage"));
+const PasswordChangePage = lazy(() => import("./pages/Common/PasswordChangePage"));
+const KoiFishPage = lazy(() => import("./pages/Customer/Koi/KoiFishPage"));
+const AddKoiFishPage = lazy(() => import("./pages/Customer/Koi/AddKoiFishPage"));
+const KoiDetails = lazy(() => import("./pages/Customer/Koi/KoiFishDetails"));
+const VetShiftSchePage = lazy(() => import("./pages/Manager/VetShiftSchePage"));
+const ViewScheduleOfVetPage = lazy(() => import("./pages/Manager/ViewScheduleOfVetPage"));
+const ServicePricingPage = lazy(() => import("./pages/Manager/ServicePricingPage"));
+const TransportationPricingPage = lazy(() => import("./pages/Manager/TransportationPricingPage"));
 
 
-const VetDetails = lazy(() => import("./pages/VetDetails"));
+const VetDetails = lazy(() => import("./pages/Manager/VetDetails"));
 
 
 // NEW
-const CustomerManagementPage = lazy(() => import("./pages/CustomerManagementPage"))
-const CustomerDetailPage = lazy(() => import("./pages/CustomerDetails"))
-const FeedbackManagementPage = lazy(() => import("./pages/FeedbackManagementPage"))
-const FeedbackDetail = lazy(() => import("./pages/FeedbackDetailsManagerPage"))
-const StaffAppointmentDetails = lazy(() => import("./pages/StaffAppointmentDetails"))
-const ManagerAppointment = lazy(() => import("./pages/ManagerAppointment"))
-const ManagerAppointmentDetails = lazy(() => import("./pages/ManagerAppointmentDetails"))
-const CustomerAppointmentDetails = lazy(() => import("./pages/CustomerAppointmentDetails"))
-const ManagerStaffPage = lazy(() => import("./pages/ManagerStaffPage"))
-const AddStaffPage = lazy(() => import("./pages/AddStaffPage"))
+const CustomerManagementPage = lazy(() => import("./pages/Manager/CustomerManagementPage"))
+const CustomerDetailPage = lazy(() => import("./pages/Manager/CustomerDetails"))
+const FeedbackManagementPage = lazy(() => import("./pages/Manager/FeedbackManagementPage"))
+const FeedbackDetail = lazy(() => import("./pages/Manager/FeedbackDetailsManagerPage"))
+const StaffAppointmentDetails = lazy(() => import("./pages/Staff/StaffAppointmentDetails"))
+const ManagerAppointment = lazy(() => import("./pages/Manager/ManagerAppointment"))
+const ManagerAppointmentDetails = lazy(() => import("./pages/Manager/ManagerAppointmentDetails"))
+const CustomerAppointmentDetails = lazy(() => import("./pages/Customer/CustomerAppointmentDetails"))
+const ManagerStaffPage = lazy(() => import("./pages/Manager/ManagerStaffPage"))
+const AddStaffPage = lazy(() => import("./pages/Manager/AddStaffPage"))
 // Define a higher-order component with authentication
 // const CustomerAppointment = lazy(() => import("./pages/CustomerAppointment"))
 // const StaffAppointment = lazy(() => import("./pages/StaffAppointment"))
@@ -53,17 +53,17 @@ const DispatchFeedback = lazy(() => import("./pages/DispatchFeedback")) // NEW
 // const MakeFeedback = lazy(() => import("./pages/MakeFeedback")) // NEW
 
 //New: fix
-const AddressManagementPage = lazy(() => import("./pages/AddressManagementPage"))
-const AddressDetails = lazy(() => import("./pages/AddressDetails"))
-const AddAddressPage = lazy(() => import("./pages/AddAddressPage"))
+const AddressManagementPage = lazy(() => import("./pages/Customer/Address/AddressManagementPage"))
+const AddressDetails = lazy(() => import("./pages/Customer/Address/AddressDetails"))
+const AddAddressPage = lazy(() => import("./pages/Customer/Address/AddAddressPage"))
 
-const StaffAppointment = lazy(() => import("./pages/StaffAppointment"))
+const StaffAppointment = lazy(() => import("./pages/Staff/StaffAppointment"))
 
-const VetSchedulePage = lazy(() => import("./pages/VetSchedulePage"))
+const VetSchedulePage = lazy(() => import("./pages/Veterinarian/VetSchedulePage"))
 
 //NEW: FOR VETERINARIAN
-const VeterinarianFeedbackDetailsPage = lazy(() => import("./pages/VeterinarianFeedbackDetailsPage"))
-const VetAppointmentDetails = lazy(() => import("./pages/VetAppointmentDetails"))
+const VeterinarianFeedbackDetailsPage = lazy(() => import("./pages/Veterinarian/VeterinarianFeedbackDetailsPage"))
+const VetAppointmentDetails = lazy(() => import("./pages/Veterinarian/VetAppointmentDetails"))
 
 // Define a higher-order component with authentication
 const withAuth = (Component: React.ComponentType) => (

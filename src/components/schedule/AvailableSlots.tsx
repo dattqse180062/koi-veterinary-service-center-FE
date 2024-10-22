@@ -111,7 +111,7 @@ const AvailableSlot: React.FC = () => {
                         <h3 className="text-start" style={{fontWeight: "bold", color: "#02033B", fontSize: "2.7rem"}}>
                         Available Slots
                         </h3>
-                        <div className="d-flex justify-content-between align-items-center mb-2">
+                        <div className="d-flex justify-content-start gap-3 align-items-center mb-2">
                             <div className="d-flex align-items-center">
                                 <select id="week-select" className="form-select form-select-sm"
                                         value={selectedWeekStart} onChange={handleWeekChange}>
@@ -131,7 +131,7 @@ const AvailableSlot: React.FC = () => {
                                 </button>
                             </div>
                         </div>
-                        <table className="table table-bordered table-small table-striped">
+                        <table className="table table-bordered table-schedule table-striped">
                             <thead>
                             <tr>
                                 <th className="fs-5">Slot</th>
