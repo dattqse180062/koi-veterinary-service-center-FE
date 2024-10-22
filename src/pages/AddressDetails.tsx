@@ -116,7 +116,7 @@ const AddressDetail: React.FC = () => {
         try {
             await updateAddressById(addressId, updatedAddress); // Pass customerId here
             alert("Address updated successfully!");
-            navigate('/addresses'); // Navigate back to address list
+            navigate('/address/my-address'); // Navigate back to address list
         } catch (error) {
             alert("Failed to update address");
         }
@@ -132,7 +132,7 @@ const AddressDetail: React.FC = () => {
         try {
             await deleteAddress( addressId); // Pass customerId here
             alert("Address deleted successfully!");
-            navigate('/addresses'); // Navigate back to address list
+            navigate('/address/my-address'); // Navigate back to address list
         } catch (error) {
             alert("You can not delete current address");
         }
@@ -143,7 +143,7 @@ const AddressDetail: React.FC = () => {
     };
 
     const handleBack = () => {
-        navigate('/addresses');
+        navigate('/address/my-address');
     };
 
     const handleCancel = () => {
@@ -176,13 +176,16 @@ const AddressDetail: React.FC = () => {
 
     return (
         <div className="container-fluid vh-100 d-flex justify-content-center align-items-center">
-            <button className="btn btn-secondary back-button" onClick={handleBack}>
+            <button
+                className="btn btn-secondary mb-3"
+                style={{position: 'absolute', top: '12%', left: '3%'}}
+                onClick={handleBack}>
                 Back
             </button>
             <div className="row w-100 h-100 d-flex justify-content-center align-items-center">
 
-                    <div className="form-container card w-100">
-                        <div className="card-body">
+                <div className="form-container card w-100">
+                    <div className="card-body">
                             {isCurrentAddress && ( // Hiển thị thông báo nếu là current address
                                 <div className="alert alert-info fw-bold " style={{padding:"10px"}}>
                                     This is your current address

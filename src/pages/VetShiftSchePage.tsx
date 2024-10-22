@@ -42,11 +42,11 @@ const VetShiftSchePage: React.FC = () => {
 
     // Update the onClick function to have fullName as optional
     const handleVetScheduleClick = (vetId: number, fullName?: string) => {
-        navigate(`/vetsche`, { state: { vetId, fullName } });
+        navigate(`/manager/vet-schedule`, { state: { vetId, fullName } });
     };
 
     const handleVetDetailsClick = (vetId: number) => {
-        navigate('/vet-details', { state: { vetId } });
+        navigate('/manager/vet-details', { state: { vetId } });
     };
 
     const actions = [

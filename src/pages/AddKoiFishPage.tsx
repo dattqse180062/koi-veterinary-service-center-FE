@@ -2,99 +2,87 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../styles/AddKoiFish.css';
 import {useAuth} from "../hooks/context/AuthContext";
+import {addKoi, addKoiImage} from "../api/koiApi";
+import {useLocation, useNavigate} from "react-router-dom";
+
 
 const AddKoiFish: React.FC = () => {
     const { user  } = useAuth(); // Use Auth context to get userId
-    const userId = user?.userId;
-    const [koiData, setKoiData] = useState({
+    const userId = user?.userId || 0;
+    const navigate = useNavigate();
+    const location = useLocation();
+    // Individual state variables for koi fish fields
+    const [species, setSpecies] = useState<string>('');
 
-        species: '',
-        age: '',
-        gender: '',
-        size: '',
-        weight: '',
-        color: '',
-        origin: '',
-        user_id: userId, // Ensure userId is fetched from session storage
-    });
+    const [gender, setGender] = useState<string>('');
+    const [age, setAge] = useState<string>('');
+    const [size, setSize] = useState<string>('');
+    const [weight, setWeight] = useState<string>('');
+    const [color, setColor] = useState<string>('');
+    const [origin, setOrigin] = useState<string>('');
+    const [error, setError] = useState(false);
     const [images, setImages] = useState<File[]>([]);
     const [imagePaths, setImagePaths] = useState<string[]>([]);
     const [showAllImages, setShowAllImages] = useState(false); // State to control visibility of all uploaded images
-
-    // Handle input changes for koi data
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setKoiData({ ...koiData, [name]: value });
-    };
-
+    
     // Handle image uploads
     const handleImageUpload = async (files: FileList | null) => {
         if (!files) return;
 
-        const uploadedImagePaths: string[] = [];
         const selectedImages = Array.from(files);
-
-        // Set the selected images for preview
         setImages(selectedImages);
 
+        const uploadedImagePaths: string[] = [];
         for (const file of selectedImages) {
-            try {
-                const formData = new FormData();
-                formData.append('file', file);
-
-                // Post image to API
-                const response = await axios.post('https://66febd102b9aac9c997d2e78.mockapi.io/api/koi-image', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
-                uploadedImagePaths.push(response.data.source_path); // Assuming the API returns image path
-            } catch (error) {
-                console.error('Error uploading image:', error);
-            }
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                uploadedImagePaths.push(reader.result as string);
+                setImagePaths(uploadedImagePaths);
+            };
+            reader.readAsDataURL(file); // Create a preview of the image
         }
-
-        setImagePaths(uploadedImagePaths);
     };
 
     // Submit koi form data and images
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!koiData.species || !koiData.age || !koiData.gender || !koiData.size || !koiData.weight || !koiData.color || !koiData.origin) {
-            alert('Please fill in all fields!');
+        // Validate that all fields are filled
+        if (!species || !gender || !color || !origin || Number(age) <= 0 || Number(size) <= 0 || Number(weight) <= 0) {
+            alert('Please fill in all fields correctly (numbers must be greater than 0)!');
+            setError(true);
             return;
         }
 
+        const koiData = {
+            userId,
+            species,
+            age: Number(age),
+            gender,
+            size: Number(size),
+            weight: Number(weight),
+            color,
+            origin,
+        };
+
         try {
             // Post koi information
-            const fishResponse = await axios.post('https://66fa1da4afc569e13a9a726b.mockapi.io/api/koi', {
-                ...koiData,
-                fish_id: Math.floor(Math.random() * 1000), // Assuming fish_id is auto-generated
-                age: parseInt(koiData.age), // Ensure age is a number
-                size: parseInt(koiData.size), // Ensure size is a number
-                weight: parseFloat(koiData.weight), // Ensure weight is a float
-            });
+            const koiResponse = await addKoi(koiData);
+            const fishId = koiResponse.fish_id; // Assuming the response returns the fish ID
 
-            const fishId = fishResponse.data.fish_id;
 
-            // Post image paths to koi-image API
-            for (const path of imagePaths) {
-                await axios.post('https://66febd102b9aac9c997d2e78.mockapi.io/api/koi-image', {
-                    source_path: path,
-                    fish_id: fishId,
-                    image_id: Math.floor(Math.random() * 1000), // Assuming image_id is auto-generated
-                });
+            for (const image of images) {
+                await addKoiImage(fishId, image);
             }
 
             alert('Koi data and images successfully submitted!');
+            navigate(location.state?.from ||'/koi');
         } catch (error) {
             console.error('Error submitting form:', error);
         }
     };
 
     const handleBack = () => {
-        // Logic to navigate back, for example, using a history push if you're using react-router
         window.history.back();
     };
 
@@ -139,68 +127,85 @@ const AddKoiFish: React.FC = () => {
                         <div className="card-body">
                             {/* Species */}
                             <div className="mb-3">
-                                <label className="form-label text-secondary">Species</label>
-                                <input type="text" name="species" className="form-control input-field-koi"
-                                       placeholder="Enter your koi species" onChange={handleInputChange} />
+                                <label className="form-label ">Species</label>
+                                <input type="text"
+                                       className={`form-control input-field-koi ${error && !species ? 'border-danger' : ''}`}
+                                       placeholder="Enter your koi species" value={species}
+                                       onChange={(e) => setSpecies(e.target.value)}/>
                             </div>
 
                             {/* Age and Gender */}
                             <div className="mb-3 row">
-                                <div className="col-md-4 col-sm-6">
-                                    <label className="form-label text-secondary">Age</label>
-                                    <input type="number" name="age" className="form-control input-field-koi"
-                                           placeholder="Enter koi age" onChange={handleInputChange} />
+                                <div className="col-md-5 col-sm-6">
+                                    <label className="form-label ">Age</label>
+                                    <input type="number"
+                                           className={`form-control input-field-koi ${error && Number(age) <= 0 ? 'border-danger' : ''}`}
+                                           placeholder="Enter koi age" value={age}
+                                           onChange={(e) => setAge(e.target.value)}/>
                                 </div>
-                                <div className="col-md-8 col-sm-6 d-flex align-items-end gap-3 mt-2">
+                                <div className="col-md-7 col-sm-6 d-flex align-items-end gap-3 mt-2">
                                     <div className="form-check">
-                                        <input className="form-check-input" type="radio" name="gender" value="male" id="male" onChange={handleInputChange} />
-                                        <label className="form-check-label" htmlFor="male">Male</label>
+                                        <input className={`form-check-input ${error && !gender ? 'border-danger' : ''}`}
+                                               type="radio" name="gender" value="MALE"
+                                               id="MALE" onChange={(e) => setGender(e.target.value)}/>
+                                        <label className="form-check-label" htmlFor="MALE">Male</label>
                                     </div>
                                     <div className="form-check">
-                                        <input className="form-check-input" type="radio" name="gender" value="female" id="female" onChange={handleInputChange} />
-                                        <label className="form-check-label" htmlFor="female">Female</label>
+                                        <input className={`form-check-input ${error && !gender ? 'border-danger' : ''}`}
+                                               type="radio" name="gender" value="FEMALE"
+                                               id="FEMALE" onChange={(e) => setGender(e.target.value)}/>
+                                        <label className="form-check-label" htmlFor="FEMALE">Female</label>
                                     </div>
                                 </div>
                             </div>
+                            <div className="mb-3 row">
+                                {/* Size */}
+                                <div className="col-md-6 col-sm-6">
+                                    <label className="form-label ">Size (cm)</label>
+                                    <input type="number"
+                                           className={`form-control input-field-koi ${error && Number(size) <= 0 ? 'border-danger' : ''}`}
+                                           placeholder="Enter your koi size " value={size}
+                                           onChange={(e) => setSize(e.target.value)}/>
+                                </div>
 
-                            {/* Size */}
-                            <div className="mb-3">
-                                <label className="form-label text-secondary">Size</label>
-                                <input type="text" name="size" className="form-control input-field-koi"
-                                       placeholder="Enter your koi size (width/height)" onChange={handleInputChange} />
+                                {/* Weight */}
+                                <div className="col-md-6 col-sm-6">
+                                    <label className="form-label ">Weight (kg)</label>
+                                    <input type="number"
+                                           className={`form-control input-field-koi ${error && Number(weight) <= 0 ? 'border-danger' : ''}`}
+                                           placeholder="Enter koi weight in kg "
+                                           value={weight}
+                                           onChange={(e) => setWeight(e.target.value)}/>
+                                </div>
                             </div>
+                                {/* Color */}
+                                <div className="mb-3">
+                                    <label className="form-label ">Color</label>
+                                    <input type="text"
+                                           className={`form-control input-field-koi ${error && !color ? 'border-danger' : ''}`}
+                                           placeholder="Enter your koi color" value={color}
+                                           onChange={(e) => setColor(e.target.value)}/>
+                                </div>
 
-                            {/* Weight */}
-                            <div className="mb-3">
-                                <label className="form-label text-secondary">Weight</label>
-                                <input type="text" name="weight" className="form-control input-field-koi"
-                                       placeholder="Enter your koi weight" onChange={handleInputChange} />
-                            </div>
+                                {/* Origin */}
+                                <div className="mb-3">
+                                    <label className="form-label ">Origin</label>
+                                    <input type="text"
+                                           className={`form-control input-field-koi ${error && !origin ? 'border-danger' : ''}`}
+                                           placeholder="Enter your koi origin" value={origin}
+                                           onChange={(e) => setOrigin(e.target.value)}/>
+                                </div>
 
-                            {/* Color */}
-                            <div className="mb-3">
-                                <label className="form-label text-secondary">Color</label>
-                                <input type="text" name="color" className="form-control input-field-koi"
-                                       placeholder="Enter your koi color" onChange={handleInputChange} />
-                            </div>
-
-                            {/* Origin */}
-                            <div className="mb-3">
-                                <label className="form-label text-secondary">Origin</label>
-                                <input type="text" name="origin" className="form-control input-field-koi"
-                                       placeholder="Enter your koi origin" onChange={handleInputChange} />
-                            </div>
-
-                            {/* Submit Button */}
-                            <div className="d-grid">
-                                <button className="btn btn-primary submit-button" onClick={handleSubmit}>
-                                    Submit
-                                </button>
+                                {/* Submit Button */}
+                                <div className="d-grid ">
+                                    <button className="btn btn-primary submit-button mt-3" onClick={handleSubmit}>
+                                        Add koi fish
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
     );
 };

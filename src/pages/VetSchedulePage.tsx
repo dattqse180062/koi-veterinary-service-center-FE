@@ -119,11 +119,11 @@ const VetSchedule: React.FC = () => {
     const handleCellClick = (appointmentId: number) => {
         console.log('Clicked appointment ID:', appointmentId);
         // Navigate to the details page with appointmentId
-        navigate(`/appointment-details/${appointmentId}/veterinarian`);
+        navigate(`/veterinarian/appointment-details/${appointmentId}`);
     };
 
     return (
-        <div className="d-flex flex-grow-1">
+        <div className="d-flex flex-grow-1 gap-5">
             <Sidebar />
             <div className="container" style={{ marginTop: "6rem" }}>
                 <div className="d-flex justify-content-between align-items-center mb-3">
@@ -134,7 +134,7 @@ const VetSchedule: React.FC = () => {
                         {`(Your ID: ${vetId})`}
                     </h3>
                 </div>
-                <div className="d-flex justify-content-between align-items-center mb-3">
+                <div className="d-flex justify-content-start align-items-center mb-3 gap-2">
                     <div className="d-flex align-items-center">
                         <select id="year-select" className="form-select form-select-sm me-2" value={selectedYear} onChange={handleYearChange}>
                             {[currentYear - 1, currentYear, currentYear + 1].map((year) => (
@@ -160,12 +160,13 @@ const VetSchedule: React.FC = () => {
                         </button>
                     </div>
                 </div>
-                <table className="table-bordered table-small">
+
+                <table className="table table-bordered table-small table-striped">
                     <thead>
                     <tr>
                         <th className="fs-5">Slot</th>
                         {weekDays.map((day, index) => (
-                            <th key={index} className="text-center">
+                            <th key={index} className="text-center" style={{ minWidth:"10vh"}}>
                                 {day}
                                 <br /> {weekDates[index].split('-').reverse().join('/')}
                             </th>
@@ -175,7 +176,7 @@ const VetSchedule: React.FC = () => {
                     <tbody>
                     {[1, 2, 3, 4].map((slotId) => (
                         <tr key={slotId}>
-                            <td>{`Slot ${slotId}`}</td>
+                            <td style={{height:"80px"}}>{`Slot ${slotId}`}</td>
                             {weekDates.map((date, dateIndex) => {
                                 const appointment = appointments.find(appointment => (
                                     appointment.year === new Date(date).getUTCFullYear() &&
@@ -184,7 +185,7 @@ const VetSchedule: React.FC = () => {
                                     appointment.slot_order === slotId
                                 ));
                                 return (
-                                    <td key={dateIndex} onClick={() => appointment && handleCellClick(appointment.appointment.appointment_id)} style={{ cursor: appointment? 'pointer': 'default' }}>
+                                    <td  key={dateIndex} onClick={() => appointment && handleCellClick(appointment.appointment.appointment_id)} style={{minWidth:"9.3vw", cursor: appointment? 'pointer': 'default' }}>
                                         {appointment ? (
                                             <>
                                                 <p className={`fw-bold ${

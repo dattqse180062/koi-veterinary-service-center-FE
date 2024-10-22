@@ -5,9 +5,10 @@ p{
 }
 
 .modal-content {
-    padding: 40px;
-    border-radius: 25px;
+    padding: 80px;
+    border-radius: 40px;
     position: relative;
+
 }
 
 
@@ -138,12 +139,12 @@ p{
 
 .modal-content {
     background-color: white;
-    border-radius: 25px;
-    padding: 40px;
+    border-radius: 40px;
+    padding: 80px;
     width: 100%; /* Adjust width as necessary */
     max-width: 1200px; /* Set a maximum width */
     display: flex;
-    max-height: 80vh;
+    max-height: 90vh;
     flex-direction: column; /* Align children vertically */
     overflow-y: auto;
 }

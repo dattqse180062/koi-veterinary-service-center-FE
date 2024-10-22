@@ -196,7 +196,7 @@ const VetAppointmentDetails: React.FC = () => {
     };
 
     const handleBack = () => {
-        navigate('/veterinarian-schedule');
+        navigate('/veterinarian/schedule');
     };
 
     const handleFinish = async () => {
@@ -340,14 +340,15 @@ const VetAppointmentDetails: React.FC = () => {
                                 <div className="modal-content"
                                      onClick={(e) => e.stopPropagation()}> {/* Prevent click event from bubbling up to the overlay */}
                                     <div className="modal-header">
-                                        <h5 className="modal-title appointment-title">Follow Up Appointment</h5>
-                                        <button type="button" className="close-button" onClick={handleCloseModal}>
-                                            &times; {/* Close button content */}
-                                        </button>
+                                        {/*<h5 className="modal-title appointment-title">Follow Up Appointment</h5>*/}
+
+                                        <span className="close-icon" onClick={handleCloseModal}>
+                                                &times;
+                                        </span>
                                     </div>
                                     <div className="modal-body" style={{marginLeft: "8%"}}>
 
-                                        {/* Pass vetId or any necessary data to AvailableSlot */}
+                                    {/* Pass vetId or any necessary data to AvailableSlot */}
                                         <AvailableSlot vetId={vetId}
                                                        appointmentId={Number(appointmentId)}
                                                        description={description}/>
@@ -357,6 +358,7 @@ const VetAppointmentDetails: React.FC = () => {
                                             value={description}
                                             onChange={handleDescriptionChange}
                                             className="form-control mb-2 mt-3"
+                                            style={{maxWidth:"820px"}}
                                         />
                                     </div>
 

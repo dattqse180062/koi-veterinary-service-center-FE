@@ -19,12 +19,12 @@ const AddressManagementPage: React.FC = () => {
     const [addresses, setAddresses] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const [currentPage, setCurrentPage] = useState<number>(1);
+
     const [userCurrenAddress, setCurrentAddress] = useState<{ address_id:number, city: string; district: string; ward: string; home_number: string } | null>(null);
 
-    const [itemsPerPage] = useState<number>(8); // Set the number of items per page
+
     const columns = ['address_id', 'district', 'city', 'ward', 'home_number'];
-    const columnHeaders = ['Id', 'District', 'City', 'Ward', 'Home Number'];
+    const columnHeaders = ['ID', 'District', 'City', 'Ward', 'Home Number'];
     const navigate = useNavigate();
     const { user  } = useAuth(); // Use Auth context to get userId
     const userId = user?.userId;
@@ -55,7 +55,7 @@ const AddressManagementPage: React.FC = () => {
 
     const handleAddressDetailsClick = (addressId: number) => {
 
-        navigate('/address-details', { state: { addressId } });
+        navigate('/address/details', { state: { addressId } });
     };
 
 
@@ -68,15 +68,7 @@ const AddressManagementPage: React.FC = () => {
             onClick: handleAddressDetailsClick,
         },
     ];
-// Calculate total pages
-    const indexOfLastAddress = currentPage * itemsPerPage;
-    const indexOfFirstAddress = indexOfLastAddress - itemsPerPage;
-    const currentAddresses = addresses.slice(indexOfFirstAddress, indexOfLastAddress)
 
-    // Handle page change
-    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        setCurrentPage(value);
-    };
     return (
         <div className="d-flex flex-grow-1">
             <Sidebar />
@@ -84,7 +76,7 @@ const AddressManagementPage: React.FC = () => {
                 <div className="card" style={{ width: '100%' }}>
                     <div className="card-header d-flex justify-content-between align-items-center">
                         <h5 className="text-start"
-                            style={{fontWeight: "bold", color: "#02033B", fontSize: "2.5rem", padding: "1.2rem"}}>
+                            style={{fontWeight: "bold", color: "#02033B", fontSize: "2.7rem", padding: "1.2rem"}}>
                             Addresses List
                         </h5>
                         <button
@@ -103,18 +95,12 @@ const AddressManagementPage: React.FC = () => {
                         <TableComponent
                             columns={columns}
                             columnHeaders={columnHeaders}
-                            data={currentAddresses}
+                            data={addresses}
                             actions={actions} // Actions for Veterinarians
                             isKoiFishPage={false}
                             isAddressPage={true}
                         />
-                        <Pagination
-                            count={Math.ceil(addresses.length / itemsPerPage)} // Total pages
-                            shape="rounded"
-                            page={currentPage} // Current page
-                            onChange={handlePageChange} // Page change handler
-                            style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }} // Center the pagination
-                        />
+
                     </div>
 
                 </div>

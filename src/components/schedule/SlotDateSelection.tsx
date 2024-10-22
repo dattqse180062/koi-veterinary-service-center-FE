@@ -162,7 +162,7 @@ const AvailableSlot: React.FC<AvailableSlotProps> = ({ vetId, appointmentId, des
                     </div>
                     )}
                     <div className="col-md-7">
-                        <h3 className="text-start" style={{fontWeight: "bold", color: "#02033B", fontSize: "2.7rem"}}>
+                        <h3 className="text-start" style={{fontWeight: "bold", color: "#02033B", fontSize: "2.5rem"}}>
                             Doctor Schedule
                         </h3>
                         <div className="d-flex gap-3 flex-row align-items-center mb-2">
@@ -191,7 +191,7 @@ const AvailableSlot: React.FC<AvailableSlotProps> = ({ vetId, appointmentId, des
                                 <tr>
                                     <th className="fs-5">Slot</th>
                                     {weekDays.map((day, index) => (
-                                        <th key={index} className="text-center">
+                                        <th key={index} className="text-center" >
                                             {day} <br/> {new Date(weekDates[index]).toLocaleDateString('en-GB')}
                                         </th>
                                     ))}
@@ -200,7 +200,7 @@ const AvailableSlot: React.FC<AvailableSlotProps> = ({ vetId, appointmentId, des
                                 <tbody>
                                 {[1, 2, 3, 4].map((slotOrder) => (
                                     <tr key={slotOrder}>
-                                        <td>{`Slot ${slotOrder}`}</td>
+                                        <td style={{height:"70px"}}>{`Slot ${slotOrder}`}</td>
                                         {weekDates.map((date, dateIndex) => {
                                             const isAvailable = availableSlots.some(slot =>
                                                 slot.year === new Date(date).getUTCFullYear() &&
