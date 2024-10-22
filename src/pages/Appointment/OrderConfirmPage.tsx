@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import {createAppointment} from "../../api/appointmentApi";
 import {persistor} from "../../store/store";
+import defaultImage from "../../assets/images/defaultImage.jpg";
 
 
 
@@ -153,7 +154,7 @@ const AppointmentOrderPage: React.FC = () => {
                             <div className="card shadow d-flex flex-column align-items-center justify-content-center"
                                  style={{borderRadius: '40px', width: '320px', height: '360px'}}>
                                 <img
-                                    src={doctor?.avatar}
+                                    src={doctor?.avatar  || defaultImage}
                                     className="card-img-top rounded-circle mt-4"
                                     alt={`${doctor?.first_name} ${doctor?.last_name}`}
                                     style={{width: '200px', height: '200px'}}

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import TableComponent from '../components/table/TableComponentForStaff';
 import { useNavigate } from 'react-router-dom';
 import { fetchAppointment, fetchAppointmentAndVeterinarians } from '../api/appointmentApi';
+import Sidebar from "../components/layout/Sidebar";
 
 interface Appointment {
     appointment_id: number;
@@ -130,7 +131,7 @@ const StaffAppointment: React.FC = () => {
  
     const handleAppointmentDetails = (appointment_id: number) => {
         // console.log(appointment_id);
-        navigate(`/appointments/${appointment_id}`);
+        navigate(`/staff/appointments/${appointment_id}`);
     };
     
 
@@ -146,6 +147,7 @@ const StaffAppointment: React.FC = () => {
     
     return (
         <div className="d-flex flex-grow-1">
+            <Sidebar />
             <div className="container" style={{ marginTop: "6rem" }}>
                 <div className="card" style={{ width: '100%' }}>
                     <div className="card-header">

@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import bcrypt from 'bcryptjs';
 // const API_URL = 'https://66e10816c831c8811b538fae.mockapi.io/api';
 const BASE_URL = 'http://localhost:8080/api/v1/users';
 export const register = async (username: string, email: string, password: string, first_name: string, last_name: string) => {
@@ -56,8 +56,11 @@ export const getUserInfo = async (userId: number) => {
 
 // Update user profile
 export const updateUserInfoAPI = async (userId: number, userData: any) => {
+    console.log(userData)
     const response = await axios.put(`${BASE_URL}/profile?userId=${userId}`, userData);
+
     return response.data;
+
 };
 
 // Update user address
@@ -67,12 +70,27 @@ export const updateUserAddressAPI = async (userId: number, addressData: any) => 
 };
 export const changePassword = async (userId: number, currentPassword: string, newPassword: string) => {
     const user = await getUserInfo(userId);
+    console.log(user);
 
-    if (user && user.password === currentPassword) {
-        await updateUserInfoAPI(userId, { ...user, password: newPassword });
-        return true; // Trả về true nếu thay đổi mật khẩu thành công
+    if (user) {
+        // Compare the current password with the stored hash
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        console.log(isMatch);
+
+        if (isMatch) {
+            // Update password via the new API endpoint
+            const response = await axios.put(`http://localhost:8080/api/v1/users/password`, {
+                password: newPassword // Ensure the JSON key is "password"
+            } );
+
+            console.log(response.data); // Log the response data for debugging
+            return response.data; // Return the response data containing the new password
+        } else {
+            console.log("userpasss", user.password);
+            throw new Error('Current password is incorrect.'); // Mật khẩu không khớp
+        }
     } else {
-        throw new Error('Current password is incorrect.');
+        throw new Error('User not found.');
     }
 };
 
@@ -90,6 +108,10 @@ export const logout = async (token: string) => {
     }
 };
 
+export const refreshToken = async (token: string) => {
+    const response = await axios.post(`${BASE_URL}/refresh`, { refreshToken: token });
+    return response.data.result.token; // Adjust based on your actual API response structure
+};
 
 
 

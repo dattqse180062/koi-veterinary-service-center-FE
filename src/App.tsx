@@ -104,22 +104,18 @@ function App() {
                             <Route path="/no-access" element={<UnauthorizedPage />} />
 
                             {/* Authenticated routes */}
-                            <Route path="/settings" element={withAuth(ProfilePage)} />
+                            <Route path="/profile" element={withAuth(ProfilePage)} />
                             <Route path="/password-change" element={withAuth(PasswordChangePage)} />
 
                             {/* Customer routes */}
-                            <Route path="/koi" element={withRole(KoiFishPage, ['CUS'])} />
-                            <Route path="/add-koifish" element={withRole(AddKoiFishPage, ['CUS'])} />
-                            <Route path="/koi-details" element={withRole(KoiDetails, ['CUS'])} />
-
+                            <Route path="/koi/my-koi" element={withRole(KoiFishPage, ['CUS'])} />
+                            <Route path="/koi/add" element={withRole(AddKoiFishPage, ['CUS'])} />
+                            <Route path="/koi/details" element={withRole(KoiDetails, ['CUS'])} />
                             {/* <Route path="/my-appointment" element={withRole(CustomerAppointment, ['CUS'])} /> */}
-                            <Route path="/my-appointment-details-customer" element={withRole(CustomerAppointmentDetails, ['CUS'])} />
-                            
-
-
-                            <Route path="/addresses" element={withRole(AddressManagementPage, ['CUS'])} />
-                            <Route path="/address-details" element={withRole(AddressDetails, ['CUS'])} />
-                            <Route path="/add-address" element={withRole(AddAddressPage, ['CUS'])} />
+                            <Route path="/appointment-details" element={withRole(CustomerAppointmentDetails, ['CUS'])} />
+                            <Route path="/address/my-address" element={withRole(AddressManagementPage, ['CUS'])} />
+                            <Route path="/address/details" element={withRole(AddressDetails, ['CUS'])} />
+                            <Route path="/address/add" element={withRole(AddAddressPage, ['CUS'])} />
 
 
                             {/* Make appointment  */}
@@ -130,35 +126,30 @@ function App() {
                             <Route path="/appointment/order-confirm" element={withRole(OrderConfirmPage, ['CUS'])} />
 
                             {/* Manager routes */}
-                            <Route path="/vetshift" element={withRole(VetShiftSchePage, ['MAN'])} />
-                            <Route path="/vet-details" element={withRole(VetDetails, ['MAN'])} />
-                            <Route path="/vetsche" element={withRole(ViewScheduleOfVetPage, ['MAN'])} />
-                            <Route path="/service-pricing" element={withRole(ServicePricingPage, ['MAN'])} />
-                            <Route path="/transport-pricing" element={withRole(TransportationPricingPage, ['MAN'])} />
-                            <Route path="/customer" element={withRole(CustomerManagementPage, ['MAN'])} />
-                            <Route path="/customer-details" element={withRole(CustomerDetailPage, ['MAN'])} />
-                            <Route path="/feedback" element={withRole(FeedbackManagementPage, ['MAN'])} />
-                            <Route path="/feedback-details" element={withRole(FeedbackDetail, ['MAN'])} />
-                            <Route path="/appointment" element={withRole(ManagerAppointment, ['MAN'])} />
-                            <Route path="/appointment-details" element={withRole(ManagerAppointmentDetails, ['MAN'])} />
-                            <Route path="/staff" element={withRole(ManagerStaffPage, ['MAN'])} />
-                            <Route path="/add-staff" element={withRole(AddStaffPage, ['MAN'])} />
+                            <Route path="/manager/vet-list" element={withRole(VetShiftSchePage, ['MAN'])} />
+                            <Route path="/manager/vet-details" element={withRole(VetDetails, ['MAN'])} />
+                            <Route path="/manager/vet-schedule" element={withRole(ViewScheduleOfVetPage, ['MAN'])} />
+                            <Route path="/manager/service-pricing" element={withRole(ServicePricingPage, ['MAN'])} />
+                            <Route path="/manager/transport-pricing" element={withRole(TransportationPricingPage, ['MAN'])} />
+                            <Route path="/manager/customer" element={withRole(CustomerManagementPage, ['MAN'])} />
+                            <Route path="/manager/customer-details" element={withRole(CustomerDetailPage, ['MAN'])} />
+                            <Route path="/manager/feedback" element={withRole(FeedbackManagementPage, ['MAN'])} />
+                            <Route path="/manager/feedback-details" element={withRole(FeedbackDetail, ['MAN'])} />
+                            <Route path="/manager/appointment-list" element={withRole(ManagerAppointment, ['MAN'])} />
+                            <Route path="/manager/appointment-details" element={withRole(ManagerAppointmentDetails, ['MAN'])} />
+                            <Route path="/manager/staff-list" element={withRole(ManagerStaffPage, ['MAN'])} />
+                            <Route path="/manager/add-staff" element={withRole(AddStaffPage, ['MAN'])} />
 
 
                             {/* Staff routes */}
-
-                            <Route path="/appointments/:appointment_id" element={withRole(StaffAppointmentDetails, ['STA'])} />
-
-                            {/* Role: Veterinarian */}
-                            <Route path="/vet-feedback-details" element={withRole(VeterinarianFeedbackDetailsPage, ['VET'])} />
-
-                            <Route path="/my-appointment" element={withRole(StaffAppointment, ['STA'])} />
-                            <Route path="/my-appointment-details" element={withRole(StaffAppointmentDetails, ['STA'])} />
-
+                            <Route path="/staff/appointment-list" element={withRole(StaffAppointment, ['STA'])} />
+                            {/*<Route path="/staff/appointment-details" element={withRole(StaffAppointmentDetails, ['STA'])} />*/}
+                            <Route path="/staff/appointments/:appointment_id" element={withRole(StaffAppointmentDetails, ['STA'])} />
 
                             {/* Role: Veterinarian */}
-                            <Route path="/veterinarian-schedule" element={withRole(VetSchedulePage, ['VET'])} />
-                            <Route path="/appointment-details/:appointmentId/veterinarian" element={withRole(VetAppointmentDetails, ['VET'])} />
+                            <Route path="/veterinarian/vet-feedback-details" element={withRole(VeterinarianFeedbackDetailsPage, ['VET'])} />
+                            <Route path="/veterinarian/schedule" element={withRole(VetSchedulePage, ['VET'])} />
+                            <Route path="/veterinarian/appointment-details/:appointmentId" element={withRole(VetAppointmentDetails, ['VET'])} />
 
 
                         </Routes>

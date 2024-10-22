@@ -3,6 +3,7 @@ import backgroundImage from "../assets/images/background.jpg";
 import Navbar from "../components/layout/Navbar";
 import {register} from "../api/authService";
 import "../styles/LoginRegister.css";
+import {useNavigate} from "react-router-dom";
 export default function RegisterPage(){
     const[username, setUsername] = useState("");
     const[password, setPassword] = useState("");
@@ -10,7 +11,7 @@ export default function RegisterPage(){
     const[email, setEmail] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-
+    const navigate = useNavigate();
     //cac bien bao loi
     const[errorTenDangNhap, setErrorTenDangNhap] = useState("");
     const[errorEmail, setErrorEmail] = useState("");
@@ -67,6 +68,7 @@ export default function RegisterPage(){
                 setEmail("");
                 setPassword("");
                 setConfirmPassword("");
+                navigate('/login');
             } catch (error: any) { // Use any type for the error
                 if (error instanceof Error) {
                     const errorMessage = error.message;
@@ -144,31 +146,7 @@ export default function RegisterPage(){
         }
         return true;
     }
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // //Kiem Tra Email Ton tai//////////////////////////////////////////////////////////////////////////////////////////
-    // const kiemTraEmailDaTonTai = async (email: string) =>{
-    //     // endpoint
-    //     const url = 'https://66e10816c831c8811b538fae.mockapi.io/api/login';
-    //     console.log(url);
-    //
-    //     try {
-    //         const response = await fetch(url);
-    //         const data = await response.json();  // Parse response as JSON
-    //
-    //         // Check if any user in the data array has the same username
-    //         const emailExists = data.some((user: any) => user.email === email);
-    //
-    //         if (emailExists) {
-    //             setErrorEmail("Email already exists!");
-    //             return true;
-    //         }
-    //         return false;
-    //     } catch (error) {
-    //         console.error("Loi khi kiem tra Email:", error);
-    //         return false;
-    //     }
-    // }
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) =>{
         //Thay doi gia tri
@@ -244,19 +222,8 @@ export default function RegisterPage(){
 
 
             <div
-                className="card border-1 rounded-4  p-4 mt-5"
-                style={{
-                    maxWidth: "70vw", // Responsive max width relative to viewport width
-                    width: "385px",
-                    background: "rgba(193, 151, 88, 0.25)", // Semi-transparent orange background
-                    backdropFilter: "blur(2px)", // Apply blur effect
-                    borderColor: "#c69533",
-                    display: 'flex',
-                    boxShadow: '4px 10px 20px rgba(0, 0, 0, 0.25)',
-                    flexDirection: 'column', // Thay đổi bố cục thành cột
-                    justifyContent: 'center', // Căn giữa nội dung
-                    alignItems: 'stretch' // Cho phép nội dung chiếm toàn bộ chiều rộng
-                }}
+                className="card border-1 rounded-4  p-4 mt-5 card-register"
+
             >
                 <div className="card-body mx-2">
                     <h3 className="card-title card-title-cus"

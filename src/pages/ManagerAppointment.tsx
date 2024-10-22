@@ -77,7 +77,7 @@ const ManagerAppointment: React.FC = () => {
     // dấu / chuyển theo path vd: appointment?appointment_id=1 ---> chuyền qua url parameters
     const handleAppointmentDetails = (appointment_id: number) => {
         console.log(appointment_id); // check xem có ra id không
-        navigate('/appointment-details', { state: { appointment_id } });
+        navigate('/manager/appointment-details', { state: { appointment_id } });
     };
 
     const actions = [

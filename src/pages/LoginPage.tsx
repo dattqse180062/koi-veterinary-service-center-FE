@@ -7,10 +7,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/context/AuthContext";
 import "../styles/LoginRegister.css";
 import axios from  "axios"
+import {jwtDecode} from "jwt-decode";
 
 
 const DangNhapNguoiDung: React.FC = () => {
-    const { login } = useAuth();
+    const { login, user  } = useAuth();
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState("");
@@ -29,10 +30,30 @@ const DangNhapNguoiDung: React.FC = () => {
         try {
             const response = await axios.post('http://localhost:8080/api/v1/users/token', { username, password });
             const token = response.data.result.token;
+            const decodedToken: any = jwtDecode(token);
+            const roleId = decodedToken.scope;
             login(token);  // Lưu JWT sau khi đăng nhập
-            navigate('/');  // Chuyển hướng sau khi đăng nhập thành công
+
+            switch (roleId) {
+                case 'CUS':
+                    navigate('/');
+                    break;
+                case 'STA':
+                    navigate('/my-appointment');
+                    break;
+                case 'MAN':
+                    navigate('/manager/appointment-list');
+                    break;
+                case 'VET':
+                    navigate('/veterinarian/schedule');
+                    break;
+                default:
+                    navigate('/');  // Fallback for any other role
+                    break;
+            }
+            console.log("2",user?.roleId)
         } catch (err) {
-            setErrorMessage('Login failed.');
+            setErrorMessage('Incorrect username or password. Please try again.');
         }
     };
 
@@ -47,21 +68,13 @@ const DangNhapNguoiDung: React.FC = () => {
             }}
         >
             <div
-                className="card border-1 rounded-4 p-4 mt-5"
-                style={{
-                    maxWidth: "70vw",
-                    width: "385px",
-                    height: "490px",
-                    background: "rgba(193, 151, 88, 0.25)",
-                    backdropFilter: "blur(2px)",
-                    borderColor: "#c69533",
-                    boxShadow: '4px 10px 20px rgba(0, 0, 0, 0.25)',
-                }}
+                className="card border-1 rounded-4 p-4 mt-5 card-login"
+
             >
                 <div className="card-body mx-2">
                     {/* Title */}
                     <h3 className="card-title card-title-cus">Login</h3>
-
+                    {errorMessage && <div className="text-danger error-register" style={{marginTop:"-15px",fontSize:"0.9rem"}}>{errorMessage}</div>} {/* Show error message if exists */}
                     {/* Username Input */}
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
@@ -99,7 +112,7 @@ const DangNhapNguoiDung: React.FC = () => {
                         </div>
 
                         {/* Sign In Button */}
-                        {errorMessage && <div className="text-danger" style={{marginTop:"-15px"}}>{errorMessage}</div>} {/* Show error message if exists */}
+
                         <div className="d-grid mb-3">
                             <button type="submit" className="btn btn-primary fw-bold"
                                     style={{ backgroundColor: '#c19758', fontSize: '0.8rem', padding: '0.5rem', borderColor: "#c69533" }}>
