@@ -152,7 +152,9 @@ const ChooseVeterinarianPage: React.FC = () => {
                     ))}
                 </div>
                 {/* Navigation buttons */}
+
                 <div className="d-flex justify-content-between mt-1" style={{margin: "0px 20px"}}>
+
                     <button className="prev-next-button d-flex align-items-center fw-bold" onClick={scrollLeft}>
                         <i className="fa-solid fa-circle-chevron-left " style={{marginRight: '8px'}}></i>
                         Prev

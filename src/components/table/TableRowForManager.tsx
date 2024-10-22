@@ -1,22 +1,19 @@
 import React from 'react';
-import defaultImage from "../../assets/images/defaultImage.jpg"
 
 interface Action {
     label: string;
-    onClick: (id: number, fullName?: string) => void;
-    icon?: string;
+    onClick: (id: number, fullName?: string) => void; // Updated to accept fullName as an optional parameter
+    icon?: string; // Optional icon property for actions
 }
 
 interface TableRowProps {
     columns: string[];
     rowData: any;
-
     actions?: Action[]; // Hành động
     isKoiFishPage?: boolean; // Thêm prop để xác định trang
     isAddressPage?: boolean; // Thêm prop để xác định trang
     isAppointmentPage?: boolean; // Thêm prop để xác định trang
     isFeedbackPage?: boolean; // Thêm prop để xác định trang
-
 }
 
 // Function to format DateTime
@@ -39,28 +36,27 @@ const formatDateTime = (dateString: string) => {
 };
 
     const TableRow: React.FC<TableRowProps> = ({ columns, rowData, actions = [], isKoiFishPage, isAddressPage, isAppointmentPage, isFeedbackPage }) => {
-        // console.log("date", formatDateTime(rowData.created_date));
+       
     const fullName = `${rowData.first_name || rowData.name} ${rowData.last_name || ''}`.trim(); // Tạo fullName
-    const dayOfSlot = `${rowData.time_slot.day}/${rowData.time_slot.month}/${rowData.time_slot.year}`.trim(); // Tạo dayOfSlot
-
+   
     return (
         <tr>
             {columns.map((column) => (
                 <td key={column}>
                     {column === 'fullName' ? (
-                        <div className="d-flex justify-content-center align-items-center ms-5" >
-                            <img
-                                src={rowData.avatar || defaultImage}
-                                style={{ width: 35, height: 35, borderRadius: '50%',border: '1px solid #002d72'}}
-                            />
-                            <span className="flex-grow-1 text-center fw-bold" style={{width:"50px"}}>{fullName}</span>
+                        <div className="d-flex justify-content-center align-items-center">
+                            {/* <img
+                                src={rowData.avatar}
+                                alt={fullName}
+                                style={{ width: 30, height: 30, borderRadius: '50%', marginRight: '1rem' }}
+                            /> */}
+                            {/* Lỗi avatar nên chưa để vào */}
+                            {fullName}
                         </div>
-                    )  : column === 'dayOfSlot' ? (
-                        <div>{dayOfSlot}</div> // Format datetime column
-                    )  : column === 'datetime' ? (
+                    ) : column === 'datetime' ? (
                         <div>{rowData.created_date}</div> // Format datetime column
                     ) : (
-                        !rowData[column] ? '' : rowData[column]
+                        !rowData[column] ? 'N/A' : rowData[column]
                     )}
                 </td>
             ))}

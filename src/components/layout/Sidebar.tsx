@@ -46,6 +46,14 @@ const Sidebar: React.FC = () => {
                     </div>
                 </Link>
 
+                {/* View Staff */}
+                <Link to="/staff" className="nav-link text-secondary">
+                    <div className="d-flex align-items-center">
+                        <div className="icon-placeholder"></div>
+                        <span className="fw-bold ms-2">Staff</span>
+                    </div>
+                </Link>
+
                 {/* Pricing Menu */}
                 <div className="nav-link text-secondary" onClick={togglePricingMenu} style={{ cursor: 'pointer' }}>
                     <div className="d-flex align-items-center">
@@ -69,10 +77,10 @@ const Sidebar: React.FC = () => {
                     </div>
                 )}
 
-                <Link to="/history" className="nav-link text-secondary">
+                <Link to="/appointment" className="nav-link text-secondary">
                     <div className="d-flex align-items-center">
                         <div className="icon-placeholder"></div>
-                        <span className="fw-bold ms-2">History</span>
+                        <span className="fw-bold ms-2">Appointment List</span>
                     </div>
                 </Link>
 

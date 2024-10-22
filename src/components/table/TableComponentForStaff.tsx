@@ -1,5 +1,5 @@
 import React from 'react';
-import TableRow from './TableRow';
+import TableRow from './TableRowForStaff';
 import "../../styles/Schedule.css"
 import "../../styles/ServicePricing.css"
 
@@ -9,7 +9,7 @@ interface TableComponentProps {
     columns: string[];
     columnHeaders: string[];
     data: any[];
-    actions?: { label: string; icon: string; onClick: (id: number, fullName?: string, slotId?: number) => void }[]; // Actions prop
+    actions?: { label: string; icon: string; onClick: (id: number, slotId?: number) => void }[]; // Actions prop
     isKoiFishPage?: boolean; // Thêm prop
     isAppointmentPage?: boolean; // Thêm prop
     isAddressPage?: boolean; // Thêm prop
@@ -18,7 +18,7 @@ interface TableComponentProps {
 } // Define the TableComponentProps interface
 
 
-const TableComponent: React.FC<TableComponentProps> = ({ columns, columnHeaders, data, actions, isKoiFishPage, isAddressPage, isAppointmentPage, isFeedbackPage ,  rowsPerPage = 5 }) => {
+const TableComponent: React.FC<TableComponentProps> = ({ columns, columnHeaders, data, actions, isKoiFishPage, isAddressPage, isAppointmentPage, isFeedbackPage, rowsPerPage = 5 }) => {
     const [currentPage, setCurrentPage] = useState(1);
     // Tính toán số trang
     const totalPages = Math.ceil(data.length / rowsPerPage);
@@ -41,9 +41,8 @@ const TableComponent: React.FC<TableComponentProps> = ({ columns, columnHeaders,
                         {columnHeaders.map((header, index) => (
                             <th key={index}>{header}</th>
                         ))}
-                        {/* <th></th> */}
-                        <th>Actions</th> {/* Actions column with padding and custom width */}
-                    </tr>                    
+                        <th></th>
+                    </tr>
                 </thead>
                 <tbody>
 
@@ -55,13 +54,7 @@ const TableComponent: React.FC<TableComponentProps> = ({ columns, columnHeaders,
                                 ...item
                                 // datetime: formatDateTime(item.date_time) // Format DateTime column
                             }}
-                            actions={
-                                
-                                actions?.map((action) => ({
-                                    ...action,
-                                    onClick: () => action.onClick(item[columns[0]], item.full_name, item.slot_id) // Assuming first column is ID
-                                }))
-                            } // Pass actions prop
+                            actions={actions} // Pass actions prop
                             isKoiFishPage={isKoiFishPage} // Truyền prop vào đây
                             isAddressPage={isAddressPage} // Truyền prop vào đây
                             isAppointmentPage={isAppointmentPage} // Truyền prop vào đây

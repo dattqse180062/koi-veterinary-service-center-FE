@@ -2,10 +2,11 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8080/api/v1/users";
 const API_BASE_URL = "http://localhost:8080/api/v1/users";
+
 // Function to fetch customers
 export const fetchCustomers = async () => {
   try {
-    const response = await axios.get(API_URL);
+    const response = await axios.get(`${API_URL}/customers`);
     return response.data; // Return the data from the response
   } catch (error) {
     console.error("Error fetching customers:", error);
@@ -14,11 +15,13 @@ export const fetchCustomers = async () => {
 };
 
 // Function to get customer profile information
-export const getUserProfile = async (userId: number): Promise<any> => {
+export const getUserProfile = async (userId: number) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/profile`, {
-      params: { userId },
-    });
+    const response = await axios.get(`${API_BASE_URL}/profile`
+      , {
+        params: { userId },
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching user profile:", error);
