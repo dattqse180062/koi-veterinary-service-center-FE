@@ -88,13 +88,13 @@ const VetShiftSchePage: React.FC = () => {
                             actions={actions} // Actions for Veterinarians
                             isKoiFishPage={false}
                         />
-                        <Pagination
+                        {/* <Pagination
                             count={Math.ceil(vets.length / itemsPerPage)} // Total pages
                             shape="rounded"
                             page={currentPage} // Current page
                             onChange={handlePageChange} // Page change handler
                             style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }} // Center the pagination
-                        />
+                        /> */}
                     </div>
                 </div>
             </div>
