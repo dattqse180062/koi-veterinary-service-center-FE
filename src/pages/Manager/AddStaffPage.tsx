@@ -1,120 +1,3 @@
-// import React, { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import { createStaff } from '../api/staffApi';
-// import '../../src/styles/AddStaffPage.css';
-// const AddStaffPage: React.FC = () => {
-//     const navigate = useNavigate();
-//     const [staffData, setStaffData] = useState({
-//         firstName: '',
-//         lastName: '',
-//         username: '',
-//         phoneNumber: '',
-//         password: ''
-//     });
-
-//     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//         setStaffData({
-//             ...staffData,
-//             [e.target.name]: e.target.value,
-//         });
-//     };
-
-//     const handleSave = async () => {
-//         try {
-//             await createStaff(staffData);
-//             navigate('/staff'); // Go back to the staff list page after saving
-//         } catch (error) {
-//             console.error('Failed to save staff', error);
-//         }
-//     };
-
-//     const handleCancel = () => {
-//         navigate('/staff'); // Go back to the staff list page without saving
-//     };
-
-//     return (
-//         <div className="container" style={{ marginTop: "6rem" }}>
-//             <div className="card" style={{ width: '100%' }}>
-//                 <div className="card-header">
-//                     <h5 className="text-start" style={{ fontWeight: "bold", color: "#02033B", fontSize: "2rem", padding: "1.2rem" }}>
-//                         Add New Staff
-//                     </h5>
-//                 </div>
-//                 <div className="card-body"
-                
-//                 >
-//                     <form>
-//                         <div className="mb-3">
-//                             <label htmlFor="firstName" className="form-label" style={{color:'black'}}>First Name</label>
-//                             <input
-//                                 type="text"
-//                                 className="form-control"
-//                                 id="firstName"
-//                                 name="firstName"
-//                                 value={staffData.firstName}
-//                                 onChange={handleChange}
-//                             />
-//                         </div>
-//                         <div className="mb-3">
-//                             <label htmlFor="lastName" className="form-label">Last Name</label>
-//                             <input
-//                                 type="text"
-//                                 className="form-control"
-//                                 id="lastName"
-//                                 name="lastName"
-//                                 value={staffData.lastName}
-//                                 onChange={handleChange}
-//                             />
-//                         </div>
-//                         <div className="mb-3">
-//                             <label htmlFor="username" style={{textAlign:'left'}} className="form-label">Username</label>
-//                             <input
-//                                 type="text"
-//                                 className="form-control"
-//                                 id="username"
-//                                 name="username"
-//                                 value={staffData.username}
-//                                 onChange={handleChange}
-//                             />
-//                         </div>
-//                         <div className="mb-3">
-//                             <label htmlFor="phoneNumber" className="form-label">Phone Number</label>
-//                             <input
-//                                 type="text"
-//                                 className="form-control"
-//                                 id="phoneNumber"
-//                                 name="phoneNumber"
-//                                 value={staffData.phoneNumber}
-//                                 onChange={handleChange}
-//                             />
-//                         </div>
-//                         <div className="mb-3">
-//                             <label htmlFor="password" className="form-label">Password</label>
-//                             <input
-//                                 type="password"
-//                                 className="form-control"
-//                                 id="password"
-//                                 name="password"
-//                                 value={staffData.password}
-//                                 onChange={handleChange}
-//                             />
-//                         </div>
-//                         <div className="d-flex justify-content-between">
-//                             <button type="button" className="btn btn-primary" onClick={handleSave}>
-//                                 Save
-//                             </button>
-//                             <button type="button" className="btn btn-secondary" onClick={handleCancel}>
-//                                 Cancel
-//                             </button>
-//                         </div>
-//                     </form>
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default AddStaffPage;
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createStaff } from '../../api/staffApi';
@@ -128,6 +11,8 @@ const AddStaffPage: React.FC = () => {
         phoneNumber: '',
         password: ''
     });
+    const [error, setError] = useState<boolean>(false); // State to track if there is an error
+    const [passwordError, setPasswordError] = useState<boolean>(false); // State to track password error
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setStaffData({
@@ -136,10 +21,41 @@ const AddStaffPage: React.FC = () => {
         });
     };
 
+
+    const validatePassword = (password: string) => {
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password); // Kiểm tra ký tự đặc biệt
+        return password.length >= 8 && hasSpecialChar;
+    };
+
     const handleSave = async () => {
+        if (!staffData.firstName || !staffData.lastName || !staffData.username || !staffData. password ) {
+            alert("Must input all field!");
+            setError(true); // Set error state to true
+            return;
+        }
+        if (!validatePassword(staffData.password)) {
+            // alert("Password must be at least 8 characters long and include at least one special character.");
+            setPasswordError(true); // Set password error state to true
+            return;
+        }
+
+        setPasswordError(false); // Reset lỗi nếu password hợp lệ
+
+        const confirmSave = window.confirm("Save the new staff?"); // Confirm before saving
+        if (!confirmSave) {
+            return; // Nếu người dùng chọn "Cancel", thoát khỏi hàm mà không thực hiện lưu
+        }
+        const newStaff = {
+            first_name: staffData.firstName,
+            last_name: staffData.lastName,
+            username: staffData.username,
+            // phone_number: staffData.phoneNumber,
+            password: staffData.password
+        }
         try {
-            await createStaff(staffData);
-            navigate('/staff'); // Go back to the staff list page after saving
+            await createStaff(newStaff);
+            // thêm điều kiện trước khi lưu, xác nhận lưu hay ko            
+            navigate('/manager/staff-list'); // Go back to the staff list page after saving
         } catch (error) {
             console.error('Failed to save staff', error);
         }
@@ -151,7 +67,7 @@ const AddStaffPage: React.FC = () => {
 
     return (
         <div className="container" style={{ marginTop: "6rem" }}>
-            <div className="card" style={{ width: '100%' }}>
+            <div className="card mx-auto" style={{ width: '50%', maxWidth: '600px', borderRadius:'40px' }}>
                 <div className="card-header">
                     <h5 className="text-start" style={{ fontWeight: "bold", color: "#02033B", fontSize: "2rem", padding: "1.2rem" }}>
                         Add New Staff
@@ -159,9 +75,9 @@ const AddStaffPage: React.FC = () => {
                 </div>
                 <div className="card-body">
                     <form className="add-staff-form">
-                        <div className="mb-3 row">
+                        <div className=" row">
                             <label htmlFor="firstName" className="col-sm-3 col-form-label text-end">First Name</label>
-                            <div className="col-sm-9">
+                            <div className="col-sm-6 mb-3">
                                 <input
                                     type="text"
                                     className="form-control"
@@ -173,9 +89,9 @@ const AddStaffPage: React.FC = () => {
                                 />
                             </div>
                         </div>
-                        <div className="mb-3 row">
+                        <div className=" row">
                             <label htmlFor="lastName" className="col-sm-3 col-form-label text-end">Last Name</label>
-                            <div className="col-sm-9">
+                            <div className="col-sm-6 mb-3">
                                 <input
                                     type="text"
                                     className="form-control"
@@ -187,9 +103,9 @@ const AddStaffPage: React.FC = () => {
                                 />
                             </div>
                         </div>
-                        <div className="mb-3 row">
+                        <div className=" row">
                             <label htmlFor="username" className="col-sm-3 col-form-label text-end">Username</label>
-                            <div className="col-sm-9">
+                            <div className="col-sm-6 mb-3">
                                 <input
                                     type="text"
                                     className="form-control"
@@ -201,24 +117,10 @@ const AddStaffPage: React.FC = () => {
                                 />
                             </div>
                         </div>
-                        <div className="mb-3 row">
-                            <label htmlFor="phoneNumber" className="col-sm-3 col-form-label text-end">Phone Number</label>
-                            <div className="col-sm-9">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="phoneNumber"
-                                    name="phoneNumber"
-                                    value={staffData.phoneNumber}
-                                    onChange={handleChange}
-                                    placeholder="Enter Phone Number"
-                                />
-                            </div>
-                        </div>
-                        <div className="mb-3 row">
+                        <div className=" row">
                             <label htmlFor="password" className="col-sm-3 col-form-label text-end">Password</label>
-                            <div className="col-sm-9">
-                                <input
+                            <div className="col-sm-6 mb-3">
+                                {/* <input
                                     type="password"
                                     className="form-control"
                                     id="password"
@@ -226,14 +128,28 @@ const AddStaffPage: React.FC = () => {
                                     value={staffData.password}
                                     onChange={handleChange}
                                     placeholder="Enter Password"
+                                /> */}
+                                <input
+                                    type="password"
+                                    className={`form-control ${passwordError ? 'is-invalid' : ''}`} // Thêm class 'is-invalid' nếu có lỗi
+                                    id="password"
+                                    name="password"
+                                    value={staffData.password}
+                                    onChange={handleChange}
+                                    placeholder="Enter Password"
                                 />
+                                {passwordError && (
+                                    <small className="text-danger">
+                                        Password must be at least 8 characters long and include at least one special character.
+                                    </small>
+                                )}
                             </div>
                         </div>
                         <div className="d-flex-end justify-content mt-4">
-                            <button type="button" style={{marginLeft:'16px'}} className="btn btn-primary" onClick={handleSave}>
+                            <button type="button" style={{ marginLeft: '16px' }} className="btn btn-primary" onClick={handleSave}>
                                 Save
                             </button>
-                            <button type="button" style={{marginLeft:'16px'}} className="btn btn-secondary" onClick={handleCancel}>
+                            <button type="button" style={{ marginLeft: '16px' }} className="btn btn-secondary" onClick={handleCancel}>
                                 Cancel
                             </button>
                         </div>

@@ -79,7 +79,6 @@ const VetShiftSchePage: React.FC = () => {
                             actions={actions} // Actions for Veterinarians
                             isKoiFishPage={false}
                         />
-
                     </div>
                 </div>
             </div>
