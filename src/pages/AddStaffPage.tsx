@@ -21,7 +21,7 @@ const AddStaffPage: React.FC = () => {
     };
 
     const handleSave = async () => {
-        if (!staffData.firstName || !staffData.lastName || !staffData.username || !staffData. password || !staffData.phoneNumber) {
+        if (!staffData.firstName || !staffData.lastName || !staffData.username || !staffData. password ) {
             alert("Must input all field!");
             setError(true); // Set error state to true
             return;
