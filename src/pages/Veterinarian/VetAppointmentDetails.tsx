@@ -220,12 +220,12 @@ const VetAppointmentDetails: React.FC = () => {
     };
 
     const handleCloseModal = () => {
-        setIsModalOpen(false); // Close the modal
-        setDescription(''); // Reset description on close
+        setIsModalOpen(false);
+        setDescription('');
     };
 
     const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setDescription(e.target.value); // Update the description state
+        setDescription(e.target.value);
     };
 
     return (
@@ -346,7 +346,7 @@ const VetAppointmentDetails: React.FC = () => {
                                                 &times;
                                         </span>
                                     </div>
-                                    <div className="modal-body" style={{marginLeft: "8%"}}>
+                                    <div className="modal-body" style={{marginLeft: "3%"}}>
 
                                     {/* Pass vetId or any necessary data to AvailableSlot */}
                                         <AvailableSlot vetId={vetId}
@@ -357,8 +357,8 @@ const VetAppointmentDetails: React.FC = () => {
                                             placeholder="Description"
                                             value={description}
                                             onChange={handleDescriptionChange}
-                                            className="form-control mb-2 mt-3"
-                                            style={{maxWidth:"820px"}}
+                                            className="form-control mb-1 mt-3"
+                                            style={{maxWidth:"930px"}}
                                         />
                                     </div>
 

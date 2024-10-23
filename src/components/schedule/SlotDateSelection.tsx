@@ -117,6 +117,7 @@ const AvailableSlot: React.FC<AvailableSlotProps> = ({ vetId, appointmentId, des
                     .then(response => {
                         console.log('Follow-up appointment created:', response.data);
                         alert("create following appointment successfully!!")
+                        window.location.reload()
                     })
                     .catch(error => {
                         console.error('Error creating follow-up appointment:', error);
@@ -131,7 +132,7 @@ const AvailableSlot: React.FC<AvailableSlotProps> = ({ vetId, appointmentId, des
         navigate('/appointment/vet-selection'); // Navigate back to service selection page
     };
     return (
-                <div className="d-flex flex-grow-1 align-items-center">
+        <div className="d-flex flex-grow-1 align-items-center">
             <div className="container-fluid">
                 {currentUserId && (
                 <button
@@ -146,10 +147,10 @@ const AvailableSlot: React.FC<AvailableSlotProps> = ({ vetId, appointmentId, des
 
                     <div className="ms-5 col-md-3 mb-4 d-flex justify-content-center align-items-center">
                         <div className="card shadow mt-5"
-                             style={{borderRadius: '40px', width: '300px', height: '330px'}}>
+                             style={{borderRadius: '40px', width: '300px', height: '360px'}}>
                             <img
                                 src={doctor.avatar || defaultImage}
-                                className="card-img-top rounded-circle mx-auto mt-4"
+                                className="card-img-top rounded-circle mx-auto mt-5"
                                 alt={`${doctor?.first_name} ${doctor?.last_name}`}
                                 style={{width: '200px', height: '200px'}}
                             />
@@ -202,7 +203,7 @@ const AvailableSlot: React.FC<AvailableSlotProps> = ({ vetId, appointmentId, des
                                 <tbody>
                                 {[1, 2, 3, 4].map((slotOrder) => (
                                     <tr key={slotOrder}>
-                                        <td style={{height:"75px"}}>{`Slot ${slotOrder}`}</td>
+                                        <td >{`Slot ${slotOrder}`}</td>
                                         {weekDates.map((date, dateIndex) => {
                                             const isAvailable = availableSlots.some(slot =>
                                                 slot.year === new Date(date).getUTCFullYear() &&
@@ -254,7 +255,7 @@ const AvailableSlot: React.FC<AvailableSlotProps> = ({ vetId, appointmentId, des
                             </table>
                         </div>
 
-                                <button className="btn btn-primary mt-3" onClick={handleNextClick}
+                                <button className="btn btn-primary" onClick={handleNextClick}
                                         disabled={!selectedSlot}>
                                     Next
                                 </button>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Prescription, Medicine, MedicalReport } from '../../../src/types';
-
+import "../../styles/AddKoiFish.css"
 interface CreateMedicalReportProps {
     isCreatingReport: boolean;
     toggleReportModal: () => void;
@@ -50,7 +50,7 @@ const CreateMedicalReport: React.FC<CreateMedicalReportProps> = ({
                     </div>
                     <div className="modal-body">
                         <div className="mb-3">
-                            <label className="form-label">Conclusion</label>
+                            <label className="form-label-koi">Conclusion</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -59,7 +59,7 @@ const CreateMedicalReport: React.FC<CreateMedicalReportProps> = ({
                             />
                         </div>
                         <div className="mb-3">
-                            <label className="form-label">Advise</label>
+                            <label className="form-label-koi">Advise</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -114,7 +114,7 @@ const CreateMedicalReport: React.FC<CreateMedicalReportProps> = ({
                                     Add Medicine
                                 </button>
                                 <div className="mb-3">
-                                    <label className="form-label">Instructions</label>
+                                    <label className="form-label-koi">Instructions</label>
                                     <input
                                         type="text"
                                         className="form-control"

@@ -10,6 +10,13 @@
 
 }
 
+.table-schedule th, .table-schedule td {
+    padding: 0.3rem;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #c2c5cd;
+    width: 120px; /* Set default width */
+}
 
 .table-schedule tbody tr:nth-child(odd) {
     background-color: rgba(224, 240, 244, 0.52);
@@ -33,7 +40,8 @@
     text-align: center; /* Căn giữa theo chiều ngang */
     vertical-align: middle; /* Căn giữa theo chiều dọc */
     padding: 0.3rem; /* Khoảng cách bên trong */
-    width: 110px;
+    width: 120px;
+    height: 79px;
 }
 
 
@@ -78,18 +86,20 @@
 /*}*/
 
 
-.table-schedule th, .table-schedule td {
-    padding: 0.3rem;
-    text-align: center;
-    vertical-align: middle;
-    border: 1px solid #c2c5cd;
 
-}
 
 
 .table-schedule tr {
 
 
+}
+
+.table-schedule td p {
+    width: 110px; /* Đặt chiều dài của các thẻ p là 110px */
+    overflow: hidden; /* Ẩn phần nội dung không vừa */
+    text-overflow: ellipsis; /* Hiển thị dấu "..." khi nội dung bị cắt */
+    white-space: nowrap; /* Ngăn không cho nội dung xuống dòng */
+    margin: 0; /* Đặt margin của thẻ p về 0 */
 }
 
 .table-schedule td p {
