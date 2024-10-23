@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/layout/Sidebar';
-import TableComponent from '../components/table/TableComponentForManager';
+import TableComponent from '../components/table/TableComponent';
 import { useNavigate } from 'react-router-dom';
 import { fetchAppointment } from '../api/appointmentApi';
 import { fetchStaff } from '../api/staffApi';
+
 
 interface Staff {
     staff_id: number;
@@ -12,11 +13,13 @@ interface Staff {
 
 const ManagerStaffPage: React.FC = () => {
     const [staff, setStaff] = useState<Staff[]>([]);
-    const columns = ['user_id', 'first_name', 'last_name', 'username', 'phone_number'];
-    const columnHeaders = ['User ID', 'First name', 'Last name', 'User name', 'Phone'];
+    const columns = ['user_id', 'first_name', 'last_name', 'username'];
+    const columnHeaders = ['User ID', 'First name', 'Last name', 'User name'];
     // tạm thời chưa có customer name!
     const navigate = useNavigate();
-    
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [itemsPerPage] = useState<number>(8); // Set the number of items per page
+
     useEffect(() => {
         const getStaff = async () => {
             try {
