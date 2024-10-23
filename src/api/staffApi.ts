@@ -13,6 +13,19 @@ export const fetchStaff = async () => {
     }
 };
 
+//Function to get staff details by id
+export const getStaffDetailsById = async (userId: number) => {
+    try {
+        const response = await axios.get(`${API_URL}/profile`, {
+            params: { userId },
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching staff details:", error);
+        throw error;
+    }
+};
+
 //Fucntipn to add staff: ONLY MANAGER CAN DO
 export const createStaff = async (userDTO: any) => {
     // const userDTO = {
