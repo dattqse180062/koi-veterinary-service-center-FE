@@ -13,28 +13,24 @@ export const fetchStaff = async () => {
     }
 };
 
-//Fucntipn to add staff
- export const createStaff = async (staffData: any) => {
-    try {
-      const response = await fetch('http://localhost:8080/staff', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(staffData),
-      });
-  
-      const message = await response.text();
-  
-      if (response.ok) {
-        console.log('Staff creation successful:', message);
-      } else {
-        console.error('Failed to create staff:', message);
-      }
-    } catch (error) {
-      console.error('Error creating staff:', error);
-    }
-  };
+//Fucntipn to add staff: ONLY MANAGER CAN DO
+export const createStaff = async (userDTO: any) => {
+    // const userDTO = {
+    //     firstName: '',
+    //     lastName: '',
+    //     username: '',
+    //     phoneNumber: '',
+    //     password: ''
+    // }
+  try {
+      const response = await axios.post(`${API_URL}/staff`, userDTO); // Gọi API POST để tạo nhân viên mới
+      return response.data; // Trả về dữ liệu phản hồi từ server
+  } catch (error) {
+      console.error("Error creating staff:", error);
+      throw error; // Ném lỗi để có thể xử lý tại nơi gọi hàm
+  }
+};
+
 
 
 // Function to update staff profile information
