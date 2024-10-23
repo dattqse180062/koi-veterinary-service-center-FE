@@ -95,20 +95,16 @@
 }
 
 .table-schedule td p {
-    width: 110px; /* Đặt chiều dài của các thẻ p là 110px */
-    overflow: hidden; /* Ẩn phần nội dung không vừa */
-    text-overflow: ellipsis; /* Hiển thị dấu "..." khi nội dung bị cắt */
-    white-space: nowrap; /* Ngăn không cho nội dung xuống dòng */
-    margin: 0; /* Đặt margin của thẻ p về 0 */
-}
-
-.table-schedule td p {
-    margin: 0; /* Bỏ khoảng cách bên ngoài */
-    font-size: 1.1rem; /* Kích thước font chữ */
-    display: inline-block; /* Cho phép căn giữa */
-    text-align: center; /* Căn giữa nội dung của thẻ p */
-
-
+    width: 110px; /* Set the width of the <p> elements */
+    overflow: hidden; /* Hide overflow content */
+    text-overflow: ellipsis; /* Show "..." when content is cut off */
+    white-space: nowrap; /* Prevent line breaks */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove any padding to minimize spacing */
+    line-height: 1; /* Set line height to 1 for tighter spacing */
+    font-size: 1.1rem; /* Font size */
+    display: inline-block; /* Allow centering */
+    text-align: center; /* Center the content of <p> */
 }
 
 
