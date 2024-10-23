@@ -12,6 +12,7 @@ const AddStaffPage: React.FC = () => {
         password: ''
     });
     const [error, setError] = useState<boolean>(false); // State to track if there is an error
+    const [passwordError, setPasswordError] = useState<boolean>(false); // State to track password error
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setStaffData({
@@ -20,12 +21,26 @@ const AddStaffPage: React.FC = () => {
         });
     };
 
+
+    const validatePassword = (password: string) => {
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password); // Kiểm tra ký tự đặc biệt
+        return password.length >= 8 && hasSpecialChar;
+    };
+
     const handleSave = async () => {
         if (!staffData.firstName || !staffData.lastName || !staffData.username || !staffData. password ) {
             alert("Must input all field!");
             setError(true); // Set error state to true
             return;
         }
+        if (!validatePassword(staffData.password)) {
+            // alert("Password must be at least 8 characters long and include at least one special character.");
+            setPasswordError(true); // Set password error state to true
+            return;
+        }
+
+        setPasswordError(false); // Reset lỗi nếu password hợp lệ
+
         const confirmSave = window.confirm("Save the new staff?"); // Confirm before saving
         if (!confirmSave) {
             return; // Nếu người dùng chọn "Cancel", thoát khỏi hàm mà không thực hiện lưu
@@ -52,7 +67,7 @@ const AddStaffPage: React.FC = () => {
 
     return (
         <div className="container" style={{ marginTop: "6rem" }}>
-            <div className="card" style={{ width: '100%' }}>
+            <div className="card mx-auto" style={{ width: '50%', maxWidth: '600px', borderRadius:'40px' }}>
                 <div className="card-header">
                     <h5 className="text-start" style={{ fontWeight: "bold", color: "#02033B", fontSize: "2rem", padding: "1.2rem" }}>
                         Add New Staff
@@ -60,9 +75,9 @@ const AddStaffPage: React.FC = () => {
                 </div>
                 <div className="card-body">
                     <form className="add-staff-form">
-                        <div className="mb-3 row">
+                        <div className=" row">
                             <label htmlFor="firstName" className="col-sm-3 col-form-label text-end">First Name</label>
-                            <div className="col-sm-9">
+                            <div className="col-sm-6 mb-3">
                                 <input
                                     type="text"
                                     className="form-control"
@@ -74,9 +89,9 @@ const AddStaffPage: React.FC = () => {
                                 />
                             </div>
                         </div>
-                        <div className="mb-3 row">
+                        <div className=" row">
                             <label htmlFor="lastName" className="col-sm-3 col-form-label text-end">Last Name</label>
-                            <div className="col-sm-9">
+                            <div className="col-sm-6 mb-3">
                                 <input
                                     type="text"
                                     className="form-control"
@@ -88,9 +103,9 @@ const AddStaffPage: React.FC = () => {
                                 />
                             </div>
                         </div>
-                        <div className="mb-3 row">
+                        <div className=" row">
                             <label htmlFor="username" className="col-sm-3 col-form-label text-end">Username</label>
-                            <div className="col-sm-9">
+                            <div className="col-sm-6 mb-3">
                                 <input
                                     type="text"
                                     className="form-control"
@@ -102,10 +117,10 @@ const AddStaffPage: React.FC = () => {
                                 />
                             </div>
                         </div>
-                        <div className="mb-3 row">
+                        <div className=" row">
                             <label htmlFor="password" className="col-sm-3 col-form-label text-end">Password</label>
-                            <div className="col-sm-9">
-                                <input
+                            <div className="col-sm-6 mb-3">
+                                {/* <input
                                     type="password"
                                     className="form-control"
                                     id="password"
@@ -113,7 +128,21 @@ const AddStaffPage: React.FC = () => {
                                     value={staffData.password}
                                     onChange={handleChange}
                                     placeholder="Enter Password"
+                                /> */}
+                                <input
+                                    type="password"
+                                    className={`form-control ${passwordError ? 'is-invalid' : ''}`} // Thêm class 'is-invalid' nếu có lỗi
+                                    id="password"
+                                    name="password"
+                                    value={staffData.password}
+                                    onChange={handleChange}
+                                    placeholder="Enter Password"
                                 />
+                                {passwordError && (
+                                    <small className="text-danger">
+                                        Password must be at least 8 characters long and include at least one special character.
+                                    </small>
+                                )}
                             </div>
                         </div>
                         <div className="d-flex-end justify-content mt-4">
