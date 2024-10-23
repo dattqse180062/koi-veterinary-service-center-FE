@@ -12,6 +12,7 @@ import VeterinarianSelectionPage from "./pages/Appointment/VeterinarianSelection
 import SlotDateSelectionPage from "./pages/Appointment/SlotDateSelectionPage";
 import InformationPage from "./pages/Appointment/InformationPage";
 import OrderConfirmPage from "./pages/Appointment/OrderConfirmPage";
+import AvailableSlots from "./pages/Appointment/AvailableSlotsPage";
 
 // Lazy load pages
 const RegisterPage = lazy(() => import("./pages/Common/RegisterPage"));
@@ -121,7 +122,7 @@ function App() {
                             {/* Make appointment  */}
                             <Route path="/appointment/service-selection" element={withRole(ServiceSelectionPage, ['CUS'])} />
                             <Route path="/appointment/vet-selection" element={withRole(VeterinarianSelectionPage, ['CUS'])} />
-                            <Route path="/appointment/slot-date-selection" element={withRole(SlotDateSelectionPage, ['CUS'])} />
+                            <Route path="/appointment/slot-date-selection" element={withRole(AvailableSlots, ['CUS'])} />
                             <Route path="/appointment/fill-information" element={withRole(InformationPage, ['CUS'])} />
                             <Route path="/appointment/order-confirm" element={withRole(OrderConfirmPage, ['CUS'])} />
 

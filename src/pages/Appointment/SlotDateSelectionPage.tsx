@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import AvailableSlots from "../../components/schedule/AvailableSlots";
+import AvailableSlots from "./AvailableSlotsPage";
 import SlotDateSelection from "../../components/schedule/SlotDateSelection";
 
 const SlotDateSelectionPage: React.FC = () => {
@@ -17,14 +17,14 @@ const SlotDateSelectionPage: React.FC = () => {
         }
     }, [service, navigate]);
     return (
-        <div className="App">
-            {doctor === null ? (
-                <AvailableSlots />
-            ) : (
-                <SlotDateSelection />
-            )}
 
-        </div>
+
+                <AvailableSlots />
+
+
+
+
+
     );
 };
 

@@ -235,7 +235,7 @@ const FillInformationPage: React.FC = () => {
         }
     };
     const handleBackClick = () => {
-        navigate('/appointment/slot-date-selection'); // Navigate back to service selection page
+        navigate('/appointment/vet-selection'); // Navigate back to service selection page
     };
 
     const handleServiceLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
