@@ -190,7 +190,7 @@ const DoctorSchedule: React.FC = () => {
                                                 <p>{slotOrderToTime[slotId as keyof typeof slotOrderToTime]}</p>
                                             </>
                                         ) : (
-                                            <p>-</p>
+                                            <p className="fw-bold">-</p>
                                         )}
                                     </td>
                                 );
