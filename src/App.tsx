@@ -42,6 +42,7 @@ const ManagerAppointmentDetails = lazy(() => import("./pages/ManagerAppointmentD
 const CustomerAppointmentDetails = lazy(() => import("./pages/CustomerAppointmentDetails"))
 const ManagerStaffPage = lazy(() => import("./pages/ManagerStaffPage"))
 const AddStaffPage = lazy(() => import("./pages/AddStaffPage"))
+const ManagerStaffDetails = lazy(() => import("./pages/ManagerStaffDetailsPage"))
 // Define a higher-order component with authentication
 // const CustomerAppointment = lazy(() => import("./pages/CustomerAppointment"))
 // const StaffAppointment = lazy(() => import("./pages/StaffAppointment"))
@@ -139,7 +140,7 @@ function App() {
                             <Route path="/manager/appointment-details" element={withRole(ManagerAppointmentDetails, ['MAN'])} />
                             <Route path="/manager/staff-list" element={withRole(ManagerStaffPage, ['MAN'])} />
                             <Route path="/manager/add-staff" element={withRole(AddStaffPage, ['MAN'])} />
-
+                            <Route path="/manager/staff-details" element={withRole(ManagerStaffDetails, ['MAN'])} />
 
                             {/* Staff routes */}
                             <Route path="/staff/appointment-list" element={withRole(StaffAppointment, ['STA'])} />
