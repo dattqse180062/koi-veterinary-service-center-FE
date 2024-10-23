@@ -13,6 +13,7 @@ import SlotDateSelectionPage from "./pages/Appointment/SlotDateSelectionPage";
 import InformationPage from "./pages/Appointment/InformationPage";
 import OrderConfirmPage from "./pages/Appointment/OrderConfirmPage";
 import AvailableSlots from "./pages/Appointment/AvailableSlotsPage";
+import BookedSchedulePage from "./pages/Manager/BookedSchedulePage";
 
 // Lazy load pages
 const RegisterPage = lazy(() => import("./pages/Common/RegisterPage"));
@@ -140,7 +141,7 @@ function App() {
                             <Route path="/manager/appointment-details" element={withRole(ManagerAppointmentDetails, ['MAN'])} />
                             <Route path="/manager/staff-list" element={withRole(ManagerStaffPage, ['MAN'])} />
                             <Route path="/manager/add-staff" element={withRole(AddStaffPage, ['MAN'])} />
-
+                            <Route path="/manager/booked-schedule" element={withRole(BookedSchedulePage, ['MAN'])} />
 
                             {/* Staff routes */}
                             <Route path="/staff/appointment-list" element={withRole(StaffAppointment, ['STA'])} />

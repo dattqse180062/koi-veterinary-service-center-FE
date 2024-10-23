@@ -25,6 +25,22 @@ const Sidebar: React.FC = () => {
                                 <span className="fw-bold ms-3">Appointment List</span>
                             </div>
                         </Link>
+
+                        <Link to="/manager/booked-schedule" className={`nav-link ${isActive('/manager/booked-schedule')}`}>
+                            <div className="d-flex align-items-center">
+                                <i className="fa-solid fa-calendar-check"></i>
+                                <span className="fw-bold ms-3">Booked Schedule</span>
+                            </div>
+                        </Link>
+
+
+                        <Link to="/manager/vet-list" className={`nav-link ${isActive('/manager/vet-list')}`}>
+                            <div className="d-flex align-items-center">
+                                <i className="fa-solid fa-user-doctor"></i>
+                                <span className="fw-bold ms-3">Veterinarians</span>
+                            </div>
+                        </Link>
+
                         <Link to="/manager/customer" className={`nav-link ${isActive('/manager/customer')}`}>
                             <div className="d-flex align-items-center">
                                 <i className="fa-solid fa-user"></i>
@@ -34,12 +50,7 @@ const Sidebar: React.FC = () => {
 
 
 
-                        <Link to="/manager/vet-list" className={`nav-link ${isActive('/manager/vet-list')}`}>
-                            <div className="d-flex align-items-center">
-                                <i className="fa-solid fa-user-doctor"></i>
-                                <span className="fw-bold ms-3">Veterinarians</span>
-                            </div>
-                        </Link>
+
 
                         <Link to="/manager/staff-list" className={`nav-link ${isActive('/manager/staff-list')}`}>
                             <div className="d-flex align-items-center">
