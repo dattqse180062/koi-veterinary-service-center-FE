@@ -14,7 +14,7 @@ const AddKoiFish: React.FC = () => {
     // Individual state variables for koi fish fields
     const [species, setSpecies] = useState<string>('');
 
-    const [gender, setGender] = useState<string>('');
+    const [gender, setGender] = useState<string>('MALE');
     const [age, setAge] = useState<string>('');
     const [size, setSize] = useState<string>('');
     const [weight, setWeight] = useState<string>('');
@@ -154,7 +154,9 @@ const AddKoiFish: React.FC = () => {
                                     <div className="form-check">
                                         <input className={`form-check-input ${error && !gender ? 'border-danger' : ''}`}
                                                type="radio" name="gender" value="MALE"
-                                               id="MALE" onChange={(e) => setGender(e.target.value)}/>
+                                               id="MALE"
+                                               checked={gender === 'MALE'}
+                                               onChange={(e) => setGender(e.target.value)}/>
                                         <label className="form-check-label" htmlFor="MALE">Male</label>
                                     </div>
                                     <div className="form-check">

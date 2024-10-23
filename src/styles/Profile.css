@@ -23,7 +23,7 @@
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    margin-bottom: 10px;
+
 }
 
 .profile-page .uploaded-image {
@@ -105,7 +105,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 7px;
+
 }
 
 .profile-page .left-buttons {

@@ -70,7 +70,7 @@ const AddAddress: React.FC = () => {
         setError(false); // Reset error state on cancel
     };
     const handleBack = () => {
-        navigate('/address/my-address');
+        window.history.back();
     };
     return (
         <div className="container-fluid vh-100 d-flex justify-content-center align-items-center">

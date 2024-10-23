@@ -6,7 +6,7 @@ import {getUserInfo, updateUserAddressAPI, updateUserInfoAPI, updateUserAvatarAP
 import { Link,useNavigate } from "react-router-dom";
 import '../../styles/Profile.css'
 import axios from "axios";
-
+import { Tooltip } from '@mui/material';
 // Define interfaces for user data
 
 interface UserAddress {
@@ -169,30 +169,56 @@ const Profile: React.FC = () => {
                     </div>
                     <div className="form-section">
                         <form className="profile-form">
+                            <h2 className="text-start"
+                                style={{
+                                    fontWeight: "bold",
+                                    color: "#02033B",
+                                    fontSize: "2.4rem",
+                                    marginBottom:"0px"
+
+                                }}>Profile</h2>
                             <div className="form-group">
                                 <label className="fw-bold">Username</label>
 
-                                <input type="text" className="form-control input-field" value={userData?.username} readOnly />
+                                <Tooltip title="You cannot change username" placement="top" arrow>
+                                    <input
+                                        type="text"
+                                        className="form-control input-field"
+                                        value={userData?.username}
+                                        readOnly
+                                    />
+                                </Tooltip>
                             </div>
                             <div className="form-group">
                                 <label className="fw-bold">Email</label>
-                                <input type="email" className="form-control input-field" value={userData?.email} readOnly />
+                                <Tooltip title="You cannot change email" placement="top" arrow>
+                                    <input
+                                        type="email"
+                                        className="form-control input-field"
+                                        value={userData?.email}
+                                        readOnly
+                                    />
+                                </Tooltip>
 
                             </div>
                             <div className="name-row">
                                 <div className="form-group">
                                     <label className="fw-bold">First Name</label>
 
-                                    <input type="text" className="form-control input-field" value={first_name} onChange={e => setFirstname(e.target.value)} readOnly={!canEditProfile}/>
+                                    <input type="text" className="form-control input-field" value={first_name}
+                                           onChange={e => setFirstname(e.target.value)} readOnly={!canEditProfile}/>
                                 </div>
                                 <div className="form-group">
                                     <label className="fw-bold">Last Name</label>
-                                    <input type="text" className="form-control input-field" value={last_name} onChange={e => setLastname(e.target.value)} readOnly={!canEditProfile}/>
+                                    <input type="text" className="form-control input-field" value={last_name}
+                                           onChange={e => setLastname(e.target.value)} readOnly={!canEditProfile}/>
                                 </div>
                             </div>
                             <div className="form-group">
                                 <label className="fw-bold">Contact Number</label>
-                                <input type="text" className="form-control input-field" value={phone_number} onChange={e => setPhone(e.target.value)} onBlur={validatePhone} readOnly={!canEditProfile} />
+                                <input type="text" className="form-control input-field" value={phone_number}
+                                       onChange={e => setPhone(e.target.value)} onBlur={validatePhone}
+                                       readOnly={!canEditProfile}/>
                                 {errorPhone && <div className="error-register">{errorPhone}</div>}
                             </div>
 
@@ -211,7 +237,7 @@ const Profile: React.FC = () => {
                                     <div className="address-row">
                                         <div className="form-group">
                                             <label className="fw-bold">District</label>
-                                            <input type="text" className="form-control input-field"  readOnly/>
+                                            <input type="text" className="form-control input-field" readOnly/>
                                         </div>
                                         <div className="form-group">
                                             <label className="fw-bold">City</label>
@@ -221,38 +247,17 @@ const Profile: React.FC = () => {
                                     <div className="address-row">
                                         <div className="form-group">
                                             <label className="fw-bold">Ward</label>
-                                            <input type="text" className="form-control input-field" readOnly />
+                                            <input type="text" className="form-control input-field" readOnly/>
                                         </div>
                                         <div className="form-group">
                                             <label className="fw-bold">Home Number</label>
-                                            <input type="text" className="form-control input-field"  readOnly/>
+                                            <input type="text" className="form-control input-field" readOnly/>
                                         </div>
                                     </div>
 
                                 </>
                             )}
 
-                            {/*<div className="address-row">*/}
-                            {/*    <div className="form-group">*/}
-                            {/*        <label className="fw-bold">State</label>*/}
-                            {/*        <input type="text" className="form-control input-field" value={state} onChange={e => setState(e.target.value)} />*/}
-                            {/*    </div>*/}
-                            {/*    <div className="form-group">*/}
-                            {/*        <label className="fw-bold">City</label>*/}
-                            {/*        <input type="text" className="form-control input-field" value={city} onChange={e => setCity(e.target.value)} />*/}
-                            {/*    </div>*/}
-                            {/*</div>*/}
-                            {/*<div className="address-row">*/}
-                            {/*    <div className="form-group">*/}
-                            {/*        <label className="fw-bold">Ward</label>*/}
-                            {/*        <input type="text" className="form-control input-field" value={ward} onChange={e => setWard(e.target.value)} />*/}
-                            {/*    </div>*/}
-                            {/*    <div className="form-group">*/}
-                            {/*        <label className="fw-bold">Home Number</label>*/}
-                            {/*        <input type="text" className="form-control input-field" value={homeNumber} onChange={e => setHomeNumber(e.target.value)} />*/}
-                            {/*    </div>*/}
-                            {/*</div>*/}
-                            {/*{errorAddress && <div className="error-register">{errorAddress}</div>}*/}
                             <div className="button-group">
                                 <div className="left-buttons">
 

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../../styles/Schedule.css';
-import { useDispatch } from "react-redux";
+import "../../styles/TableSchedule.css"
+import {useDispatch, useSelector} from "react-redux";
 import { setSlot } from '../../store/actions';
 
 const slotOrderToTime = {
@@ -58,6 +58,17 @@ const AvailableSlot: React.FC = () => {
 
     const weeks = generateWeeksOfYear(selectedYear);
 
+    const service = useSelector((state: any) => state.service);
+
+    useEffect(() => {
+        // Nếu service là null, điều hướng về trang chọn service
+        if (!service) {
+            alert("You should choose service first!!!")
+            navigate('/appointment/service-selection');
+
+        }
+    }, [service, navigate]);
+
     useEffect(() => {
         // Fetch available slots
         axios.get(`http://localhost:8080/api/v1/slots/available`)
@@ -91,11 +102,11 @@ const AvailableSlot: React.FC = () => {
     const handleNextClick = () => {
         if (selectedSlot) {
             dispatch(setSlot(selectedSlot));
-            navigate('/appointment/fill-information'); // Navigate to the next page (replace with your actual path)
+            navigate('/appointment/vet-selection'); // Navigate to the next page (replace with your actual path)
         }
     };
     const handleBackClick = () => {
-        navigate('/appointment/vet-selection'); // Navigate back to service selection page
+        navigate('/appointment/service-selection'); // Navigate back to service selection page
     };
     return (
         <div className="d-flex flex-grow-1 align-items-center">
