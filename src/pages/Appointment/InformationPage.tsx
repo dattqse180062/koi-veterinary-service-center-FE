@@ -279,7 +279,7 @@ const FillInformationPage: React.FC = () => {
                         </div>
                         <div className="col-md-6">
                             <div className="form-group mb-3">
-                                <label className="fw-bold form-label">Your Name</label>
+                                <label className="fw-bold form-label-koi">Your Name</label>
                                 <input
                                     type="text"
                                     className={`form-control input-field ${!validity.name ? 'border-danger' : ''}`}
@@ -292,7 +292,7 @@ const FillInformationPage: React.FC = () => {
                             </div>
 
                             <div className="form-group mb-3">
-                                <label className="fw-bold form-label">Phone</label>
+                                <label className="fw-bold form-label-koi">Phone</label>
                                 <input
                                     type="text"
                                     className={`form-control input-field ${!validity.phone ? 'border-danger' : ''}`}
@@ -305,7 +305,7 @@ const FillInformationPage: React.FC = () => {
                             </div>
 
                             <div className="form-group mb-3">
-                                <label className="fw-bold form-label">Email</label>
+                                <label className="fw-bold form-label-koi">Email</label>
                                 <input
                                     type="email"
                                     className={`form-control input-field ${!validity.email ? 'border-danger' : ''}`}
@@ -319,7 +319,7 @@ const FillInformationPage: React.FC = () => {
                             {service_id !== 1 && service_id !== 2 && (
                                 <div className="form-group mb-3 position-relative">
                                     <div className="d-flex justify-content-between mb-1">
-                                        <label className="fw-bold form-label">Fish</label>
+                                        <label className="fw-bold form-label-koi">Fish</label>
                                         <button type="button" className="btn btn-sm btn-primary ms-2"
                                                 onClick={handleAddFish}>
                                             <i className="fas fa-plus"></i>
@@ -354,7 +354,7 @@ const FillInformationPage: React.FC = () => {
                             {service_id !== 1 && (
                                 <div className="form-group mb-3">
 
-                                <label className="fw-bold form-label">Service Location</label>
+                                <label className="fw-bold form-label-koi">Service Location</label>
                                     <div className="d-flex align-items-center">
                                     <div className="form-check me-3">
                                         <input
@@ -385,7 +385,7 @@ const FillInformationPage: React.FC = () => {
                                 {serviceLocation === 'at_home' && ( // Chỉ hiển thị địa chỉ khi chọn 'At Home' và service_id không phải 1
                                     <div className="form-group mb-3 position-relative">
                                         <div className="d-flex justify-content-between mb-1">
-                                            <label className="fw-bold form-label">Address</label>
+                                            <label className="fw-bold form-label-koi">Address</label>
                                             <button type="button" className="btn btn-sm btn-primary ms-2"
                                                     onClick={handleAddAddress}>
                                                 <i className="fas fa-plus"></i>
@@ -417,7 +417,7 @@ const FillInformationPage: React.FC = () => {
                                 )}
 
                                 <div className="form-group mb-3">
-                                    <label className="fw-bold form-label">Description</label>
+                                    <label className="fw-bold form-label-koi">Description</label>
                                     <textarea
                                         className="form-control input-field"
                                         name="description"
@@ -429,7 +429,7 @@ const FillInformationPage: React.FC = () => {
                                 </div>
 
                                 <div className=" form-group mb-3">
-                                    <label className="fw-bold form-label">Payment Method</label>
+                                    <label className="fw-bold form-label-koi">Payment Method</label>
                                     <div className="form-check">
                                         <input
                                             className="form-check-input"

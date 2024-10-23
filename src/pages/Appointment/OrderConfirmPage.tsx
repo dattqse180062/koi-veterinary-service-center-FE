@@ -155,7 +155,7 @@ const AppointmentOrderPage: React.FC = () => {
                                  style={{borderRadius: '40px', width: '320px', height: '360px'}}>
                                 <img
                                     src={doctor?.avatar  || defaultImage}
-                                    className="card-img-top rounded-circle mt-4"
+                                    className="card-img-top rounded-circle mt-5"
                                     alt={`${doctor?.first_name} ${doctor?.last_name}`}
                                     style={{width: '200px', height: '200px'}}
                                 />

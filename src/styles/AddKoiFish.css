@@ -86,7 +86,7 @@
         padding: 8px;
     }
 }
-.form-label {
+.form-label-koi {
     font-weight: bold;
     text-align: left;
     display: block;
@@ -95,10 +95,9 @@
 
 .back-button {
 
-    position: relative;
-    top: 10%;
-    left: 2%;
-    z-index: 1000;
+    position: absolute;
+    top: 12%;
+    left: 3%;
 }
 .border-danger {
     border-color: rgba(255, 0, 0, 0.39) !important;
