@@ -43,7 +43,8 @@ const ManagerStaffPage: React.FC = () => {
         getStaff();
     }, []);
 
-    const handleAppointmentDetails = (userId: number) => {
+    const handleStaffDetails = (userId: number) => {
+        console.log(userId);
         navigate('/manager/staff-details', { state: { userId } });
     };
 
@@ -51,7 +52,7 @@ const ManagerStaffPage: React.FC = () => {
         {
             label: 'View Details',
             icon: 'fas fa-info-circle',
-            onClick: handleAppointmentDetails,
+            onClick: handleStaffDetails,
         },
     ];
     console.log(staff);
