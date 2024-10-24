@@ -1,8 +1,7 @@
-
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/layout/Sidebar";
-import { updateUserInfoAPI } from "../api/authService"; // Import authService functions
-import { getStaffDetailsById } from "../api/staffApi";
+import axios from "axios";
+import { getStaffDetailsById, modifyStaffStatus, updateStaffProfile } from "../api/staffApi";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import '../styles/Profile.css'
@@ -15,20 +14,21 @@ interface StaffData {
     first_name: string;
     last_name: string;
     phone_number: string;
-    enable: string; // Thêm thuộc tính enabled
+    enable: boolean; // Thêm thuộc tính enabled
 }
 
 const StaffProfile: React.FC = () => {
     const location = useLocation();
-    const { userId } = location.state;
+    const userId = location.state?.userId;
     const [StaffData, setStaffData] = useState<StaffData | null>(null);
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [errorPhone, setErrorPhone] = useState("");
+    const [errorEmail, setErrorEmail] = useState("");
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
-    const [enabled, setEnabled] = useState("1"); // Khởi tạo trạng thái enabled là "1"
+    const [enabled, setEnabled] = useState<boolean>(); // Khởi tạo đúng kiểu dữ liệu boolean
 
     const navigate = useNavigate();
 
@@ -38,10 +38,12 @@ const StaffProfile: React.FC = () => {
             try {
                 const staff = await getStaffDetailsById(userId); // Call authService function
                 setStaffData(staff);
+                setEnabled(staff.enable); // Lấy trạng thái enabled từ dữ liệu
                 setFirstname(staff.first_name || '');
                 setLastname(staff.last_name || '');
                 setPhone(staff.phone_number || '');
-                setEnabled(staff.enable || "1"); // Lấy trạng thái enabled từ dữ liệu
+                setEmail(staff.email || '');
+                console.log(staff)
             } catch (error) {
                 console.error('Failed to fetch user data:', error);
             }
@@ -51,14 +53,26 @@ const StaffProfile: React.FC = () => {
     }, [userId]);
 
     // Handle image upload
-    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setSelectedImage(reader.result as string);
-            };
-            reader.readAsDataURL(file);
+            const formData = new FormData();
+            formData.append('image', file);  // Append file image
+            formData.append('user_id', userId);  // Append user ID
+            
+            try {
+                const response = await axios.put('http://localhost:8080/api/v1/users/avatar', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                const updatedUser = response.data;  // Response will contain updated user data
+                setSelectedImage(URL.createObjectURL(file));  // Update the UI with the new image
+                console.log('Avatar updated successfully:', updatedUser);
+            } catch (error) {
+                console.error('Failed to update avatar:', error);
+                alert('Failed to update avatar. Please try again.');
+            }
         }
     };
 
@@ -72,30 +86,19 @@ const StaffProfile: React.FC = () => {
         }
     };
 
-    // Handle saving updated user info
-    // const handleSave = async () => {
-    //     if (errorPhone) return;
-    //     try {
-    //         const updatedData = {
-    //             firstname,
-    //             lastname,
-    //             phone,
-    //             enabled,
-    //         };
-    //         if (userId) {
-    //             await updateUserInfoAPI(userId, updatedData); // Use authService function
-    //             console.log("User StaffProfile updated successfully!");
-    //             alert('User data updated successfully!');
-    //         }
-    //     } catch (error) {
-    //         console.error('Failed to update user data:', error);
-    //     }
-    // };
+    //Validate email
+    const validateEmail = () => {
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (email.trim() !== "" && !emailPattern.test(email)) {
+            setErrorPhone("Email is not valid, must have @ and '.' .");
+        } else {
+            setErrorPhone("");
+        }
+    };
 
-    // Thêm vào hàm handleSave với cảnh báo
-
+    // Handle save action to update user data
     const handleSave = async () => {
-        if (errorPhone) return;
+        if (errorPhone || errorEmail) return;
 
         // Hiển thị cảnh báo khi người dùng nhấn nút "Save"
         const isConfirmed = window.confirm("Are you sure you want to save changes? This action will update the user data.");
@@ -110,18 +113,35 @@ const StaffProfile: React.FC = () => {
                 first_name: firstname,
                 last_name: lastname,
                 phone_number: phone,
-                enable: enabled, // Gửi trạng thái enabled cập nhật
+                email: email
             };
             if (userId) {
-                await updateUserInfoAPI(userId, updatedData); // Use authService function
+                await updateStaffProfile(userId, updatedData); // Gọi hàm updateStaffProfile từ staffApi
+                setEmail(email); // Cập nhật email              
                 console.log("User StaffProfile updated successfully!");
                 alert('User data updated successfully!');
             }
         } catch (error) {
+            alert('Failed to update user data. Please try again later.');
             console.error('Failed to update user data:', error);
         }
     };
 
+    // Function to change user status
+    const handleChangeStatus = async () => {
+        const isConfirmed = window.confirm("Are you sure you want to change this user's status?");
+        if (!isConfirmed) return;
+    
+        try {
+            await modifyStaffStatus(userId, !enabled); // Truyền giá trị enable mới (đảo ngược)
+            setEnabled(prev => !prev); // Cập nhật trạng thái trên frontend
+            alert('User status updated successfully!');
+        } catch (error) {
+            alert('Failed to update user status. Please try again later.');
+            console.error('Failed to update user status:', error);
+        }
+    };
+    
 
     // Handle cancel action to reset form values to original state
     const handleCancel = () => {
@@ -171,7 +191,8 @@ const StaffProfile: React.FC = () => {
                             </div>
                             <div className="form-group">
                                 <label className="fw-bold">Email</label>
-                                <input type="email" className="form-control input-field" value={email || 'Loading...'} readOnly />
+                                <input type="email" className="form-control input-field" value={email} onChange={e => setEmail(e.target.value)} onBlur={validateEmail}/>
+                                {errorEmail && <div className="error-register">{errorEmail}</div>}
                             </div>
                             <div className="name-row">
                                 <div className="form-group">
@@ -191,32 +212,21 @@ const StaffProfile: React.FC = () => {
                             </div>
 
                             <div className="form-group">
-                                <label className="fw-bold">Status</label>
-                                <select
-                                    className="form-control input-field"
-                                    value={enabled}
-                                    onChange={e => setEnabled(e.target.value)} // Cập nhật trạng thái enabled
-                                >
-                                    <option value="1">Enabled</option>
-                                    <option value="0">Disabled</option>
-                                </select>
+                                <label className="fw-bold">Status: {StaffData?.enable}</label>
+                                <p>{enabled ? "Enabled" : "Disabled"}</p> {/* Hiển thị trạng thái */}
                             </div>
 
                             <div className="button-group">
                                 <div className="left-buttons">
                                     <button
+                                        type="button"
                                         className="btn btn-secondary"
-                                        onClick={() => navigate(`/password-change`)}
+                                        onClick={handleChangeStatus}
+                                        style={{ backgroundColor: enabled ? 'green' : 'red', marginTop: '10px' }}
                                     >
-                                        Change Password
+                                        {enabled ? "Disable" : "Enable"} {/* Thay đổi text nút */}
                                     </button>
 
-                                    {/* <button type="button" className="btn btn-info" 
-                                    onClick={toggleEnable}
-                                    style={{marginTop:'6px'}}
-                                    >
-                                        Change status
-                                    </button> */}
                                 </div>
                                 <div className="right-buttons">
                                     <button type="button" className="btn btn-dark" onClick={() => navigate(-1)}>Back</button>
